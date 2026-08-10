@@ -1,0 +1,75 @@
+name: Resource update
+description: Suggest a new learning resource or report a stale, moved, or broken link.
+title: "[Resource] "
+labels:
+  - resources
+body:
+  - type: markdown
+    attributes:
+      value: |
+        资料应直接帮助理解对应知识点。优先选择教材、原始论文、课程讲义和官方文档，并提供精确章节。
+
+  - type: dropdown
+    id: change
+    attributes:
+      label: 更新类型
+      options:
+        - 修复失效或跳转错误的链接
+        - 更新发生变化的官方资料
+        - 增加高质量学习资料
+        - 替换质量较低或定位不精确的资料
+    validations:
+      required: true
+
+  - type: input
+    id: unit
+    attributes:
+      label: 对应知识点编号
+      description: 例如 C02、H04、R11；若是通用索引，请填写 T。
+      placeholder: C02
+    validations:
+      required: true
+
+  - type: input
+    id: current_url
+    attributes:
+      label: 当前链接
+      description: 若是新增资料，可填写“不适用”。
+      placeholder: https://...
+    validations:
+      required: true
+
+  - type: input
+    id: proposed_url
+    attributes:
+      label: 建议链接
+      placeholder: https://...
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: 精确阅读位置
+      description: 章节、节、页码、讲次、时间戳或文档标题，不要只写“整篇”。
+      placeholder: Chapter 3, Section 3.2；Lecture 8, 12:10–24:30
+    validations:
+      required: true
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: 更新理由
+      description: 说明该资料与知识点的对应关系、质量优势，以及是否存在版本或时效限制。
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已打开并核对建议链接，且它不是搜索结果页或无关主页。
+          required: true
+        - label: 我已检查资料的作者、机构、版本与发布日期。
+          required: true
