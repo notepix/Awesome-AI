@@ -1,0 +1,548 @@
+{
+  "papers": [
+    {
+      "id": "adam",
+      "title": "Adam：自适应梯度与偏差校正",
+      "path": "readings/papers/adam.md",
+      "topics": [
+        "优化",
+        "深度学习"
+      ],
+      "units": [
+        "A10",
+        "A18",
+        "D05"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/1412.6980v9"
+      ]
+    },
+    {
+      "id": "xgboost",
+      "title": "XGBoost：二阶树提升与系统设计",
+      "path": "readings/papers/xgboost.md",
+      "topics": [
+        "机器学习",
+        "树模型"
+      ],
+      "units": [
+        "A08",
+        "C07",
+        "C08"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/1603.02754v1"
+      ]
+    },
+    {
+      "id": "resnet",
+      "title": "ResNet：残差学习与深层优化",
+      "path": "readings/papers/resnet.md",
+      "topics": [
+        "计算机视觉",
+        "深度学习"
+      ],
+      "units": [
+        "D02",
+        "D10",
+        "E03",
+        "E04"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/1512.03385v1"
+      ]
+    },
+    {
+      "id": "transformer",
+      "title": "Transformer：注意力与编解码器",
+      "path": "readings/papers/transformer.md",
+      "topics": [
+        "深度学习",
+        "自然语言处理"
+      ],
+      "units": [
+        "A02",
+        "D10",
+        "D13",
+        "F06",
+        "F07"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/1706.03762v1"
+      ]
+    },
+    {
+      "id": "bert",
+      "title": "BERT：双向预训练与迁移",
+      "path": "readings/papers/bert.md",
+      "topics": [
+        "自然语言处理",
+        "预训练"
+      ],
+      "units": [
+        "D11",
+        "F08",
+        "F09"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/1810.04805v1"
+      ]
+    },
+    {
+      "id": "gpt3",
+      "title": "GPT-3：上下文学习与规模",
+      "path": "readings/papers/gpt3.md",
+      "topics": [
+        "大语言模型",
+        "预训练"
+      ],
+      "units": [
+        "F08",
+        "F09",
+        "F10",
+        "F13"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/2005.14165v1"
+      ]
+    },
+    {
+      "id": "t5",
+      "title": "T5：统一文本接口与跨度去噪",
+      "path": "readings/papers/t5.md",
+      "topics": [
+        "自然语言处理",
+        "预训练"
+      ],
+      "units": [
+        "F06",
+        "F08",
+        "F09"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/1910.10683v4"
+      ]
+    },
+    {
+      "id": "chinchilla",
+      "title": "Chinchilla：计算最优的模型数据分配",
+      "path": "readings/papers/chinchilla.md",
+      "topics": [
+        "大语言模型",
+        "规模规律"
+      ],
+      "units": [
+        "A17",
+        "D14",
+        "F10"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/2203.15556v1"
+      ]
+    },
+    {
+      "id": "llama",
+      "title": "LLaMA：现代自回归模型的设计",
+      "path": "readings/papers/llama.md",
+      "topics": [
+        "大语言模型",
+        "架构"
+      ],
+      "units": [
+        "D07",
+        "D13",
+        "F07",
+        "F10"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/2302.13971v1"
+      ]
+    },
+    {
+      "id": "lora",
+      "title": "LoRA：低秩任务更新",
+      "path": "readings/papers/lora.md",
+      "topics": [
+        "参数高效微调",
+        "大语言模型"
+      ],
+      "units": [
+        "A05",
+        "D11",
+        "F12",
+        "O02"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/2106.09685v2"
+      ]
+    },
+    {
+      "id": "instructgpt",
+      "title": "InstructGPT：人类反馈与策略优化",
+      "path": "readings/papers/instructgpt.md",
+      "topics": [
+        "后训练",
+        "强化学习"
+      ],
+      "units": [
+        "I10",
+        "O01",
+        "O03",
+        "O04"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/2203.02155v1"
+      ]
+    },
+    {
+      "id": "dpo",
+      "title": "DPO：从偏好直接优化策略",
+      "path": "readings/papers/dpo.md",
+      "topics": [
+        "后训练",
+        "偏好优化"
+      ],
+      "units": [
+        "A15",
+        "O03",
+        "O04"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/2305.18290v2"
+      ]
+    },
+    {
+      "id": "deepseekmath",
+      "title": "DeepSeekMath：数学训练与GRPO",
+      "path": "readings/papers/deepseekmath.md",
+      "topics": [
+        "后训练",
+        "推理",
+        "强化学习"
+      ],
+      "units": [
+        "I09",
+        "I10",
+        "O03",
+        "O04"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/2402.03300v3"
+      ]
+    },
+    {
+      "id": "dpr",
+      "title": "DPR：稠密段落检索",
+      "path": "readings/papers/dpr.md",
+      "topics": [
+        "信息检索",
+        "双编码器"
+      ],
+      "units": [
+        "D09",
+        "F09",
+        "N04",
+        "N06",
+        "O05"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/2004.04906v3"
+      ]
+    },
+    {
+      "id": "rag",
+      "title": "RAG：检索文档的概率边际化",
+      "path": "readings/papers/rag.md",
+      "topics": [
+        "检索增强生成",
+        "大语言模型"
+      ],
+      "units": [
+        "F06",
+        "N04",
+        "O05",
+        "O06"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/2005.11401v4"
+      ]
+    },
+    {
+      "id": "react",
+      "title": "ReAct：推理行动与外部观察",
+      "path": "readings/papers/react.md",
+      "topics": [
+        "智能体",
+        "工具使用"
+      ],
+      "units": [
+        "B12",
+        "O07",
+        "O08"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/2210.03629v3"
+      ]
+    },
+    {
+      "id": "vae",
+      "title": "VAE：变分下界与可微采样",
+      "path": "readings/papers/vae.md",
+      "topics": [
+        "生成模型",
+        "概率建模"
+      ],
+      "units": [
+        "A13",
+        "C15",
+        "G03",
+        "G04"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/1312.6114v11"
+      ]
+    },
+    {
+      "id": "ddpm",
+      "title": "DDPM：逐步去噪生成",
+      "path": "readings/papers/ddpm.md",
+      "topics": [
+        "生成模型",
+        "扩散"
+      ],
+      "units": [
+        "A11",
+        "G03",
+        "G07"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/2006.11239v2"
+      ]
+    },
+    {
+      "id": "clip",
+      "title": "CLIP：图文对比对齐",
+      "path": "readings/papers/clip.md",
+      "topics": [
+        "多模态",
+        "对比学习"
+      ],
+      "units": [
+        "D09",
+        "D12",
+        "H01",
+        "H02"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/2103.00020v1"
+      ]
+    },
+    {
+      "id": "llava",
+      "title": "LLaVA：视觉指令微调",
+      "path": "readings/papers/llava.md",
+      "topics": [
+        "多模态",
+        "视觉语言模型"
+      ],
+      "units": [
+        "H02",
+        "H04",
+        "H05",
+        "H06"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/2304.08485v2"
+      ]
+    },
+    {
+      "id": "dqn",
+      "title": "DQN：经验回放与目标网络",
+      "path": "readings/papers/dqn.md",
+      "topics": [
+        "强化学习",
+        "决策"
+      ],
+      "units": [
+        "E03",
+        "I04",
+        "I06",
+        "I07"
+      ],
+      "sources": [
+        "https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf"
+      ]
+    },
+    {
+      "id": "gcn",
+      "title": "GCN：图归一化与节点分类",
+      "path": "readings/papers/gcn.md",
+      "topics": [
+        "图学习",
+        "半监督学习"
+      ],
+      "units": [
+        "A05",
+        "J01",
+        "J02"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/1609.02907v4"
+      ]
+    },
+    {
+      "id": "flashattention",
+      "title": "FlashAttention：分块精确注意力",
+      "path": "readings/papers/flashattention.md",
+      "topics": [
+        "AI系统",
+        "注意力"
+      ],
+      "units": [
+        "A16",
+        "D16",
+        "F07",
+        "F14",
+        "P05"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/2205.14135v2"
+      ]
+    },
+    {
+      "id": "pagedattention",
+      "title": "PagedAttention：KV缓存分页与共享",
+      "path": "readings/papers/pagedattention.md",
+      "topics": [
+        "AI系统",
+        "推理服务"
+      ],
+      "units": [
+        "F14",
+        "P04",
+        "P05"
+      ],
+      "sources": [
+        "https://arxiv.org/pdf/2309.06180v1"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "nanogpt",
+      "title": "nanoGPT：经典最小GPT训练器",
+      "path": "readings/projects/nanogpt.md",
+      "topics": [
+        "预训练",
+        "训练系统"
+      ],
+      "units": [
+        "B04",
+        "D08",
+        "D13",
+        "F07",
+        "F08"
+      ],
+      "sources": [
+        "https://github.com/karpathy/nanoGPT",
+        "https://github.com/karpathy/nanochat"
+      ]
+    },
+    {
+      "id": "transformers",
+      "title": "Transformers：模型定义与训练生成接口",
+      "path": "readings/projects/transformers.md",
+      "topics": [
+        "模型框架",
+        "多模态"
+      ],
+      "units": [
+        "B04",
+        "D11",
+        "F07",
+        "F09",
+        "F11",
+        "H04"
+      ],
+      "sources": [
+        "https://github.com/huggingface/transformers",
+        "https://huggingface.co/docs/transformers/index"
+      ]
+    },
+    {
+      "id": "peft",
+      "title": "PEFT：参数高效适配的注入保存与合并",
+      "path": "readings/projects/peft.md",
+      "topics": [
+        "参数高效微调"
+      ],
+      "units": [
+        "D11",
+        "F12",
+        "O02"
+      ],
+      "sources": [
+        "https://github.com/huggingface/peft",
+        "https://huggingface.co/docs/peft/index"
+      ]
+    },
+    {
+      "id": "trl",
+      "title": "TRL：监督偏好与在线策略训练",
+      "path": "readings/projects/trl.md",
+      "topics": [
+        "后训练",
+        "强化学习"
+      ],
+      "units": [
+        "I10",
+        "O01",
+        "O03",
+        "O04"
+      ],
+      "sources": [
+        "https://github.com/huggingface/trl",
+        "https://huggingface.co/docs/trl/index"
+      ]
+    },
+    {
+      "id": "vllm",
+      "title": "vLLM：缓存调度与模型服务",
+      "path": "readings/projects/vllm.md",
+      "topics": [
+        "AI系统",
+        "推理服务"
+      ],
+      "units": [
+        "D16",
+        "F11",
+        "F14",
+        "P04",
+        "P05"
+      ],
+      "sources": [
+        "https://github.com/vllm-project/vllm",
+        "https://docs.vllm.ai/en/latest/usage/v1_guide/"
+      ]
+    },
+    {
+      "id": "langgraph",
+      "title": "LangGraph：有状态工具流程与恢复",
+      "path": "readings/projects/langgraph.md",
+      "topics": [
+        "智能体",
+        "编排"
+      ],
+      "units": [
+        "B12",
+        "O07",
+        "O08",
+        "P08"
+      ],
+      "sources": [
+        "https://github.com/langchain-ai/langgraph",
+        "https://docs.langchain.com/oss/python/langgraph/overview"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "project": "multimodal",
+  "profile": "local-model",
+  "output": "labs/outputs/multimodal",
+  "seed": 42,
+  "device": "auto",
+  "images_per_class": 12,
+  "dim": 32,
+  "steps": 100,
+  "batch_size": 32,
+  "lr": 0.003,
+  "model_path": null
+}

@@ -1,5 +1,13 @@
 # Awesome AI
 
+## 三个互相连接的学习入口
+
+- **[系统讲义与完整推导](docs/08-walkthroughs/README.md)**：在既有知识点基础上，把概率、训练、Transformer、后训练、RAG、Agent和多模态串成完整过程。
+- **[24篇论文与6个项目精读](readings/README.md)**：解释关键公式、实验与局限，并沿真实源码追踪实现。
+- **[五个完整实践项目](labs/README.md)**：Mini-GPT、SFT/LoRA/DPO、RAG、工具型Agent和图文检索；默认采用离线小数据，另有读取本地模型的扩展。
+
+可用[知识点与术语索引](docs/07-resources/knowledge-index.md)按编号查找。本轮增加内容的来源和验证范围单独记录于[实施与验证说明](docs/IMPLEMENTATION.md)。既有前沿材料的旧核验日期继续保留，不代表所有结论已重新核验。
+
 [![Content check](https://github.com/notepix/Awesome-AI/actions/workflows/content-check.yml/badge.svg)](https://github.com/notepix/Awesome-AI/actions/workflows/content-check.yml)
 
 > 一份按知识依赖组织、以理解与实践为目标的中文 AI 百科式学习仓库。
@@ -62,6 +70,8 @@ Awesome-AI/
 │   └── 07-resources/                # 资料索引、可信度与阅读边界
 ├── full/
 │   └── AI_Encyclopedia.md           # 单文件完整版
+├── readings/                       # 论文精读、版本固定的源码导读
+├── labs/                           # 五个完整项目、配置与测试
 └── scripts/
     └── validate_content.py          # 内容结构和代码片段检查
 ```
@@ -82,6 +92,8 @@ cd Awesome-AI
 ```bash
 python scripts/validate_content.py
 ```
+
+分章正文是唯一内容来源。修改后先运行 `python scripts/build_full.py` 生成完整版；`python scripts/build_full.py --check` 只作直接文本比较。章节与精读清单分别放在 `docs/curriculum.json` 和 `readings/catalog.json`。不进行哈希值校验。
 
 验证脚本用于检查仓库结构、知识单元必要字段、代码围栏与 Python 片段语法；它不能替代对公式、资料解释和实验结论的人工审阅。
 

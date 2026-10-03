@@ -5,9 +5,23 @@
 
 ---
 
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](../08-walkthroughs/05-posttraining.md) · [论文与源码精读](../../readings/README.md) · [完整实践代码](../../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+本章负责后训练和应用闭环；Transformer基础回到F章。[检索与Agent串讲](../08-walkthroughs/06-retrieval-agents.md)拆开讲解召回、答案、工具和控制器的证据。
+
 ## 知识单元
 
+<a id="o01"></a>
+
 ### O01 指令数据与监督微调 SFT【稳定流程】
+
+<!-- readings:start -->
+**进一步精读：** [InstructGPT：人类反馈与策略优化](../../readings/papers/instructgpt.md) · [TRL：监督偏好与在线策略训练](../../readings/projects/trl.md)
+<!-- readings:end -->
 - **先修**：Transformer、语言模型交叉熵、tokenization。
 - **定义与解析**：SFT 用“指令/上下文→期望回答”继续训练预训练模型；通常只对 assistant token 计 loss，数据质量、混合比例和格式一致性比盲目增量更重要。
 - **公式/机制**：$L_{\mathrm{SFT}}=-\sum_{t\in\mathrm{assistant}}\log p_\theta(y_t\mid x,y_{<t})$，prompt token label 设为 ignore index。
@@ -26,7 +40,13 @@ print(loss.item())
 - **检测/实验**：同一小模型比较全序列 loss 与 response-only loss；检查聊天模板、EOS、截断后监督 token 数。
 - **常见坑**：训练/推理 chat template 不同；把用户文本也当回答监督；仅看训练 loss、不做人评与保留能力回归。
 
+<a id="o02"></a>
+
 ### O02 参数高效微调 LoRA【稳定基础，变体活跃】
+
+<!-- readings:start -->
+**进一步精读：** [LoRA：低秩任务更新](../../readings/papers/lora.md) · [PEFT：参数高效适配的注入保存与合并](../../readings/projects/peft.md)
+<!-- readings:end -->
 - **先修**：O01、矩阵秩、线性层。
 - **定义与解析**：LoRA 冻结原权重，用低秩 (BA) 表示任务更新；降低可训练参数和优化器内存，但不保证所有任务与秩都等价于全量微调。
 - **公式/机制**：$W'=W+(\alpha/r)BA$，$A\in\mathbb R^{r\times d_{\mathrm{in}}},\ B\in\mathbb R^{d_{\mathrm{out}}\times r}$。
@@ -45,7 +65,13 @@ print(A.numel()+B.numel(),W.numel())
 - **检测/实验**：比较 r=1/2/8 的可训练参数、验证指标与合并前后输出误差。
 - **常见坑**：target modules 选错；保存 adapter 却漏记 base model revision；量化、merge 和 dtype 导致输出漂移。
 
+<a id="o03"></a>
+
 ### O03 偏好数据与奖励模型【稳定框架，标注科学活跃】
+
+<!-- readings:start -->
+**进一步精读：** [InstructGPT：人类反馈与策略优化](../../readings/papers/instructgpt.md) · [DPO：从偏好直接优化策略](../../readings/papers/dpo.md) · [DeepSeekMath：数学训练与GRPO](../../readings/papers/deepseekmath.md) · [TRL：监督偏好与在线策略训练](../../readings/projects/trl.md)
+<!-- readings:end -->
 - **先修**：O01、成对排序、采样偏差。
 - **定义与解析**：奖励模型把 prompt-response 映射为标量，并从 chosen/rejected 对学习偏好；它拟合的是标注协议与人群，不是真实、普遍的“人类价值函数”。
 - **公式/机制**：Bradley–Terry：$P(y_w\succ y_l\mid x)=\sigma\!\left(r_\phi(x,y_w)-r_\phi(x,y_l)\right)$。
@@ -65,7 +91,13 @@ assert acc>.8
 - **检测/实验**：按标注者、主题、答案长度分层看一致率；加入长度相同的对照检查 reward 是否学到长度捷径。
 - **常见坑**：同 prompt 的回答跨 split；chosen 总是更长；RM 分数跨模型版本直接比较。
 
+<a id="o04"></a>
+
 ### O04 RLHF、KL 约束与 DPO【成熟主线，快速演进】
+
+<!-- readings:start -->
+**进一步精读：** [InstructGPT：人类反馈与策略优化](../../readings/papers/instructgpt.md) · [DPO：从偏好直接优化策略](../../readings/papers/dpo.md) · [DeepSeekMath：数学训练与GRPO](../../readings/papers/deepseekmath.md) · [TRL：监督偏好与在线策略训练](../../readings/projects/trl.md)
+<!-- readings:end -->
 - **先修**：O03、策略梯度、参考模型、log-prob。
 - **定义与解析**：经典 RLHF 用奖励模型加 KL 约束优化策略；DPO 将同一偏好目标化为 chosen/rejected 的分类损失，无显式 reward model 与在线 RL，但仍依赖参考模型和数据分布。
 - **公式/机制**：DPO：$L=-\log\sigma\!\left(\beta\left[(\log\pi_w-\log\pi_{\mathrm{ref},w})-(\log\pi_l-\log\pi_{\mathrm{ref},l})\right]\right)$。
@@ -84,7 +116,13 @@ assert (pi_w.grad<0).all() and (pi_l.grad>0).all()
 - **检测/实验**：扫描 β，报告偏好 win-rate、KL、通用能力和安全集，不以单一 judge 分数验收。
 - **常见坑**：sequence log-prob 是否按长度归一不明确；reference/template 不匹配；“不用 RL”误解为“不做分布约束”。
 
+<a id="o05"></a>
+
 ### O05 RAG：切分、索引与检索【稳定架构，配方演进中】
+
+<!-- readings:start -->
+**进一步精读：** [DPR：稠密段落检索](../../readings/papers/dpr.md) · [RAG：检索文档的概率边际化](../../readings/papers/rag.md)
+<!-- readings:end -->
 - **先修**：N01、N04–N06、文本切分、LLM 上下文窗口。
 - **定义与解析**：RAG 将外部资料检索结果放入生成上下文；切分决定证据粒度，检索失败不能靠生成器可靠补救。
 - **公式/机制**：RAG-sequence 近似 $p(y\mid x)=\sum_{z\in\operatorname{top}\text{-}k}p_\eta(z\mid x)p_\theta(y\mid x,z)$。
@@ -103,7 +141,13 @@ assert top[0]==2
 - **检测/实验**：扫描 chunk 长度/重叠/k，分别报告 context recall、MRR、答案正确率与延迟。
 - **常见坑**：文档解析顺序错乱；query 与 corpus encoder/version 不一致；仅测最终回答，不定位检索还是生成故障。
 
+<a id="o06"></a>
+
 ### O06 Grounded RAG、引用与端到端评估【演进中】
+
+<!-- readings:start -->
+**进一步精读：** [RAG：检索文档的概率边际化](../../readings/papers/rag.md)
+<!-- readings:end -->
 - **先修**：O05、N01、事实核验、评测设计。
 - **定义与解析**：grounded answer 的每个可验证主张应由提供的证据蕴含并能定位来源；“含引用”不等于引用支持该句。
 - **公式/机制**：端到端拆为 context relevance/recall、faithfulness、answer correctness；自动 judge 需用人工样本校准一致率。
@@ -122,7 +166,13 @@ assert 0<=coverage<=1
 - **检测/实验**：建 50 条含“正确、错引、无证据、证据冲突”的金标集，校准自动 judge；报告各类混淆矩阵。
 - **常见坑**：judge 与生成模型同源造成偏好偏差；证据在上下文但不支持结论；网页更新后引用无法复现。
 
+<a id="o07"></a>
+
 ### O07 工具、资源与 Agent 协议【协议稳定化中】
+
+<!-- readings:start -->
+**进一步精读：** [ReAct：推理行动与外部观察](../../readings/papers/react.md) · [LangGraph：有状态工具流程与恢复](../../readings/projects/langgraph.md)
+<!-- readings:end -->
 - **先修**：JSON Schema、RPC、鉴权、O05。
 - **定义与解析**：协议规定消息、能力发现、参数 schema、结果和权限边界；它不规定模型何时调用何工具。MCP/JSON-RPC 是接口协议，ReAct/规划器才是策略。
 - **公式/机制**：`initialize→capability negotiation→tools/list→tools/call`；host 负责 consent/隔离，server 暴露 tools/resources/prompts。
@@ -141,7 +191,13 @@ print(result); assert result['value']==5
 - **检测/实验**：给工具增加删除副作用，设计 dry-run、最小权限、幂等键和用户确认；说明协议兼容不保证策略正确。
 - **常见坑**：信任 tool description/annotation；把任意字符串送 `eval`/shell；服务端看到超出最小需要的完整上下文。
 
+<a id="o08"></a>
+
 ### O08 Agent 策略：ReAct、规划、记忆与多 Agent【研究前沿】
+
+<!-- readings:start -->
+**进一步精读：** [ReAct：推理行动与外部观察](../../readings/papers/react.md) · [LangGraph：有状态工具流程与恢复](../../readings/projects/langgraph.md)
+<!-- readings:end -->
 - **先修**：O05–O07、状态机、错误恢复、评测。
 - **定义与解析**：Agent 策略决定“观察—思考—选工具—验证—停止”；工作记忆保存当前状态，长期记忆需检索与过期策略。多 Agent 是多个策略主体，不是多开几个相同 prompt。
 - **公式/机制**：策略 $\pi(a_t\mid h_t)$ 作用在协议允许的动作集合；停止条件、预算、重试和补偿事务属于控制器，而非 LLM 自由文本。

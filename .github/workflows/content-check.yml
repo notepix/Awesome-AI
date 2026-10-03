@@ -24,4 +24,23 @@ jobs:
           python-version: "3.12"
 
       - name: Validate encyclopedia content
-        run: python scripts/validate_content.py
+        run: |
+          python -m unittest discover -s scripts/tests -v
+          python scripts/sync_navigation.py --check
+          python scripts/build_full.py --check
+          python scripts/validate_content.py
+
+  offline-algorithms:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install CPU dependencies
+        run: |
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -e .
+      - name: Verify offline algorithms and boundaries
+        run: python -m unittest discover -s labs/tests -v

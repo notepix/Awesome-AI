@@ -5,7 +5,15 @@
 
 ---
 
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](../08-walkthroughs/07-generative-multimodal.md) · [论文与源码精读](../../readings/README.md) · [完整实践代码](../../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
 ## 知识单元
+
+<a id="g01"></a>
 
 ### G01 显式似然、隐式、潜变量、能量与 Score 范式 `[核心·成熟框架]`
 
@@ -28,6 +36,8 @@ print(p, p.sum(), sample, score)
 
 - **检测题/小实验**：给 EBM 的所有能量加常数，概率和 score 是否变化？为什么只会采样但不能算密度的模型仍可有用？
 - **常见坑**：把“生成”限定为图像；把 ELBO 当精确 log-likelihood；用不可比较的似然/感知指标排名所有范式；把 score 误作分类分数。
+
+<a id="g02"></a>
 
 ### G02 自回归生成与密度分解 `[核心·成熟]`
 
@@ -52,7 +62,13 @@ print(logits.shape, nll.item(), model.weight.grad)
 - **检测题/小实验**：为什么训练五个位置可一次算完、严格采样却要五步？换一种变量顺序，理论联合分布表达能力与优化难度分别怎样？
 - **常见坑**：目标未右移；生成时忘记停止条件；以 token 平均 NLL 直接比较不同 tokenization；把暴露偏差等同于“链式法则有错”。
 
+<a id="g03"></a>
+
 ### G03 潜变量、变分推断与 ELBO `[核心·成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [VAE：变分下界与可微采样](../../readings/papers/vae.md) · [DDPM：逐步去噪生成](../../readings/papers/ddpm.md)
+<!-- readings:end -->
 
 - **先修**：A09–A15、A07、G01。
 - **定义与解析**：潜变量 `z` 表示未直接观察的生成因素。真实后验 `p(z|x)` 往往难算，变分推断用可处理的 `q_φ(z|x)` 逼近；ELBO 同时是 log-likelihood 下界与后验逼近目标。
@@ -74,7 +90,13 @@ print(log_px.item(), elbo.item(), gap.item(), (log_px-elbo).item())
 - **检测题/小实验**：令 `q=posterior`，gap 应为多少？ELBO 上升时 log-likelihood 是否必然同幅上升？
 - **常见坑**：漏掉 KL 方向；把单样本 Monte Carlo ELBO 当精确值；混淆先验与聚合后验；下界更高就断言样本更好。
 
+<a id="g04"></a>
+
 ### G04 VAE、层次潜变量与解耦 `[核心·成熟；解耦主张需谨慎]`
+
+<!-- readings:start -->
+**进一步精读：** [VAE：变分下界与可微采样](../../readings/papers/vae.md)
+<!-- readings:end -->
 
 - **先修**：D02–D05、G03。
 - **定义与解析**：VAE 用 encoder 参数化 `q_φ(z|x)`、decoder 参数化 `p_θ(x|z)`，通过重参数化反传。层次 VAE 用多层潜变量表达多尺度结构。β-VAE 加大 KL 权重鼓励受限表示，但“无监督自动发现真实独立因素”没有一般保证。
@@ -99,6 +121,8 @@ print(rec.item(), kl.item(), z.shape)
 - **检测题/小实验**：把 β 从 0 改到 10，预测重构/KL 的长期趋势；为何 decoder 很强时可能忽略 z？
 - **常见坑**：`logvar` 当 `std`；KL 的 batch/维度 reduction 不一致；Bernoulli/Gaussian likelihood 选错；把漂亮 latent traversal 当无监督可辨识性证明。
 
+<a id="g05"></a>
+
 ### G05 Normalizing Flow `[分支·成熟]`
 
 - **先修**：A05、A07、A13、A16、G01。
@@ -120,6 +144,8 @@ print(x, torch.allclose(z, z_inv), logp_x)
 
 - **检测题/小实验**：为什么前一维不变仍能经多层/置换后变换所有维？删掉 log-determinant 后密度为什么错？
 - **常见坑**：正反方向 log-det 符号错；可逆不等于数值稳定；离散图像直接套连续密度忘记 dequantization；以 bits/dim 单指标代表感知质量。
+
+<a id="g06"></a>
 
 ### G06 GAN `[核心·成熟；训练稳定性仍任务相关]`
 
@@ -147,7 +173,13 @@ print(d_loss.item(), g_loss.item(), G.weight.grad.norm().item())
 - **检测题/小实验**：为什么更新 D 时要 `fake.detach()`？若 D 轻易完美，原始饱和型 G loss 的梯度会怎样？
 - **常见坑**：同一反向图错误更新双方；只看生成样本网格不测覆盖；把训练震荡都称“博弈正常”；比较 FID 时样本数、预处理和特征实现不同。
 
+<a id="g07"></a>
+
 ### G07 Score Matching、扩散、DDPM 与 SDE `[核心·较成熟；采样研究活跃]`
+
+<!-- readings:start -->
+**进一步精读：** [DDPM：逐步去噪生成](../../readings/papers/ddpm.md)
+<!-- readings:end -->
 
 - **先修**：A07、A10、A15、D03、G01。
 - **定义与解析**：扩散模型逐步给数据加噪，再学习反向去噪；DDPM 常预测加入的噪声，等价联系到不同噪声尺度的 score。连续极限以 SDE 描述前向扰动，反向时间 SDE/概率流 ODE 用学习到的 score 生成。
@@ -171,6 +203,8 @@ print(xt.shape, loss.item(), net.weight.grad.norm().item())
 
 - **检测题/小实验**：`ᾱ_t→1` 与 `→0` 时 `x_t` 各像什么？只训练一次噪声预测网络为何还不能直接一步获得正确样本？
 - **常见坑**：混淆 `α_t` 与累积 `ᾱ_t`；训练/采样 scheduler 不匹配；说 DDPM loss 就是无条件精确 NLL；只比步数不比函数评估次数和质量。
+
+<a id="g08"></a>
 
 ### G08 条件/潜空间扩散、Guidance 与生成评测 `[核心·较成熟；模型配方快速变化]`
 

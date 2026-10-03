@@ -1,0 +1,1 @@
+{"project":"multimodal","profile":"offline-core","output":"labs/outputs/multimodal","seed":42,"device":"cpu","images_per_class":12,"dim":32,"steps":100,"batch_size":32,"lr":0.003,"model_path":null}

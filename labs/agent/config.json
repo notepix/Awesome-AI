@@ -1,0 +1,1 @@
+{"project":"agent","profile":"offline-core","output":"labs/outputs/agent","seed":42,"device":"cpu","max_steps":6,"max_tool_calls":4,"max_errors":3,"max_seconds":120,"call_timeout":60,"tool_timeout":1,"max_output_chars":6000,"model_path":null}

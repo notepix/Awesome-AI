@@ -5,9 +5,21 @@
 
 ---
 
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](../08-walkthroughs/07-generative-multimodal.md) · [论文与源码精读](../../readings/README.md) · [完整实践代码](../../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
 ## 知识单元
 
+<a id="h01"></a>
+
 ### H01 多模态表示、对齐、融合与 Cross-Attention `[核心·较成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [CLIP：图文对比对齐](../../readings/papers/clip.md)
+<!-- readings:end -->
 
 - **先修**：D09、D12–D13、E08、F07。
 - **定义与解析**：多模态模型把图像、文本、音频等映射到可比较或可交互的表示。对齐让对应样本接近；早融合在浅层混合 token，晚融合组合独立决策，cross-attention 让一个模态的 query 从另一模态的 key/value 读取信息。
@@ -29,7 +41,13 @@ print(weights[0].sum(-1))                 # 每个 text query 对图像 token �
 - **检测题/小实验**：交换 query 与 key/value 后输出长度为什么变化？对比学习学到图文全局接近，是否足以定位句中每个名词？
 - **常见坑**：不同模态 padding mask 未传；把 embedding 维度相同当已对齐；把 attention 权重当可靠定位/解释；训练集共现捷径误当组合理解。
 
+<a id="h02"></a>
+
 ### H02 CLIP 图文对比预训练 `[核心·成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [CLIP：图文对比对齐](../../readings/papers/clip.md) · [LLaVA：视觉指令微调](../../readings/papers/llava.md)
+<!-- readings:end -->
 
 - **先修**：A04、A15、D12、E08、F09、H01。
 - **定义与解析**：CLIP 用成对图像—文本批次训练双编码器，使正确配对相似度高、批内错配低；推理可把类别写成文本提示做零样本分类，也可做双向检索。它学到开放词汇表征，但不是生成式 VLM。
@@ -52,6 +70,8 @@ print(logits.shape, loss.item(), logits.argmax(1))
 
 - **检测题/小实验**：将 batch 从 4 增到 64，批内负例数怎样变化？zero-shot 类别名更换为多模板平均为何可能改变分数？
 - **常见坑**：图/文 encoder 输出未 L2 归一；温度方向/可学习参数写反；用训练配对作检索测试；把 CLIP 相似度当校准概率或细粒度事实验证。
+
+<a id="h03"></a>
 
 ### H03 Caption、VQA、视觉定位与文档理解 `[分支·较成熟]`
 
@@ -79,7 +99,13 @@ loss.backward(); print(loss.item())
 - **检测题/小实验**：遮住图像只给问题，若 VQA 仍很高说明什么？OCR 文本正确但 box 坐标全错，对文档阅读顺序会有何影响？
 - **常见坑**：把 closed-vocab VQA accuracy 当开放回答能力；caption 指标代替事实核查；框坐标未按缩放同步；OCR 错误与推理错误不分层归因。
 
+<a id="h04"></a>
+
 ### H04 视觉编码器—连接器—LLM 的 VLM 架构 `[核心·较成熟；具体配方演进]`
+
+<!-- readings:start -->
+**进一步精读：** [LLaVA：视觉指令微调](../../readings/papers/llava.md) · [Transformers：模型定义与训练生成接口](../../readings/projects/transformers.md)
+<!-- readings:end -->
 
 - **先修**：D11–D13、E08、F09、H01–H03。
 - **定义与解析**：常见生成式 VLM 由视觉编码器提取 token，连接器把视觉维度/长度适配到 LLM embedding，再由 LLM 条件生成。连接器可为线性/MLP、query transformer 或 resampler；冻结还是联训决定成本与适配能力。
@@ -105,7 +131,13 @@ print(visual_tokens.shape, sequence.shape, out.shape)
 - **检测题/小实验**：视觉 token 从 4 增到 576 对上下文长度/attention 成本有何影响？冻结视觉 encoder 时 connector 能否恢复 encoder 已丢弃的信息？
 - **常见坑**：忽略图像 resize/crop 与 encoder 预处理；视觉 token 的位置/mask 错；把线性连接成功当“模态鸿沟已解决”；由端到端答案猜测未公开内部架构。
 
+<a id="h05"></a>
+
 ### H05 多模态指令微调与数据混合 `[核心·前沿工程]`
+
+<!-- readings:start -->
+**进一步精读：** [LLaVA：视觉指令微调](../../readings/papers/llava.md)
+<!-- readings:end -->
 
 - **先修**：B05–B06、F12、H03–H04。
 - **定义与解析**：多模态 SFT 用图像/视频/音频与多轮指令—回答示范，让预训练模型适应交互和任务。训练常分“连接器对齐→指令微调”，并混合纯文本以减轻语言能力遗忘。合成指令可扩规模，也会继承生成器错误与风格。
@@ -129,7 +161,13 @@ print(loss.item(), (labels != -100).sum().item())
 - **检测题/小实验**：若把用户问题也计 loss，优化目标发生什么变化？数据集 A 有百万短回答、B 有万条长推理，只按样本均匀与按 token 均匀有何区别？
 - **常见坑**：图像与对话错配；模板/特殊 token 不一致；混合后某模态被大量短样本淹没；把作者报告的 benchmark 提升写成已独立验证。结论边界截至 **2026-08-11**。
 
+<a id="h06"></a>
+
 ### H06 跨模态检索、组合泛化、幻觉与 VLM 评测 `[核心·评测前沿]`
+
+<!-- readings:start -->
+**进一步精读：** [LLaVA：视觉指令微调](../../readings/papers/llava.md)
+<!-- readings:end -->
 
 - **先修**：B06、C12、F13、H02–H05。
 - **定义与解析**：跨模态检索按图文相似度排名；组合泛化测试已见概念的新关系/次序；视觉幻觉指回答声称图中不存在或不受图证据支持的内容。评测要拆成感知、OCR/定位、知识、推理、校准与拒答，不能用总分掩盖短板。
@@ -152,6 +190,8 @@ for k in (1, 3, 5):
 
 - **检测题/小实验**：Recall@5=100% 是否说明第一名可靠？把“狗追人/人追狗”作成对 caption，普通全局相似度为何可能都高？
 - **常见坑**：一图多真 caption 却只认一个；用 LLM judge 不校验一致性/位置偏差；问答准确就忽略幻觉率；闭源模型版本变化仍把跨日期分数排成静态榜单。边界截至 **2026-08-11**。
+
+<a id="h07"></a>
 
 ### H07 统一多模态 Token 与图像、视频、音频生成 `[前沿·快速变化]`
 

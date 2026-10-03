@@ -1,0 +1,19 @@
+{
+  "project": "posttrain",
+  "profile": "local-model",
+  "output": "labs/outputs/posttrain",
+  "pretrain_checkpoint": "labs/outputs/minigpt/model.pt",
+  "seed": 42,
+  "device": "auto",
+  "method": "sft",
+  "steps": 60,
+  "batch_size": 8,
+  "lr": 0.001,
+  "rank": 4,
+  "alpha": 8,
+  "beta": 0.1,
+  "local_block_size": 128,
+  "local_batch_size": 1,
+  "local_lr": 0.0002,
+  "model_path": null
+}

@@ -5,7 +5,17 @@
 
 ---
 
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](../08-walkthroughs/03-transformer.md) · [论文与源码精读](../../readings/README.md) · [完整实践代码](../../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+本章负责分词、架构、目标和生成；F12给出适配入口，SFT/LoRA的详细推导统一见[后训练串讲](../08-walkthroughs/05-posttraining.md)。系统成本见[预训练与推理](../08-walkthroughs/04-pretraining-inference.md)。
+
 ## 知识单元
+
+<a id="f01"></a>
 
 ### F01 语言层次、Unicode、规范化与语料 `[核心·成熟]`
 
@@ -27,6 +37,8 @@ print(ud.normalize("NFKC", "① ℌ"))
 
 - **检测题/小实验**：为什么 `len(s)` 不一定是屏幕字符数？比较 NFC 与 NFKC 处理数学字母、圈号数字的结果，并判断你的任务能否接受信息折叠。
 - **常见坑**：先按 byte 截断再解码；把小写化/繁简转换当无损规范化；训练/推理清洗不同；忽略来源许可、隐私、时间污染和语言覆盖。
+
+<a id="f02"></a>
 
 ### F02 分词、子词、BPE、WordPiece 与词表 `[核心·成熟]`
 
@@ -52,6 +64,8 @@ for a, b in [("l", "o"), ("lo", "w"), ("e", "r")]:
 - **检测题/小实验**：同一中英混合句分别按字符、空格词、子词计长度；词表增大时 embedding 参数、平均序列长度和稀有 token 学习次数如何变化？
 - **常见坑**：只保存词表不保存 tokenizer 配置/合并表；新增特殊 token 后不扩 embedding；在 token 化后去重；用“token 数”直接比较不同 tokenizer 的数据量。
 
+<a id="f03"></a>
+
 ### F03 BoW、TF-IDF 与传统文本分类 `[核心·成熟]`
 
 - **先修**：A02、A10、C03、B05–B06、F01–F02。
@@ -73,6 +87,8 @@ print(clf.predict(vec.transform(["good", "bad slow"])), X.shape)
 
 - **检测题/小实验**：把词序反转，unigram 特征是否变化？只在训练折 `fit` 与全数据 `fit` TF-IDF，对验证分数有何潜在差别？
 - **常见坑**：验证/测试参与词表与 IDF 拟合；稀疏矩阵无意转 dense；只用 accuracy 处理不均衡；拿神经模型和未调参、未用 n-gram 的弱基线比较。
+
+<a id="f04"></a>
 
 ### F04 分布式语义、Word2Vec 与静态词向量 `[核心·成熟]`
 
@@ -99,6 +115,8 @@ print(loss.item(), vin.weight.grad[1])
 - **检测题/小实验**：把负样本数从 1 增到 20，损失尺度和计算量如何变？“bank”两个词义为何会挤在一个向量里？
 - **常见坑**：把类比偶然性当逻辑推理；未处理高频词采样；混淆输入/输出向量；用含社会偏差的向量而不做审计。
 
+<a id="f05"></a>
+
 ### F05 RNN、LSTM 与 GRU `[核心·成熟]`
 
 - **先修**：A07、D02、D04、D10、F04。
@@ -123,7 +141,13 @@ print(torch.stack(states).shape, x.grad[:, 0].norm().item())
 - **检测题/小实验**：把序列长度从 4 增到 100，比较首步输入梯度；双向 RNN 为什么不能无延迟用于严格在线生成？
 - **常见坑**：padding 步仍更新状态；hidden/state 形状混乱；训练时未 detach 跨 batch 状态；认为门控能可靠记住任意长度信息。
 
+<a id="f06"></a>
+
 ### F06 Seq2Seq、编码器—解码器与注意力 `[核心·成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [Transformer：注意力与编解码器](../../readings/papers/transformer.md) · [T5：统一文本接口与跨度去噪](../../readings/papers/t5.md) · [RAG：检索文档的概率边际化](../../readings/papers/rag.md)
+<!-- readings:end -->
 
 - **先修**：A04、D13、F05。
 - **定义与解析**：Seq2Seq 把变长输入编码为状态，再自回归解码输出；固定单向量瓶颈促成注意力：每个解码步按相关性汇聚全部编码状态。teacher forcing 加快训练，但推理时模型消费自身输出，形成暴露偏差。
@@ -147,7 +171,13 @@ print(alpha, context.shape, alpha.sum(1))
 - **检测题/小实验**：全 mask 一行会发生什么数值问题？训练时 100% teacher forcing 而推理逐步生成，输入分布发生了什么变化？
 - **常见坑**：softmax 维度错；mask 在 softmax 后才乘零且不重归一；将注意力热图直接解释为因果；目标序列未右移导致偷看当前 token。
 
+<a id="f07"></a>
+
 ### F07 Transformer、位置编码、Mask 与 KV Cache `[核心·成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [Transformer：注意力与编解码器](../../readings/papers/transformer.md) · [LLaMA：现代自回归模型的设计](../../readings/papers/llama.md) · [FlashAttention：分块精确注意力](../../readings/papers/flashattention.md) · [nanoGPT：经典最小GPT训练器](../../readings/projects/nanogpt.md) · [Transformers：模型定义与训练生成接口](../../readings/projects/transformers.md)
+<!-- readings:end -->
 
 - **先修**：A02、A04、A16、D07、D13、F06。
 - **定义与解析**：Transformer 以多头注意力和逐位置前馈层替代循环；自注意力本身对 token 排列等变，必须注入位置。因果 mask 禁止看未来；KV cache 在自回归推理中复用旧 token 的 key/value，但不会免掉新 query 与全部历史的注意力计算。
@@ -171,7 +201,13 @@ print(a[0], y.shape)
 - **检测题/小实验**：验证第 0 行只能关注自己；把输入 token 同步置换且不加位置编码，输出应如何置换？KV cache 为何主要省去旧 token 的 K/V 投影？
 - **常见坑**：把 padding mask、causal mask、loss mask 混用；缩放除以 `√d_model` 而非头维；cache 位置索引错位；把 RoPE 外推当成训练长度外必然可靠。
 
+<a id="f08"></a>
+
 ### F08 因果、掩码与 Encoder–Decoder 语言建模目标 `[核心·成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [BERT：双向预训练与迁移](../../readings/papers/bert.md) · [GPT-3：上下文学习与规模](../../readings/papers/gpt3.md) · [T5：统一文本接口与跨度去噪](../../readings/papers/t5.md) · [nanoGPT：经典最小GPT训练器](../../readings/projects/nanogpt.md)
+<!-- readings:end -->
 
 - **先修**：A09、A15、D03、F02、F07。
 - **定义与解析**：因果 LM 预测下一个 token；掩码 LM 从双向上下文恢复被遮 token；encoder–decoder 去噪把受损输入映射回目标跨度/文本。目标决定可见信息和训练信号，不等同于具体模型品牌。
@@ -195,7 +231,13 @@ print(clm.item(), mlm.item(), seq2seq.item())
 - **检测题/小实验**：若 CLM 的输入和标签同位置对齐且模型有残差，会出现什么捷径？MLM 为何不天然适合逐 token 左到右生成？
 - **常见坑**：padding 也计入 loss；把 `[MASK]` 留在下游真实输入；错误 shift 造成当前 token 泄漏；将 NSP、sentence order 等辅助目标视作 BERT 必不可少定义。
 
+<a id="f09"></a>
+
 ### F09 BERT、GPT 与 T5 `[核心·成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [BERT：双向预训练与迁移](../../readings/papers/bert.md) · [GPT-3：上下文学习与规模](../../readings/papers/gpt3.md) · [T5：统一文本接口与跨度去噪](../../readings/papers/t5.md) · [DPR：稠密段落检索](../../readings/papers/dpr.md) · [Transformers：模型定义与训练生成接口](../../readings/projects/transformers.md)
+<!-- readings:end -->
 
 - **先修**：F07–F08、D11–D12。
 - **定义与解析**：BERT 是双向 Transformer encoder 的掩码预训练范式，适合理解/编码；GPT 是 decoder-only 因果语言模型，统一为续写；T5 是 encoder–decoder，把任务写成 text-to-text。三者边界来自可见性、结构和目标，而非参数规模。
@@ -220,7 +262,13 @@ print(bert.shape, gpt.shape, t5.shape)
 - **检测题/小实验**：分类任务为何常取 BERT 的 pooled/特殊 token 表征，而抽取任务需逐 token 输出？T5 decoder 若无 cross-attention 会退化成什么？
 - **常见坑**：把“GPT”泛指所有 LLM；用 encoder 的双向 mask 做生成训练；只按架构名推断数据/能力；把预训练目标成绩当下游可靠性保证。
 
+<a id="f10"></a>
+
 ### F10 预训练数据、去重、Scaling 与配比 `[核心·较成熟；配方快速演进]`
+
+<!-- readings:start -->
+**进一步精读：** [GPT-3：上下文学习与规模](../../readings/papers/gpt3.md) · [Chinchilla：计算最优的模型数据分配](../../readings/papers/chinchilla.md) · [LLaMA：现代自回归模型的设计](../../readings/papers/llama.md)
+<!-- readings:end -->
 
 - **先修**：A13、A18、B05–B06、D14、F01–F09。
 - **定义与解析**：预训练系统由数据来源、许可/治理、过滤、去重、采样配比、tokenizer、训练预算共同定义。scaling law 是给定范围内损失随模型/数据/计算的经验幂律拟合；compute-optimal 配比取决于架构、数据质量和训练制度，不是自然常数。
@@ -242,7 +290,13 @@ print(f"N={N[i]:.0f}, D={D[i]:.0f}, loss={loss[i]:.3f}")
 - **检测题/小实验**：改变 `alpha/beta`，最优配比如何移动？去重为何可能同时降低 benchmark 分数（去掉污染）又提高真实泛化？
 - **常见坑**：跨论文直接套指数；把 token 数等同信息量；忽略测试污染和训练数据时间边界；模型报告未公开完整数据时仍声称已复现。结论边界截至 **2026-08-11**。
 
+<a id="f11"></a>
+
 ### F11 Greedy、Beam、采样与约束解码 `[核心·成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [Transformers：模型定义与训练生成接口](../../readings/projects/transformers.md) · [vLLM：缓存调度与模型服务](../../readings/projects/vllm.md)
+<!-- readings:end -->
 
 - **先修**：A09–A10、A15、F08–F09。
 - **定义与解析**：greedy 每步取最大概率；beam 保留若干高累积分序列；随机采样从截断/重标定分布取样；约束解码限制合法 token 或结构。解码改变输出分布，却不能补回模型没学到的事实。
@@ -266,7 +320,13 @@ print(candidates.tolist(), p.tolist(), sample.item())
 - **检测题/小实验**：温度趋近 0/无穷时分布怎样？构造一个 greedy 首步最优却整句概率低于另一序列的二步例子。
 - **常见坑**：softmax 后再除温度；top-p 集合未重归一；比较采样方法却不固定随机种子/预算；结构约束只保证语法，不保证语义与安全。
 
+<a id="f12"></a>
+
 ### F12 SFT、指令数据、Chat Template 与 PEFT/LoRA `[核心·较成熟；工具接口会变]`
+
+<!-- readings:start -->
+**进一步精读：** [LoRA：低秩任务更新](../../readings/papers/lora.md) · [PEFT：参数高效适配的注入保存与合并](../../readings/projects/peft.md)
+<!-- readings:end -->
 
 - **先修**：D11、F02、F08–F11。
 - **定义与解析**：SFT 用示范 `(instruction,response)` 的 token 级交叉熵教模型遵循交互格式；chat template 将角色消息序列化为模型训练时的特殊 token 协议。PEFT 只训练小量参数；LoRA 把线性层增量限制为低秩。SFT 不是偏好优化，也不能保证事实性。
@@ -290,7 +350,13 @@ print(y.shape, A.grad.norm().item(), B.grad.norm().item())
 - **检测题/小实验**：为什么 `B=0` 初始化时首步 `A.grad` 可能为 0 而 `B.grad` 非 0？同一消息用两个 chat template 序列化，token loss 能直接比较吗？
 - **常见坑**：训练/推理模板不一致；特殊 token 重复；prompt、padding 也计 loss；把“可训练参数少”误解为显存一定极低（激活仍在）；`main` 文档接口可能漂移，工程复现需固定版本。边界截至 **2026-08-11**。
 
+<a id="f13"></a>
+
 ### F13 分类、标注、抽取、翻译、摘要与 QA 评测 `[核心·成熟；开放生成评测仍不完备]`
+
+<!-- readings:start -->
+**进一步精读：** [GPT-3：上下文学习与规模](../../readings/papers/gpt3.md)
+<!-- readings:end -->
 
 - **先修**：B06、C03、C12、F03、F09–F12。
 - **定义与解析**：分类给序列标签，序列标注给 token 标签，抽取预测 span，翻译/摘要生成文本，QA 可抽取或生成。指标必须对应错误成本：macro-F1 关注小类，span EM/F1 关注边界，BLEU/ROUGE 测表面重叠；任何单指标都不等于语义正确或有用。
@@ -310,7 +376,13 @@ print(confusion_matrix(y, pred))
 - **检测题/小实验**：解释代码中 micro 与 macro 的差距；两个语义等价译文可能 BLEU 低，怎样用人工盲评和任务成功率补充？
 - **常见坑**：用测试集选阈值；tokenizer 不同仍直接比 token F1；抽取 span 的字符/token offset 错位；只报平均分不做按语言、长度、类别、时间切片误差分析。
 
+<a id="f14"></a>
+
 ### F14 长上下文、高效 Attention、KV Cache 与 LLM 推理 `[前沿；系统快速演进]`
+
+<!-- readings:start -->
+**进一步精读：** [FlashAttention：分块精确注意力](../../readings/papers/flashattention.md) · [PagedAttention：KV缓存分页与共享](../../readings/papers/pagedattention.md) · [vLLM：缓存调度与模型服务](../../readings/projects/vllm.md)
+<!-- readings:end -->
 
 - **先修**：A16、D16、F07、F10–F12。
 - **定义与解析**：长上下文要同时解决位置外推、注意力计算/显存与有效检索；FlashAttention 用 IO-aware 分块精确计算注意力，结果不是稀疏近似；MQA/GQA 让多个 query 头共享较少 KV 头以压 cache。声称的最大窗口不等于所有位置都能可靠利用。

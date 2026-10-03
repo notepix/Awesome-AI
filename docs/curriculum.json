@@ -1,0 +1,360 @@
+{
+  "version": 1,
+  "title": "Awesome AI 系统讲义",
+  "chapters": [
+    {
+      "path": "docs/01-foundations/a-math-statistics-optimization.md",
+      "title": "A. 数学、统计与优化",
+      "kind": "knowledge",
+      "units": [
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "A07",
+        "A08",
+        "A09",
+        "A10",
+        "A11",
+        "A12",
+        "A13",
+        "A14",
+        "A15",
+        "A16",
+        "A17",
+        "A18"
+      ]
+    },
+    {
+      "path": "docs/01-foundations/b-programming-data-experiments.md",
+      "title": "B. 编程、数据与实验基础",
+      "kind": "knowledge",
+      "units": [
+        "B01",
+        "B02",
+        "B03",
+        "B04",
+        "B05",
+        "B06"
+      ]
+    },
+    {
+      "path": "docs/01-foundations/b-plus-classical-ai.md",
+      "title": "B+. 经典人工智能：搜索、约束、逻辑与规划",
+      "kind": "knowledge",
+      "units": [
+        "B07",
+        "B08",
+        "B09",
+        "B10",
+        "B11",
+        "B12"
+      ]
+    },
+    {
+      "path": "docs/01-foundations/c-machine-learning.md",
+      "title": "C. 传统机器学习",
+      "kind": "knowledge",
+      "units": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "C11",
+        "C12",
+        "C13"
+      ]
+    },
+    {
+      "path": "docs/01-foundations/c-plus-probabilistic-black-box.md",
+      "title": "C+. 概率函数模型与无梯度优化",
+      "kind": "knowledge",
+      "units": [
+        "C14",
+        "C15",
+        "C16"
+      ]
+    },
+    {
+      "path": "docs/01-foundations/d-deep-learning.md",
+      "title": "D. 深度学习共同主干",
+      "kind": "knowledge",
+      "units": [
+        "D01",
+        "D02",
+        "D03",
+        "D04",
+        "D05",
+        "D06",
+        "D07",
+        "D08",
+        "D09",
+        "D10",
+        "D11",
+        "D12",
+        "D13",
+        "D14",
+        "D15",
+        "D16"
+      ]
+    },
+    {
+      "path": "docs/02-perception-language/e-computer-vision.md",
+      "title": "E. 计算机视觉",
+      "kind": "knowledge",
+      "units": [
+        "E01",
+        "E02",
+        "E03",
+        "E04",
+        "E05",
+        "E06",
+        "E07",
+        "E08",
+        "E09"
+      ]
+    },
+    {
+      "path": "docs/02-perception-language/f-nlp-transformers-llms.md",
+      "title": "F. NLP、Transformer 与 LLM",
+      "kind": "knowledge",
+      "units": [
+        "F01",
+        "F02",
+        "F03",
+        "F04",
+        "F05",
+        "F06",
+        "F07",
+        "F08",
+        "F09",
+        "F10",
+        "F11",
+        "F12",
+        "F13",
+        "F14"
+      ]
+    },
+    {
+      "path": "docs/02-perception-language/g-generative-models.md",
+      "title": "G. 生成模型",
+      "kind": "knowledge",
+      "units": [
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "G05",
+        "G06",
+        "G07",
+        "G08"
+      ]
+    },
+    {
+      "path": "docs/02-perception-language/h-multimodal-vlm.md",
+      "title": "H. VLM 与多模态",
+      "kind": "knowledge",
+      "units": [
+        "H01",
+        "H02",
+        "H03",
+        "H04",
+        "H05",
+        "H06",
+        "H07"
+      ]
+    },
+    {
+      "path": "docs/03-decision-specialties/i-reinforcement-learning.md",
+      "title": "I. 强化学习与 Deep RL",
+      "kind": "knowledge",
+      "units": [
+        "I01",
+        "I02",
+        "I03",
+        "I04",
+        "I05",
+        "I06",
+        "I07",
+        "I08",
+        "I09",
+        "I10",
+        "I11",
+        "I12",
+        "I13",
+        "I14"
+      ]
+    },
+    {
+      "path": "docs/03-decision-specialties/j-graph-neural-networks.md",
+      "title": "J. 图神经网络",
+      "kind": "knowledge",
+      "units": [
+        "J01",
+        "J02",
+        "J03",
+        "J04",
+        "J05"
+      ]
+    },
+    {
+      "path": "docs/03-decision-specialties/k-speech-audio.md",
+      "title": "K. 语音与音频",
+      "kind": "knowledge",
+      "units": [
+        "K01",
+        "K02",
+        "K03",
+        "K04",
+        "K05"
+      ]
+    },
+    {
+      "path": "docs/03-decision-specialties/l-time-series.md",
+      "title": "L. 时间序列",
+      "kind": "knowledge",
+      "units": [
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05"
+      ]
+    },
+    {
+      "path": "docs/03-decision-specialties/m-causal-inference.md",
+      "title": "M. 因果推断",
+      "kind": "knowledge",
+      "units": [
+        "M01",
+        "M02",
+        "M03",
+        "M04",
+        "M05"
+      ]
+    },
+    {
+      "path": "docs/03-decision-specialties/n-recommendation-search-retrieval.md",
+      "title": "N. 推荐、搜索与检索",
+      "kind": "knowledge",
+      "units": [
+        "N01",
+        "N02",
+        "N03",
+        "N04",
+        "N05",
+        "N06"
+      ]
+    },
+    {
+      "path": "docs/04-systems-agents-robotics/o-llm-posttraining-rag-agents.md",
+      "title": "O. LLM 后训练、RAG 与 Agent",
+      "kind": "knowledge",
+      "units": [
+        "O01",
+        "O02",
+        "O03",
+        "O04",
+        "O05",
+        "O06",
+        "O07",
+        "O08"
+      ]
+    },
+    {
+      "path": "docs/04-systems-agents-robotics/p-mlops-safety-evaluation.md",
+      "title": "P. MLOps、安全与评测",
+      "kind": "knowledge",
+      "units": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P08",
+        "P09"
+      ]
+    },
+    {
+      "path": "docs/04-systems-agents-robotics/q-embodied-ai-robotics.md",
+      "title": "Q. 具身智能与机器人",
+      "kind": "knowledge",
+      "units": [
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04",
+        "Q05",
+        "Q06",
+        "Q07",
+        "Q08"
+      ]
+    },
+    {
+      "path": "docs/05-frontier/r-frontier-2024-2026.md",
+      "title": "R. 2024–2026 前沿技术地图",
+      "kind": "knowledge",
+      "units": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R10",
+        "R11",
+        "R12"
+      ]
+    },
+    {
+      "path": "docs/06-projects/s-projects-assessment.md",
+      "title": "S. 综合项目与验收路线",
+      "kind": "project",
+      "units": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10",
+        "S11"
+      ]
+    }
+  ],
+  "front_matter": [
+    "docs/00-start/README.md"
+  ],
+  "back_matter": [
+    "docs/07-resources/t-source-index.md",
+    "docs/07-resources/knowledge-index.md"
+  ],
+  "reading_index": "readings/README.md",
+  "walkthroughs": [
+    "docs/08-walkthroughs/README.md",
+    "docs/08-walkthroughs/01-probability-learning.md",
+    "docs/08-walkthroughs/02-training-experiments.md",
+    "docs/08-walkthroughs/03-transformer.md",
+    "docs/08-walkthroughs/04-pretraining-inference.md",
+    "docs/08-walkthroughs/05-posttraining.md",
+    "docs/08-walkthroughs/06-retrieval-agents.md",
+    "docs/08-walkthroughs/07-generative-multimodal.md",
+    "docs/08-walkthroughs/08-domain-bridges.md"
+  ]
+}

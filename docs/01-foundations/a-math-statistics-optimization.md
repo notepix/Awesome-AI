@@ -5,7 +5,15 @@
 
 ---
 
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](../08-walkthroughs/01-probability-learning.md) · [论文与源码精读](../../readings/README.md) · [完整实践代码](../../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
 ## 知识单元
+
+<a id="a01"></a>
 
 ### A01 `[核]` 集合、函数、关系与逻辑记号
 
@@ -30,7 +38,13 @@ print(even, image)
 
 **常见坑：** 混淆“元素”和“子集”、定义域和实际观测样本；把 `P⇒Q` 错读成 `Q⇒P`；用若干例子代替一般性证明。
 
+<a id="a02"></a>
+
 ### A02 `[核]` 标量、向量、矩阵与张量
+
+<!-- readings:start -->
+**进一步精读：** [Transformer：注意力与编解码器](../../readings/papers/transformer.md)
+<!-- readings:end -->
 
 **先修：** A01。
 
@@ -53,6 +67,8 @@ print(X.shape, W.shape, Y)
 **检测题/小实验：** 不运行代码，先写出 `(32,10)@(10,4)` 和 `(32,10)*(10,)` 的输出形状；把最后一式改成显式循环并核对结果。
 
 **常见坑：** 把 `*` 当矩阵乘、忽略一维数组没有“行/列”方向、未经检查就依赖广播，或把 batch 轴与 feature 轴互换。
+
+<a id="a03"></a>
 
 ### A03 `[核]` 向量空间、基、秩、线性映射与子空间
 
@@ -77,6 +93,8 @@ print("A v ≈", A @ null_vec, "singular values=", s)
 **检测题/小实验：** 构造一个 `3×4`、秩为 2 的矩阵，数值求零空间并验证秩—零度定理；解释为何相关特征会使线性回归参数不唯一。
 
 **常见坑：** 把“矩阵可逆”等同于“任何矩阵有逆”；把小但非零奇异值机械判零；混淆行空间、列空间和输入空间。
+
+<a id="a04"></a>
 
 ### A04 `[核]` 内积、范数、距离、正交与投影
 
@@ -103,7 +121,13 @@ print("orthogonal?", np.isclose(q @ residual, 0), "cos", cosine)
 
 **常见坑：** 未标准化就比较余弦与点积；认为任意“相异度”都是度量；用非正交基时仍套用 `QQ^T`。
 
+<a id="a05"></a>
+
 ### A05 `[核]` 特征分解、SVD、正定矩阵与二次型
+
+<!-- readings:start -->
+**进一步精读：** [LoRA：低秩任务更新](../../readings/papers/lora.md) · [GCN：图归一化与节点分类](../../readings/papers/gcn.md)
+<!-- readings:end -->
 
 **先修：** A03、A04。
 
@@ -127,6 +151,8 @@ print("rank-1 error", np.linalg.norm(X - X_rank1))
 **检测题/小实验：** 随机生成矩阵，验证 `X^TX` 的特征值等于奇异值平方；随截断秩增加绘制重构误差。
 
 **常见坑：** 对非对称矩阵假设正交特征向量；直接求逆而非 `solve/lstsq`；把特征值与奇异值当成同一概念。
+
+<a id="a06"></a>
 
 ### A06 `[核]` 单变量与多变量微分、偏导和梯度
 
@@ -152,6 +178,8 @@ print(grad, fd, np.linalg.norm(grad - fd))
 **检测题/小实验：** 推导 `x^TAx` 在 `A` 非对称时的梯度；对不同 `eps` 做有限差分，观察截断误差与浮点误差的折中。
 
 **常见坑：** 忽略向量形状；把梯度当普通“分数”；有限差分步长越小越好；漏掉均值损失中的样本数因子。
+
+<a id="a07"></a>
 
 ### A07 `[核]` Jacobian、Hessian、链式法则与矩阵微积分
 
@@ -180,7 +208,13 @@ print(auto, manual)
 
 **常见坑：** Jacobian 乘法次序颠倒；原地修改破坏计算图；忘记梯度会累加；把 Hessian 的正定性误当成全局凸性。
 
+<a id="a08"></a>
+
 ### A08 `[核]` Taylor 展开、局部近似与曲率
+
+<!-- readings:start -->
+**进一步精读：** [XGBoost：二阶树提升与系统设计](../../readings/papers/xgboost.md)
+<!-- readings:end -->
 
 **先修：** A07。
 
@@ -205,6 +239,8 @@ for delta in [1e-1, 5e-1, 1.0]:
 **检测题/小实验：** 对 `log(1+x)` 比较一阶、二阶近似误差随 `|x|` 的变化；为一个非凸函数找出 Hessian 为正但非全局最优的点。
 
 **常见坑：** 把局部近似当全局等式；认为 Hessian 半正定必为严格极小值；直接显式求逆 Hessian 而忽略数值代价。
+
+<a id="a09"></a>
 
 ### A09 `[核]` 概率公理、条件概率与 Bayes 公式
 
@@ -232,7 +268,13 @@ print("odds check =", odds_post / (1 + odds_post))
 
 **常见坑：** 混淆 `P(A|B)` 与 `P(B|A)`；忽略基率；把互斥误当独立；条件事件概率为零时仍套公式。
 
+<a id="a10"></a>
+
 ### A10 `[核]` 随机变量、常见分布、期望与方差
+
+<!-- readings:start -->
+**进一步精读：** [Adam：自适应梯度与偏差校正](../../readings/papers/adam.md)
+<!-- readings:end -->
 
 **先修：** A09。
 
@@ -258,7 +300,13 @@ print("discrete mean/var", mu, var)
 
 **常见坑：** 把密度值当区间概率；样本方差与总体方差分母混淆；只报均值而忽略分布形状和尾部。
 
+<a id="a11"></a>
+
 ### A11 `[核]` 联合、边缘、条件分布、独立性与协方差
+
+<!-- readings:start -->
+**进一步精读：** [DDPM：逐步去噪生成](../../readings/papers/ddpm.md)
+<!-- readings:end -->
 
 **先修：** A10。
 
@@ -282,6 +330,8 @@ print("conditional-residual corr", np.corrcoef(rx, ry)[0, 1])
 **检测题/小实验：** 构造 `Y=X²`、对称分布的 `X`，验证 `Cov(X,Y)=0` 但不独立；用一张三变量表手算边缘与条件概率。
 
 **常见坑：** 将相关解释为因果；把不相关等同独立；漏掉共同原因；从有限样本的小相关系数断言条件独立。
+
+<a id="a12"></a>
 
 ### A12 `[核]` 大数定律、中心极限定理与集中现象
 
@@ -307,7 +357,13 @@ for n in [2, 10, 100]:
 
 **常见坑：** 认为小样本也近似正态；忽略独立性和有限方差条件；把概率收敛误作每条样本路径单调收敛。
 
+<a id="a13"></a>
+
 ### A13 `[核]` 参数估计、MLE、MAP 与 Bayesian 推断
+
+<!-- readings:start -->
+**进一步精读：** [VAE：变分下界与可微采样](../../readings/papers/vae.md)
+<!-- readings:end -->
 
 **先修：** A06、A09–A11。
 
@@ -331,6 +387,8 @@ print("MLE", mle, "MAP", map_est, "posterior mean", post_mean)
 **检测题/小实验：** 改变样本量和 Beta 先验强度，画 MLE、MAP、后验均值；解释为何数据增多后合理先验影响减弱。
 
 **常见坑：** 把似然 `p(D|θ)` 当后验 `p(θ|D)`；忽略 log-likelihood；把 MAP 称作完整 Bayesian 推断；先验由测试集调出。
+
+<a id="a14"></a>
 
 ### A14 `[核]` 置信区间、假设检验、Bootstrap 与显著性
 
@@ -357,7 +415,13 @@ print("P(bootstrap mean <= 1)", np.mean(boot_means <= 1.0))
 
 **常见坑：** 把 p-value 当零假设为真的概率；反复试验后只报告显著者；对强依赖序列进行普通 i.i.d. Bootstrap。
 
+<a id="a15"></a>
+
 ### A15 `[核]` 熵、交叉熵、KL 散度、互信息与编码长度
+
+<!-- readings:start -->
+**进一步精读：** [DPO：从偏好直接优化策略](../../readings/papers/dpo.md)
+<!-- readings:end -->
 
 **先修：** A09–A11。
 
@@ -383,7 +447,13 @@ print("KL reverse", (q * np.log2(q / p)).sum())
 
 **常见坑：** 混用自然对数和二进制对数却比较绝对值；处理 `p=0`、`q=0` 不当；把低熵等同高质量预测。
 
+<a id="a16"></a>
+
 ### A16 `[核]` 浮点数、数值稳定性、条件数与数值线性代数
+
+<!-- readings:start -->
+**进一步精读：** [FlashAttention：分块精确注意力](../../readings/papers/flashattention.md)
+<!-- readings:end -->
 
 **先修：** A02、A05、A06。
 
@@ -409,7 +479,13 @@ print("condition/solution", np.linalg.cond(A), np.linalg.solve(A, b))
 
 **常见坑：** 用完全相等比较浮点数；以为更高精度能修复病态问题；手写不稳定 softmax；显式计算逆矩阵。
 
+<a id="a17"></a>
+
 ### A17 `[核]` 梯度下降、凸性、约束优化与对偶思想
+
+<!-- readings:start -->
+**进一步精读：** [Chinchilla：计算最优的模型数据分配](../../readings/papers/chinchilla.md)
+<!-- readings:end -->
 
 **先修：** A07、A08。
 
@@ -435,7 +511,13 @@ print("x", x, "f", objective, "grad", Q@x+c)
 
 **常见坑：** 梯度为零就宣称全局最优；不缩放特征却统一学习率；约束后只截断一次；把训练损失最小当泛化最好。
 
+<a id="a18"></a>
+
 ### A18 `[核]` 随机优化、经验风险、正则化与泛化
+
+<!-- readings:start -->
+**进一步精读：** [Adam：自适应梯度与偏差校正](../../readings/papers/adam.md)
+<!-- readings:end -->
 
 **先修：** A12、A13、A17。
 

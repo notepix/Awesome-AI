@@ -1,0 +1,1 @@
+{"project":"rag","profile":"offline-core","output":"labs/outputs/rag","seed":42,"device":"cpu","svd_components":6,"model_path":null,"embedding_path":null}

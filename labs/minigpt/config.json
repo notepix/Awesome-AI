@@ -1,0 +1,1 @@
+{"project":"minigpt","profile":"offline-core","output":"labs/outputs/minigpt","seed":42,"device":"cpu","merges":48,"block_size":128,"dim":64,"heads":4,"layers":2,"steps":80,"batch_size":8,"lr":0.002,"max_new_tokens":60}

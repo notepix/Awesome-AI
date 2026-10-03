@@ -1,0 +1,10 @@
+{
+  "project": "rag",
+  "profile": "local-model",
+  "output": "labs/outputs/rag",
+  "seed": 42,
+  "device": "auto",
+  "svd_components": 6,
+  "model_path": null,
+  "embedding_path": null
+}

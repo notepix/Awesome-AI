@@ -5,7 +5,15 @@
 
 ---
 
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](../08-walkthroughs/02-training-experiments.md) · [论文与源码精读](../../readings/README.md) · [完整实践代码](../../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
 ## 知识单元
+
+<a id="d01"></a>
 
 ### D01 `[核]` 感知机、神经元、MLP 与激活函数
 
@@ -33,7 +41,13 @@ print("probabilities", logits.sigmoid().detach().squeeze())
 
 **常见坑：** 把“神经元像生物神经元”当机制解释；分类输出层重复 sigmoid；张量 batch/feature 轴弄反；盲目加深而无基线。
 
+<a id="d02"></a>
+
 ### D02 `[核]` 计算图、反向传播与自动微分
+
+<!-- readings:start -->
+**进一步精读：** [ResNet：残差学习与深层优化](../../readings/papers/resnet.md)
+<!-- readings:end -->
 
 **先修：** A07、B04、D01。
 
@@ -58,6 +72,8 @@ x.grad = None
 **检测题/小实验：** 画出 `L=(wx+b-y)²` 的计算图并手算每条边的局部导数；用 central difference 做参数级 gradient check。
 
 **常见坑：** 每步未清梯度；跨 iteration 保留图导致内存增长；不可微点误认为无法训练；对非标量调用 backward 不给上游向量。
+
+<a id="d03"></a>
 
 ### D03 `[核]` 输出分布、任务损失与复合目标
 
@@ -86,6 +102,8 @@ print(ce.item(), manual.item(), logits.grad)
 
 **常见坑：** CrossEntropyLoss 前先 softmax；类别索引与 one-hot 接口混淆；损失下降就代表业务指标改善；复合项尺度差几个数量级。
 
+<a id="d04"></a>
+
 ### D04 `[核]` 参数初始化、信号传播与梯度稳定性
 
 **先修：** A05、D02。
@@ -113,7 +131,13 @@ for i, layer in enumerate(model):
 
 **常见坑：** 所有权重初始化为零；忽略激活函数选择 gain；只看参数分布不看逐层激活与梯度；把随机种子当初始化策略。
 
+<a id="d05"></a>
+
 ### D05 `[核]` SGD、Momentum、Adam 与学习率调度
+
+<!-- readings:start -->
+**进一步精读：** [Adam：自适应梯度与偏差校正](../../readings/papers/adam.md)
+<!-- readings:end -->
 
 **先修：** A17、A18、D02。
 
@@ -138,6 +162,8 @@ for step in range(30):
 **检测题/小实验：** 在条件数很大的二次碗上画 SGD、Momentum、Adam 轨迹；做 learning-rate range test，再比较 constant/cosine schedule。
 
 **常见坑：** 同时改优化器和学习率却归因于优化器；scheduler 调用时机错误；忘记 `zero_grad`；把 Adam 的 L2 penalty 当 AdamW。
+
+<a id="d06"></a>
 
 ### D06 `[核]` Weight Decay、Dropout、早停与数据增强
 
@@ -167,7 +193,13 @@ print("L2 penalty", 0.5 * w.square().sum())
 
 **常见坑：** 验证/推理时忘记 `eval()`；增强破坏标签语义；用测试集早停；把更多正则化默认当更好。
 
+<a id="d07"></a>
+
 ### D07 `[核]` BatchNorm、LayerNorm 与 RMSNorm
+
+<!-- readings:start -->
+**进一步精读：** [LLaMA：现代自回归模型的设计](../../readings/papers/llama.md)
+<!-- readings:end -->
 
 **先修：** A11、D02、D04。
 
@@ -194,7 +226,13 @@ print("BN eval uses running stats", bn(x).mean().item())
 
 **常见坑：** 混淆归一化轴；BN 推理仍处于 train；认为归一化可替代输入预处理；忽略小 batch 和分布漂移。
 
+<a id="d08"></a>
+
 ### D08 `[核]` 训练循环、微型过拟合、检查点与系统调试
+
+<!-- readings:start -->
+**进一步精读：** [nanoGPT：经典最小GPT训练器](../../readings/projects/nanogpt.md)
+<!-- readings:end -->
 
 **先修：** B06、D02–D07。
 
@@ -223,7 +261,13 @@ print("tiny-batch loss/accuracy", loss.item(), acc.item())
 
 **常见坑：** 验证时仍启用 dropout/BN 更新；平均 batch loss 未按样本数加权；只保存权重不保存优化器和配置；训练失败先调大模型。
 
+<a id="d09"></a>
+
 ### D09 `[核]` Embedding、表征学习与度量学习
+
+<!-- readings:start -->
+**进一步精读：** [DPR：稠密段落检索](../../readings/papers/dpr.md) · [CLIP：图文对比对齐](../../readings/papers/clip.md)
+<!-- readings:end -->
 
 **先修：** A04、D01、D03。
 
@@ -251,7 +295,13 @@ print("loss", loss.item(), "gradient rows", active_rows)
 
 **常见坑：** 把向量距离天然解释为语义；未归一化却比较余弦/点积；负样本实际同类；只看漂亮降维图。
 
+<a id="d10"></a>
+
 ### D10 `[核]` 残差、门控、递归与状态传递结构
+
+<!-- readings:start -->
+**进一步精读：** [ResNet：残差学习与深层优化](../../readings/papers/resnet.md) · [Transformer：注意力与编解码器](../../readings/papers/transformer.md)
+<!-- readings:end -->
 
 **先修：** D01、D02、D04。
 
@@ -280,7 +330,13 @@ print(residual.shape, sequence.shape, h_last.shape, mixed)
 
 **常见坑：** 残差两支形状不匹配；认为残差必然无损；RNN 隐状态未按序列边界重置；把门值当硬开关。
 
+<a id="d11"></a>
+
 ### D11 `[核]` 迁移学习、微调、冻结策略与参数高效适配
+
+<!-- readings:start -->
+**进一步精读：** [BERT：双向预训练与迁移](../../readings/papers/bert.md) · [LoRA：低秩任务更新](../../readings/papers/lora.md) · [Transformers：模型定义与训练生成接口](../../readings/projects/transformers.md) · [PEFT：参数高效适配的注入保存与合并](../../readings/projects/peft.md)
+<!-- readings:end -->
 
 **先修：** D06、D08、D09。
 
@@ -307,7 +363,13 @@ print("backbone grad", backbone[0].weight.grad, "head grad", head.weight.grad.no
 
 **常见坑：** 冻结参数却让 BN 运行统计继续变化；新头未重置；源域差异很大仍盲目冻结；PEFT 参数少就误认为显存一定很少。
 
+<a id="d12"></a>
+
 ### D12 `[核]` 自监督、对比学习与掩码建模
+
+<!-- readings:start -->
+**进一步精读：** [CLIP：图文对比对齐](../../readings/papers/clip.md)
+<!-- readings:end -->
 
 **先修：** A15、D09、D11。
 
@@ -335,7 +397,13 @@ print("InfoNCE/retrieval@1", loss.item(), retrieval.item())
 
 **常见坑：** 增强破坏语义；batch 太小却无 memory bank；把预训练损失低等同迁移好；线性探针协议不一致。
 
+<a id="d13"></a>
+
 ### D13 `[核]` Attention、Multi-Head Attention 与 Transformer 公共结构
+
+<!-- readings:start -->
+**进一步精读：** [Transformer：注意力与编解码器](../../readings/papers/transformer.md) · [LLaMA：现代自回归模型的设计](../../readings/papers/llama.md) · [nanoGPT：经典最小GPT训练器](../../readings/projects/nanogpt.md)
+<!-- readings:end -->
 
 **先修：** A15、D02、D09。
 
@@ -363,7 +431,13 @@ print("row sums/output shape", weights.sum(-1), out.shape)
 
 **常见坑：** Mask 方向反了；padding 与 causal mask 混淆；softmax 轴错误；认为 attention 权重天然等于因果解释。
 
+<a id="d14"></a>
+
 ### D14 `[核]` 表达能力、优化偏置、泛化与 Scaling Law
+
+<!-- readings:start -->
+**进一步精读：** [Chinchilla：计算最优的模型数据分配](../../readings/papers/chinchilla.md)
+<!-- readings:end -->
 
 **先修：** A18、D01、D05。
 
@@ -391,6 +465,8 @@ for width in [2, 8, 32]:
 **检测题/小实验：** 多随机种子比较宽度、参数量、训练/验证误差；在 log-log 坐标拟合经验幂律并检查残差，禁止用三个点宣称普适定律。
 
 **常见坑：** 用存在性定理推断 SGD 必能找到解；将训练集记忆等同泛化；从单一模型族外推 scaling；忽略数据质量和计算预算。
+
+<a id="d15"></a>
 
 ### D15 `[核]` 不确定性、校准、OOD 与对抗鲁棒性
 
@@ -420,7 +496,13 @@ print("ECE", ece)
 
 **常见坑：** 以最大 softmax 概率当可靠不确定性；在测试集校准；只测一种攻击；把 OOD 检出率高误作模型在 OOD 上预测正确。
 
+<a id="d16"></a>
+
 ### D16 `[选]` 混合精度、分布式训练、性能剖析、剪枝与量化
+
+<!-- readings:start -->
+**进一步精读：** [FlashAttention：分块精确注意力](../../readings/papers/flashattention.md) · [vLLM：缓存调度与模型服务](../../readings/projects/vllm.md)
+<!-- readings:end -->
 
 **先修：** A16、B04、D08。
 

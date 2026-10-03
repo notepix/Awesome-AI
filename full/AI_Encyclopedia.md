@@ -1,60 +1,144 @@
-# Awesome AI Dictionary：从线性回归到现代基础模型
+# Awesome AI：系统讲义与精读导航
 
-> 仓库导航：[项目首页](../README.md) · [分章学习目录](../docs/README.md)
+<a id="awesome-ai-dictionary从线性回归到现代基础模型"></a>
 
-> - **版本**：v1.0（资料核验截止 2026-08-11）
-> - **语言与代码**：中文讲解，英文术语并列；Python / NumPy / scikit-learn / PyTorch 为主
-> - **规模**：177 个知识单元（A01–R12）+ 11 个综合项目/验收单元（S01–S11）
-> - **学习目标**：不是记忆术语，而是形成“解释 → 推导 → 实现 → 实验 → 说明边界”的完整能力。
+> 自动生成文件，请修改分章正文后运行 `python scripts/build_full.py`。
+
+> [仓库首页](../README.md) · [分章目录](../docs/README.md) · [论文与源码精读](../readings/README.md) · [完整实践项目](../labs/README.md)
+
+> 177 个知识单元，11 个项目与验收单元。资料日期按各条来源记录；不将旧结论统一改为新日期。
+
+<a id="05-章节导航"></a>
+
+## 全文目录
+
+- [从这里开始](#page-docs-00-start-readme-md)
+- [A. 数学、统计与优化](#page-docs-01-foundations-a-math-statistics-optimization-md)
+- [B. 编程、数据与实验基础](#page-docs-01-foundations-b-programming-data-experiments-md)
+- [B+. 经典人工智能：搜索、约束、逻辑与规划](#page-docs-01-foundations-b-plus-classical-ai-md)
+- [C. 传统机器学习](#page-docs-01-foundations-c-machine-learning-md)
+- [C+. 概率函数模型与无梯度优化](#page-docs-01-foundations-c-plus-probabilistic-black-box-md)
+- [D. 深度学习共同主干](#page-docs-01-foundations-d-deep-learning-md)
+- [E. 计算机视觉](#page-docs-02-perception-language-e-computer-vision-md)
+- [F. NLP、Transformer 与 LLM](#page-docs-02-perception-language-f-nlp-transformers-llms-md)
+- [G. 生成模型](#page-docs-02-perception-language-g-generative-models-md)
+- [H. VLM 与多模态](#page-docs-02-perception-language-h-multimodal-vlm-md)
+- [I. 强化学习与 Deep RL](#page-docs-03-decision-specialties-i-reinforcement-learning-md)
+- [J. 图神经网络](#page-docs-03-decision-specialties-j-graph-neural-networks-md)
+- [K. 语音与音频](#page-docs-03-decision-specialties-k-speech-audio-md)
+- [L. 时间序列](#page-docs-03-decision-specialties-l-time-series-md)
+- [M. 因果推断](#page-docs-03-decision-specialties-m-causal-inference-md)
+- [N. 推荐、搜索与检索](#page-docs-03-decision-specialties-n-recommendation-search-retrieval-md)
+- [O. LLM 后训练、RAG 与 Agent](#page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md)
+- [P. MLOps、安全与评测](#page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md)
+- [Q. 具身智能与机器人](#page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md)
+- [R. 2024–2026 前沿技术地图](#page-docs-05-frontier-r-frontier-2024-2026-md)
+- [S. 综合项目与验收路线](#page-docs-06-projects-s-projects-assessment-md)
+- [从知识点到完整方法：系统推导讲义](#page-docs-08-walkthroughs-readme-md)
+- [概率、损失与泛化：为什么训练要最小化这个数](#page-docs-08-walkthroughs-01-probability-learning-md)
+- [梯度、训练与实验：从一条导数到可信结论](#page-docs-08-walkthroughs-02-training-experiments-md)
+- [从 token 到下一个 token：完整 Transformer 数据流](#page-docs-08-walkthroughs-03-transformer-md)
+- [预训练与推理系统：数据、计算预算和缓存](#page-docs-08-walkthroughs-04-pretraining-inference-md)
+- [后训练：SFT、LoRA、奖励模型与偏好优化](#page-docs-08-walkthroughs-05-posttraining-md)
+- [从检索到 Agent：把答案和动作都变成可检查的过程](#page-docs-08-walkthroughs-06-retrieval-agents-md)
+- [生成与多模态：从分布、去噪到图文对齐](#page-docs-08-walkthroughs-07-generative-multimodal-md)
+- [各领域怎样接回共同主干](#page-docs-08-walkthroughs-08-domain-bridges-md)
+- [T. 总索引与资料使用说明](#page-docs-07-resources-t-source-index-md)
+- [知识点与术语索引](#page-docs-07-resources-knowledge-index-md)
+- [论文精读与项目源码导读](#page-readings-readme-md)
 
 ---
 
-## 0. 如何使用本讲义
+<a id="page-docs-00-start-readme-md"></a>
 
-这是一份按**知识依赖关系**而不是按热度排序的讲义。GPT、VLM、Agent、VLA 都不是平行的入门主题：它们分别依赖概率统计、优化、深度学习、Transformer、视觉表征、检索或强化学习等较长的先修链。
+<a id="page-docs-00-start-readme-md-从这里开始"></a>
 
-每个知识单元都包含：
+# 从这里开始
 
-- **先修**：开始前必须会什么；
-- **定义与解析**：术语定义、直觉、适用边界；
-- **公式/机制**：目标、前向计算和更新方式；
-- **资料定位**：可直接跳转的一手教材、课程章节、论文小节或官方文档；
-- **最小代码**：优先 CPU、小数据、固定随机种子的机制示例；
-- **检测题/小实验**：必须先预测结果，再运行验证；
-- **常见坑**：概念、实现和评估中的典型错误。
+<a id="page-docs-00-start-readme-md-0-如何使用本讲义"></a>
 
-推荐对每个单元执行下面的学习闭环：
+<a id="0-如何使用本讲义"></a>
 
-1. 不看资料，用 30 秒解释“它是什么、解决什么问题”。
-2. 阅读指定位置，并把公式中的每个符号和张量形状写清楚。
-3. 先预测代码输出或实验趋势，再运行代码。
-4. 合上讲义，从空文件重写核心机制。
-5. 完成检测题；在第 2、7、21 天再次闭卷测试。
+这套讲义按**依赖关系**而不是热度排列。GPT、VLM、Agent 和 VLA 看起来都能直接上手，但真正理解它们，需要概率统计、优化、深度学习、Transformer、视觉表征、检索或强化学习中的不同先修链。
 
-通过标准：概念题正确率至少 80%，能独立复写最小代码，能指出至少一个失败条件，能把该单元连接到前后各一个知识点。
+- [返回分章总目录](../docs/README.md)
+- [打开单文件完整版](AI_Encyclopedia.md)
+- [直接进入两周基础诊断](#page-docs-06-projects-s-projects-assessment-md-s01-两周基础诊断)
 
-### 0.1 标记约定
+<a id="page-docs-00-start-readme-md-新增的学习层次"></a>
 
-- `核心`：现代 AI 的共同主干，建议顺序学习。
-- `分支`：进入相应领域时变为必修。
-- `前沿`：仍快速演进；结论必须带数据、任务与日期边界。
-- `代码：可运行`：在列出的依赖存在时可独立运行。
-- `代码：机制示意`：刻意省略数据下载、完整训练或生产安全层，只用于解释机制。
+## 新增的学习层次
 
-### 0.2 代码环境
+先用本目录和原有知识单元定位基础，再进入[八篇系统串讲](#page-docs-08-walkthroughs-readme-md)。想看一个方法为何成立时打开[论文精读](#page-readings-readme-md)；想知道公式如何落实为程序时打开[源码导读](../readings/projects/README.md)；需要实际验证时运行[完整项目](../labs/README.md)。这些层次相互链接，不要求一次读完全部材料。
 
-代码片段按 Python 3、CPU 优先编写。不同章节可能使用：
+<a id="page-docs-00-start-readme-md-一个知识点怎样才算学会"></a>
 
-```text
-numpy, scipy, pandas, matplotlib, scikit-learn
-torch, torchvision
-transformers, datasets, tokenizers
-gymnasium, networkx
+## 一个知识点怎样才算学会
+
+每个知识点都提供先修、定义、机制、精确资料、最小代码、检测题和常见坑。按下面的闭环学习，而不是只阅读正文：
+
+1. **闭卷解释**：用 30 秒回答“它是什么、解决什么问题、何时会失败”。
+2. **精读定位资料**：写清公式中每个符号、张量形状和假设，不追求一次读完整本教材。
+3. **预测后运行**：先写下代码输出、曲线或消融趋势，再执行最小示例。
+4. **空白复写**：合上讲义，从空文件重写核心机制，并固定随机种子。
+5. **完成检测**：回答检测题或小实验，保留结果与错误样本。
+6. **间隔复习**：在第 2、7、21 天闭卷重测，把遗忘点加入复习清单。
+
+一个单元的建议通过标准：概念题正确率至少 80%，能独立复写最小代码，能指出至少一个失败条件，并能说清它与前后各一个知识点的关系。
+
+<a id="page-docs-00-start-readme-md-01-标记约定"></a>
+
+<a id="01-标记约定"></a>
+
+<a id="page-docs-00-start-readme-md-标记约定"></a>
+
+## 标记约定
+
+| 标记 | 含义 | 行动建议 |
+|---|---|---|
+| `核心` / `[核]` | 现代 AI 的共同主干 | 原则上按依赖顺序学习并完成检测 |
+| `分支` | 对应方向的必修内容 | 选定方向后再系统学习 |
+| `前沿` | 快速演进中的方法 | 记录任务、数据、指标、来源和核验日期 |
+| `代码：可运行` | 安装所列依赖后可独立执行 | 先预测，再运行并修改一个变量 |
+| `代码：机制示意` | 为解释机制而省略完整训练或生产层 | 不把它误当成可部署实现 |
+
+<a id="page-docs-00-start-readme-md-02-代码环境"></a>
+
+<a id="02-代码环境"></a>
+
+<a id="page-docs-00-start-readme-md-环境策略"></a>
+
+## 环境策略
+
+代码以 Python 3 和 CPU 优先，主要使用 NumPy、scikit-learn 与 PyTorch。不要在第一天安装所有包：进入一章时再创建独立环境，并记录 Python 与依赖版本。
+
+最小基础环境可以这样建立：
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install numpy scipy pandas matplotlib scikit-learn
 ```
 
-本讲义不要求一开始安装全部依赖。进入某章时再建立独立环境并记录精确版本；不要在同一环境里无目的地堆包。大型模型章节通常用小张量复现损失或数据流，而不是下载数十 GB 权重。
+进入深度学习、NLP 或强化学习章节时，再按对应官方安装说明添加 `torch`、`torchvision`、`transformers`、`datasets`、`tokenizers`、`gymnasium` 或 `networkx`。大型模型章节的目标通常是用小张量复现损失与数据流，不需要下载数十 GB 权重。
 
-### 0.3 宏观依赖图
+每次实验至少记录：
+
+```text
+日期 / 知识点编号 / Git commit
+Python 与依赖版本 / 随机种子 / 设备
+数据划分 / 基线 / 唯一改动
+主指标 / 失败案例 / 下一步假设
+```
+
+<a id="page-docs-00-start-readme-md-03-宏观依赖图"></a>
+
+<a id="03-宏观依赖图"></a>
+
+<a id="page-docs-00-start-readme-md-宏观依赖图"></a>
+
+## 宏观依赖图
 
 ```mermaid
 flowchart LR
@@ -62,18 +146,18 @@ flowchart LR
   A --> D["D 深度学习"]
   B["B 编程、数据与实验"] --> C
   B --> D
+  BP["B+ 经典 AI"] --> Q["Q 机器人"]
   C --> D
+  CP["C+ 概率模型与黑盒优化"] --> M["M 因果与专业模型"]
   D --> E["E 计算机视觉"]
-  D --> F["F NLP、Transformer 与 LLM"]
+  D --> F["F NLP / Transformer / LLM"]
   D --> G["G 生成模型"]
   E --> H["H VLM 与多模态"]
   F --> H
   G --> H
   D --> I["I 强化学习"]
-  D --> J["J 图神经网络"]
-  D --> K["K 语音与音频"]
-  D --> L["L 时间序列"]
-  A --> M["M 因果推断"]
+  D --> JKL["J 图 / K 语音 / L 时序"]
+  A --> M
   C --> M
   D --> N["N 推荐、搜索与检索"]
   F --> N
@@ -82,62 +166,117 @@ flowchart LR
   N --> O
   B --> P["P MLOps、安全与评测"]
   D --> P
-  E --> Q["Q 具身智能与机器人"]
+  E --> Q
   H --> Q
   I --> Q
   P --> Q
-  F --> R["R 2024–2026 前沿地图"]
+  F --> R["R 前沿地图"]
   G --> R
   H --> R
   O --> R
 ```
 
-### 0.4 推荐学习路径
+<a id="page-docs-00-start-readme-md-04-推荐学习路径"></a>
 
-第一轮共同主干：
+<a id="04-推荐学习路径"></a>
 
-```text
-A 数学 → B 实验基础 → C 传统机器学习 → D 深度学习
-→ E 视觉 + F 语言/Transformer + G 生成模型
-→ H 多模态 → I 强化学习基础 → N 检索 → O Agent → P 工程评测
-```
+<a id="page-docs-00-start-readme-md-按方向选路径"></a>
 
-第二轮选择一个主攻分支：
+## 按方向选路径
 
-- LLM/Agent：`F → N → O → P → R`
-- CV/VLM：`E → G → H → P → R`
-- 强化学习/机器人：`I → Q`，同时补控制、规划与安全；
-- 数据科学/因果：`C → L/M/N → P`
-- 图、语音等专业方向：进入 `J` 或 `K`，其“分支”单元全部视为必修。
+所有方向先确保 [A 数学](#page-docs-01-foundations-a-math-statistics-optimization-md)、[B 实验基础](#page-docs-01-foundations-b-programming-data-experiments-md)、[C 机器学习](#page-docs-01-foundations-c-machine-learning-md) 与 [D 深度学习](#page-docs-01-foundations-d-deep-learning-md) 中相关“核心”单元通过检测，再走下面的分支。
 
-### 0.5 章节导航
+<a id="page-docs-00-start-readme-md-llm--agent"></a>
 
-- [A. 数学、统计与优化](#a-数学统计与优化)
-- [B. 编程、数据与实验基础](#b-编程数据与实验基础)
-- [B+. 经典人工智能](#b-经典人工智能搜索约束逻辑与规划)
-- [C. 传统机器学习](#c-传统机器学习)
-- [C+. 概率函数模型与无梯度优化](#c-概率函数模型与无梯度优化)
-- [D. 深度学习共同主干](#d-深度学习共同主干)
-- [E. 计算机视觉](#e-计算机视觉)
-- [F. NLP、Transformer 与 LLM](#f-nlptransformer-与-llm)
-- [G. 生成模型](#g-生成模型)
-- [H. VLM 与多模态](#h-vlm-与多模态)
-- [I. 强化学习与 Deep RL](#i-强化学习与-deep-rl)
-- [J. 图神经网络](#j-图神经网络)
-- [K. 语音与音频](#k-语音与音频)
-- [L. 时间序列](#l-时间序列)
-- [M. 因果推断](#m-因果推断)
-- [N. 推荐、搜索与检索](#n-推荐搜索与检索)
-- [O. LLM 后训练、RAG 与 Agent](#o-llm-后训练rag-与-agent)
-- [P. MLOps、安全与评测](#p-mlops安全与评测)
-- [Q. 具身智能与机器人](#q-具身智能与机器人)
-- [R. 2024–2026 前沿技术地图](#r-20242026-前沿技术地图)
-- [S. 综合项目与验收路线](#s-综合项目与验收路线)
-- [T. 总索引与资料使用说明](#t-总索引与资料使用说明)
+### LLM / Agent
+
+[F NLP、Transformer 与 LLM](#page-docs-02-perception-language-f-nlp-transformers-llms-md) → [N 检索](#page-docs-03-decision-specialties-n-recommendation-search-retrieval-md) → [O 后训练、RAG 与 Agent](#page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md) → [P 工程与评测](#page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md) → [R 前沿](#page-docs-05-frontier-r-frontier-2024-2026-md)
+
+<a id="page-docs-00-start-readme-md-cv--vlm"></a>
+
+### CV / VLM
+
+[E 计算机视觉](#page-docs-02-perception-language-e-computer-vision-md) → [G 生成模型](#page-docs-02-perception-language-g-generative-models-md) → [H VLM 与多模态](#page-docs-02-perception-language-h-multimodal-vlm-md) → [P 工程与评测](#page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md) → [R 前沿](#page-docs-05-frontier-r-frontier-2024-2026-md)
+
+<a id="page-docs-00-start-readme-md-强化学习--机器人"></a>
+
+### 强化学习 / 机器人
+
+[B+ 经典 AI](#page-docs-01-foundations-b-plus-classical-ai-md) + [I 强化学习](#page-docs-03-decision-specialties-i-reinforcement-learning-md) → [E 视觉](#page-docs-02-perception-language-e-computer-vision-md) / [H 多模态](#page-docs-02-perception-language-h-multimodal-vlm-md) → [Q 具身智能与机器人](#page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md) → [P 安全与评测](#page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md)
+
+<a id="page-docs-00-start-readme-md-数据科学--因果--推荐"></a>
+
+### 数据科学 / 因果 / 推荐
+
+[C 机器学习](#page-docs-01-foundations-c-machine-learning-md) → [C+ 概率模型与黑盒优化](#page-docs-01-foundations-c-plus-probabilistic-black-box-md) → [L 时间序列](#page-docs-03-decision-specialties-l-time-series-md) / [M 因果推断](#page-docs-03-decision-specialties-m-causal-inference-md) / [N 推荐与检索](#page-docs-03-decision-specialties-n-recommendation-search-retrieval-md) → [P 工程与评测](#page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md)
+
+<a id="page-docs-00-start-readme-md-图语音或时间序列"></a>
+
+### 图、语音或时间序列
+
+完成共同主干后，按目标进入 [J 图神经网络](#page-docs-03-decision-specialties-j-graph-neural-networks-md)、[K 语音与音频](#page-docs-03-decision-specialties-k-speech-audio-md) 或 [L 时间序列](#page-docs-03-decision-specialties-l-time-series-md)。这些章节中的“分支”单元在对应方向里应视为必修。
+
+<a id="page-docs-00-start-readme-md-两周基础诊断入口"></a>
+
+## 两周基础诊断入口
+
+先打开 [S01 两周基础诊断](#page-docs-06-projects-s-projects-assessment-md-s01-两周基础诊断)。诊断要求你完成 NumPy 线性/逻辑回归、PyTorch MLP 训练循环和数据泄漏识别；它的目的不是得到高分，而是确定应该补哪些知识。
+
+建议节奏：
+
+| 时间 | 任务 | 证据 |
+|---|---|---|
+| 第 1–2 天 | 闭卷完成数学、概率、张量形状与实验设计自测 | 错题清单与知识点编号 |
+| 第 3–5 天 | NumPy 实现线性回归和逻辑回归；做数值梯度检查 | 梯度相对误差 `< 1e-5` |
+| 第 6–8 天 | PyTorch 写 MLP 数据、训练、验证与 checkpoint 流程 | 能过拟合 64–256 个样本 |
+| 第 9–10 天 | 在一个人为泄漏的数据流程中定位并修正问题 | 修正前后对照与原因解释 |
+| 第 11–12 天 | 闭卷解释 bias–variance、交叉熵、正则化及三种数据划分 | 自测正确率至少 80% |
+| 第 13–14 天 | 整理曲线、数值检查与 300 字缺口复盘 | 下一阶段补缺清单 |
+
+诊断后的分流原则：
+
+- 数学与概率解释不清：回到 [A](#page-docs-01-foundations-a-math-statistics-optimization-md)，只补错题对应单元。
+- 数据划分、指标或泄漏有误：优先补 [B](#page-docs-01-foundations-b-programming-data-experiments-md)。
+- 线性/逻辑回归或泛化概念薄弱：补 [C](#page-docs-01-foundations-c-machine-learning-md)。
+- 反向传播、训练循环或优化不稳：补 [D](#page-docs-01-foundations-d-deep-learning-md)。
+- 四项均通过：选择上面的一个方向路径，同时开始 [S 项目](#page-docs-06-projects-s-projects-assessment-md)。
+
+<a id="page-docs-00-start-readme-md-每次只做下一小步"></a>
+
+## 每次只做下一小步
+
+现在不要从头收藏所有资料或安装全部依赖。先完成 S01 的第一项：闭卷写出线性回归的模型、均方误差、梯度形状和训练/验证/测试三者职责；再打开对应章节核对。你的错误清单，才是个人学习路线的真正起点。
 
 ---
 
-## A. 数学、统计与优化
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a-数学统计与优化"></a>
+
+# A. 数学、统计与优化
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [下一章 →](#page-docs-01-foundations-b-programming-data-experiments-md)
+
+---
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-01-probability-learning-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a01"></a>
+
+<a id="a01"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a01-核-集合函数关系与逻辑记号"></a>
 
 ### A01 `[核]` 集合、函数、关系与逻辑记号
 
@@ -162,7 +301,17 @@ print(even, image)
 
 **常见坑：** 混淆“元素”和“子集”、定义域和实际观测样本；把 `P⇒Q` 错读成 `Q⇒P`；用若干例子代替一般性证明。
 
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a02"></a>
+
+<a id="a02"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a02-核-标量向量矩阵与张量"></a>
+
 ### A02 `[核]` 标量、向量、矩阵与张量
+
+<!-- readings:start -->
+**进一步精读：** [Transformer：注意力与编解码器](../readings/papers/transformer.md)
+<!-- readings:end -->
 
 **先修：** A01。
 
@@ -185,6 +334,12 @@ print(X.shape, W.shape, Y)
 **检测题/小实验：** 不运行代码，先写出 `(32,10)@(10,4)` 和 `(32,10)*(10,)` 的输出形状；把最后一式改成显式循环并核对结果。
 
 **常见坑：** 把 `*` 当矩阵乘、忽略一维数组没有“行/列”方向、未经检查就依赖广播，或把 batch 轴与 feature 轴互换。
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a03"></a>
+
+<a id="a03"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a03-核-向量空间基秩线性映射与子空间"></a>
 
 ### A03 `[核]` 向量空间、基、秩、线性映射与子空间
 
@@ -209,6 +364,12 @@ print("A v ≈", A @ null_vec, "singular values=", s)
 **检测题/小实验：** 构造一个 `3×4`、秩为 2 的矩阵，数值求零空间并验证秩—零度定理；解释为何相关特征会使线性回归参数不唯一。
 
 **常见坑：** 把“矩阵可逆”等同于“任何矩阵有逆”；把小但非零奇异值机械判零；混淆行空间、列空间和输入空间。
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a04"></a>
+
+<a id="a04"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a04-核-内积范数距离正交与投影"></a>
 
 ### A04 `[核]` 内积、范数、距离、正交与投影
 
@@ -235,7 +396,17 @@ print("orthogonal?", np.isclose(q @ residual, 0), "cos", cosine)
 
 **常见坑：** 未标准化就比较余弦与点积；认为任意“相异度”都是度量；用非正交基时仍套用 `QQ^T`。
 
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a05"></a>
+
+<a id="a05"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a05-核-特征分解svd正定矩阵与二次型"></a>
+
 ### A05 `[核]` 特征分解、SVD、正定矩阵与二次型
+
+<!-- readings:start -->
+**进一步精读：** [LoRA：低秩任务更新](../readings/papers/lora.md) · [GCN：图归一化与节点分类](../readings/papers/gcn.md)
+<!-- readings:end -->
 
 **先修：** A03、A04。
 
@@ -259,6 +430,12 @@ print("rank-1 error", np.linalg.norm(X - X_rank1))
 **检测题/小实验：** 随机生成矩阵，验证 `X^TX` 的特征值等于奇异值平方；随截断秩增加绘制重构误差。
 
 **常见坑：** 对非对称矩阵假设正交特征向量；直接求逆而非 `solve/lstsq`；把特征值与奇异值当成同一概念。
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a06"></a>
+
+<a id="a06"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a06-核-单变量与多变量微分偏导和梯度"></a>
 
 ### A06 `[核]` 单变量与多变量微分、偏导和梯度
 
@@ -284,6 +461,12 @@ print(grad, fd, np.linalg.norm(grad - fd))
 **检测题/小实验：** 推导 `x^TAx` 在 `A` 非对称时的梯度；对不同 `eps` 做有限差分，观察截断误差与浮点误差的折中。
 
 **常见坑：** 忽略向量形状；把梯度当普通“分数”；有限差分步长越小越好；漏掉均值损失中的样本数因子。
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a07"></a>
+
+<a id="a07"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a07-核-jacobianhessian链式法则与矩阵微积分"></a>
 
 ### A07 `[核]` Jacobian、Hessian、链式法则与矩阵微积分
 
@@ -312,7 +495,17 @@ print(auto, manual)
 
 **常见坑：** Jacobian 乘法次序颠倒；原地修改破坏计算图；忘记梯度会累加；把 Hessian 的正定性误当成全局凸性。
 
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a08"></a>
+
+<a id="a08"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a08-核-taylor-展开局部近似与曲率"></a>
+
 ### A08 `[核]` Taylor 展开、局部近似与曲率
+
+<!-- readings:start -->
+**进一步精读：** [XGBoost：二阶树提升与系统设计](../readings/papers/xgboost.md)
+<!-- readings:end -->
 
 **先修：** A07。
 
@@ -337,6 +530,12 @@ for delta in [1e-1, 5e-1, 1.0]:
 **检测题/小实验：** 对 `log(1+x)` 比较一阶、二阶近似误差随 `|x|` 的变化；为一个非凸函数找出 Hessian 为正但非全局最优的点。
 
 **常见坑：** 把局部近似当全局等式；认为 Hessian 半正定必为严格极小值；直接显式求逆 Hessian 而忽略数值代价。
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a09"></a>
+
+<a id="a09"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a09-核-概率公理条件概率与-bayes-公式"></a>
 
 ### A09 `[核]` 概率公理、条件概率与 Bayes 公式
 
@@ -364,7 +563,17 @@ print("odds check =", odds_post / (1 + odds_post))
 
 **常见坑：** 混淆 `P(A|B)` 与 `P(B|A)`；忽略基率；把互斥误当独立；条件事件概率为零时仍套公式。
 
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a10"></a>
+
+<a id="a10"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a10-核-随机变量常见分布期望与方差"></a>
+
 ### A10 `[核]` 随机变量、常见分布、期望与方差
+
+<!-- readings:start -->
+**进一步精读：** [Adam：自适应梯度与偏差校正](../readings/papers/adam.md)
+<!-- readings:end -->
 
 **先修：** A09。
 
@@ -390,7 +599,17 @@ print("discrete mean/var", mu, var)
 
 **常见坑：** 把密度值当区间概率；样本方差与总体方差分母混淆；只报均值而忽略分布形状和尾部。
 
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a11"></a>
+
+<a id="a11"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a11-核-联合边缘条件分布独立性与协方差"></a>
+
 ### A11 `[核]` 联合、边缘、条件分布、独立性与协方差
+
+<!-- readings:start -->
+**进一步精读：** [DDPM：逐步去噪生成](../readings/papers/ddpm.md)
+<!-- readings:end -->
 
 **先修：** A10。
 
@@ -414,6 +633,12 @@ print("conditional-residual corr", np.corrcoef(rx, ry)[0, 1])
 **检测题/小实验：** 构造 `Y=X²`、对称分布的 `X`，验证 `Cov(X,Y)=0` 但不独立；用一张三变量表手算边缘与条件概率。
 
 **常见坑：** 将相关解释为因果；把不相关等同独立；漏掉共同原因；从有限样本的小相关系数断言条件独立。
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a12"></a>
+
+<a id="a12"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a12-核-大数定律中心极限定理与集中现象"></a>
 
 ### A12 `[核]` 大数定律、中心极限定理与集中现象
 
@@ -439,7 +664,17 @@ for n in [2, 10, 100]:
 
 **常见坑：** 认为小样本也近似正态；忽略独立性和有限方差条件；把概率收敛误作每条样本路径单调收敛。
 
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a13"></a>
+
+<a id="a13"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a13-核-参数估计mlemap-与-bayesian-推断"></a>
+
 ### A13 `[核]` 参数估计、MLE、MAP 与 Bayesian 推断
+
+<!-- readings:start -->
+**进一步精读：** [VAE：变分下界与可微采样](../readings/papers/vae.md)
+<!-- readings:end -->
 
 **先修：** A06、A09–A11。
 
@@ -463,6 +698,12 @@ print("MLE", mle, "MAP", map_est, "posterior mean", post_mean)
 **检测题/小实验：** 改变样本量和 Beta 先验强度，画 MLE、MAP、后验均值；解释为何数据增多后合理先验影响减弱。
 
 **常见坑：** 把似然 `p(D|θ)` 当后验 `p(θ|D)`；忽略 log-likelihood；把 MAP 称作完整 Bayesian 推断；先验由测试集调出。
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a14"></a>
+
+<a id="a14"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a14-核-置信区间假设检验bootstrap-与显著性"></a>
 
 ### A14 `[核]` 置信区间、假设检验、Bootstrap 与显著性
 
@@ -489,7 +730,17 @@ print("P(bootstrap mean <= 1)", np.mean(boot_means <= 1.0))
 
 **常见坑：** 把 p-value 当零假设为真的概率；反复试验后只报告显著者；对强依赖序列进行普通 i.i.d. Bootstrap。
 
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a15"></a>
+
+<a id="a15"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a15-核-熵交叉熵kl-散度互信息与编码长度"></a>
+
 ### A15 `[核]` 熵、交叉熵、KL 散度、互信息与编码长度
+
+<!-- readings:start -->
+**进一步精读：** [DPO：从偏好直接优化策略](../readings/papers/dpo.md)
+<!-- readings:end -->
 
 **先修：** A09–A11。
 
@@ -515,7 +766,17 @@ print("KL reverse", (q * np.log2(q / p)).sum())
 
 **常见坑：** 混用自然对数和二进制对数却比较绝对值；处理 `p=0`、`q=0` 不当；把低熵等同高质量预测。
 
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a16"></a>
+
+<a id="a16"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a16-核-浮点数数值稳定性条件数与数值线性代数"></a>
+
 ### A16 `[核]` 浮点数、数值稳定性、条件数与数值线性代数
+
+<!-- readings:start -->
+**进一步精读：** [FlashAttention：分块精确注意力](../readings/papers/flashattention.md)
+<!-- readings:end -->
 
 **先修：** A02、A05、A06。
 
@@ -541,7 +802,17 @@ print("condition/solution", np.linalg.cond(A), np.linalg.solve(A, b))
 
 **常见坑：** 用完全相等比较浮点数；以为更高精度能修复病态问题；手写不稳定 softmax；显式计算逆矩阵。
 
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a17"></a>
+
+<a id="a17"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a17-核-梯度下降凸性约束优化与对偶思想"></a>
+
 ### A17 `[核]` 梯度下降、凸性、约束优化与对偶思想
+
+<!-- readings:start -->
+**进一步精读：** [Chinchilla：计算最优的模型数据分配](../readings/papers/chinchilla.md)
+<!-- readings:end -->
 
 **先修：** A07、A08。
 
@@ -567,7 +838,17 @@ print("x", x, "f", objective, "grad", Q@x+c)
 
 **常见坑：** 梯度为零就宣称全局最优；不缩放特征却统一学习率；约束后只截断一次；把训练损失最小当泛化最好。
 
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a18"></a>
+
+<a id="a18"></a>
+
+<a id="page-docs-01-foundations-a-math-statistics-optimization-md-a18-核-随机优化经验风险正则化与泛化"></a>
+
 ### A18 `[核]` 随机优化、经验风险、正则化与泛化
+
+<!-- readings:start -->
+**进一步精读：** [Adam：自适应梯度与偏差校正](../readings/papers/adam.md)
+<!-- readings:end -->
 
 **先修：** A12、A13、A17。
 
@@ -593,7 +874,36 @@ for lam in [0., 1e-3, 1e-1]:
 
 **常见坑：** 在测试集调超参数；把 SGD 噪声一概视为缺陷；混淆 L2 penalty 与某些优化器中的 decoupled weight decay。
 
-## B. 编程、数据与实验基础
+---
+
+<a id="page-docs-01-foundations-b-programming-data-experiments-md"></a>
+
+<a id="page-docs-01-foundations-b-programming-data-experiments-md-b-编程数据与实验基础"></a>
+
+# B. 编程、数据与实验基础
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-01-foundations-a-math-statistics-optimization-md) · [下一章 →](#page-docs-01-foundations-b-plus-classical-ai-md)
+
+---
+
+<a id="page-docs-01-foundations-b-programming-data-experiments-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-02-training-experiments-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-01-foundations-b-programming-data-experiments-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-01-foundations-b-programming-data-experiments-md-b01"></a>
+
+<a id="b01"></a>
+
+<a id="page-docs-01-foundations-b-programming-data-experiments-md-b01-核-pythonnumpy广播与向量化"></a>
 
 ### B01 `[核]` Python、NumPy、广播与向量化
 
@@ -619,6 +929,12 @@ print(dist2, nearest, np.allclose(dist2, loop))
 **检测题/小实验：** 只用广播实现 100 个点与 5 个中心的距离矩阵；估算 `100000×1000×128` 中间数组的内存并提出分块方案。
 
 **常见坑：** 轴对齐错误但结果仍可运行；用 `tile` 制造无谓副本；为追求一行代码生成超大中间张量；忘记整数数组除法与 dtype。
+
+<a id="page-docs-01-foundations-b-programming-data-experiments-md-b02"></a>
+
+<a id="b02"></a>
+
+<a id="page-docs-01-foundations-b-programming-data-experiments-md-b02-核-数据结构算法复杂度与内存复杂度"></a>
 
 ### B02 `[核]` 数据结构、算法复杂度与内存复杂度
 
@@ -646,6 +962,12 @@ print("top5", top5)
 
 **常见坑：** 只看 Big-O 不看数据布局；忽略中间张量；把哈希查找的平均复杂度当绝对保证；过早微优化而不先 profile。
 
+<a id="page-docs-01-foundations-b-programming-data-experiments-md-b03"></a>
+
+<a id="b03"></a>
+
+<a id="page-docs-01-foundations-b-programming-data-experiments-md-b03-核-git环境依赖测试与调试"></a>
+
 ### B03 `[核]` Git、环境、依赖、测试与调试
 
 **先修：** B01。
@@ -672,7 +994,17 @@ print("tests passed", z)
 
 **常见坑：** 提交数据、密钥或巨大模型；只写“能运行”的测试；环境文件不锁关键版本；调试时同时改多个变量。
 
+<a id="page-docs-01-foundations-b-programming-data-experiments-md-b04"></a>
+
+<a id="b04"></a>
+
+<a id="page-docs-01-foundations-b-programming-data-experiments-md-b04-核-张量自动微分gpu-与计算图工具"></a>
+
 ### B04 `[核]` 张量、自动微分、GPU 与计算图工具
+
+<!-- readings:start -->
+**进一步精读：** [nanoGPT：经典最小GPT训练器](../readings/projects/nanogpt.md) · [Transformers：模型定义与训练生成接口](../readings/projects/transformers.md)
+<!-- readings:end -->
 
 **先修：** A07、B01。
 
@@ -699,6 +1031,12 @@ w.grad = None
 **检测题/小实验：** 连续调用两次 `backward()` 观察梯度累加；分别用 autograd 和有限差分检查一个小网络参数梯度。
 
 **常见坑：** 在计算图中误用 `.detach()` 或 `.item()`；参数和输入设备不同；原地运算破坏反传；把张量形状正确误当语义正确。
+
+<a id="page-docs-01-foundations-b-programming-data-experiments-md-b05"></a>
+
+<a id="b05"></a>
+
+<a id="page-docs-01-foundations-b-programming-data-experiments-md-b05-核-数据清洗预处理划分与数据泄漏"></a>
 
 ### B05 `[核]` 数据清洗、预处理、划分与数据泄漏
 
@@ -727,6 +1065,12 @@ print("held-out accuracy", model.score(Xte, yte))
 
 **常见坑：** 特征选择在划分前完成；测试集被反复查看；时间序列随机打乱；重复样本跨集合；用预测时不可获得的未来变量。
 
+<a id="page-docs-01-foundations-b-programming-data-experiments-md-b06"></a>
+
+<a id="b06"></a>
+
+<a id="page-docs-01-foundations-b-programming-data-experiments-md-b06-核-指标基线受控实验复现与误差分析"></a>
+
 ### B06 `[核]` 指标、基线、受控实验、复现与误差分析
 
 **先修：** A14、B03、B05。
@@ -752,10 +1096,38 @@ for name, pred in [("majority", pred_majority), ("candidate", pred_candidate)]:
 
 **常见坑：** 只报 accuracy；从多个指标中挑最好看的；没有朴素基线；单随机种子下宣称提升；把测试集误差分析变成继续调参。
 
+---
 
-## B+. 经典人工智能：搜索、约束、逻辑与规划
+<a id="page-docs-01-foundations-b-plus-classical-ai-md"></a>
+
+<a id="page-docs-01-foundations-b-plus-classical-ai-md-b-经典人工智能搜索约束逻辑与规划"></a>
+
+# B+. 经典人工智能：搜索、约束、逻辑与规划
 
 现代深度学习不是 AI 的全部。搜索、约束满足、逻辑和规划提供“显式状态、规则与可验证决策”的另一套工具，也直接连接强化学习、Agent 和机器人。
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-01-foundations-b-programming-data-experiments-md) · [下一章 →](#page-docs-01-foundations-c-machine-learning-md)
+
+---
+
+<a id="page-docs-01-foundations-b-plus-classical-ai-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-08-domain-bridges-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-01-foundations-b-plus-classical-ai-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-01-foundations-b-plus-classical-ai-md-b07"></a>
+
+<a id="b07"></a>
+
+<a id="page-docs-01-foundations-b-plus-classical-ai-md-b07-核心-状态空间图搜索与问题建模"></a>
 
 ### B07 `[核心]` 状态空间、图搜索与问题建模
 
@@ -786,6 +1158,12 @@ assert path == ["left", "down"]
 
 **常见坑**：把世界的所有信息都塞进搜索状态；用 list 做 membership；混淆搜索树节点与世界状态。
 
+<a id="page-docs-01-foundations-b-plus-classical-ai-md-b08"></a>
+
+<a id="b08"></a>
+
+<a id="page-docs-01-foundations-b-plus-classical-ai-md-b08-核心-启发式搜索与-a"></a>
+
 ### B08 `[核心]` 启发式搜索与 A*
 
 **先修**：B07、A04 距离。
@@ -815,6 +1193,12 @@ assert len(path) == 6
 **检测题/小实验**：把 $h$ 乘以 2，找一个不再保证最优的例子；比较 `h=0`、曼哈顿距离和真实剩余距离的扩展节点数。
 
 **常见坑**：说“有启发式就最优”；关闭状态后不处理更低代价路径；用测试答案反向设计泄漏启发式。
+
+<a id="page-docs-01-foundations-b-plus-classical-ai-md-b09"></a>
+
+<a id="b09"></a>
+
+<a id="page-docs-01-foundations-b-plus-classical-ai-md-b09-核心-约束满足问题csp"></a>
 
 ### B09 `[核心]` 约束满足问题（CSP）
 
@@ -849,6 +1233,12 @@ solution = solve(); assert solution and solution["WA"] != solution["NT"]
 
 **常见坑**：把约束检查放到完整赋值后；混淆局部一致性和全局可解；没有明确 domain。
 
+<a id="page-docs-01-foundations-b-plus-classical-ai-md-b10"></a>
+
+<a id="b10"></a>
+
+<a id="page-docs-01-foundations-b-plus-classical-ai-md-b10-核心-对抗搜索minimax-与-alphabeta"></a>
+
 ### B10 `[核心]` 对抗搜索、Minimax 与 Alpha–Beta
 
 **先修**：B07、A17 最优化。
@@ -873,6 +1263,12 @@ assert value == 5
 **检测题/小实验**：手算根节点值；实现 alpha–beta 并统计叶子访问数；改变子节点顺序，观察剪枝量但验证根值不变。
 
 **常见坑**：真实对手随机却仍声称 minimax 概率最优；评估函数与终局效用混淆；把搜索深度增大当作无成本提升。
+
+<a id="page-docs-01-foundations-b-plus-classical-ai-md-b11"></a>
+
+<a id="b11"></a>
+
+<a id="page-docs-01-foundations-b-plus-classical-ai-md-b11-核心-命题逻辑蕴含与规则推理"></a>
 
 ### B11 `[核心]` 命题逻辑、蕴含与规则推理
 
@@ -902,7 +1298,17 @@ assert "can_walk" in facts
 
 **常见坑**：把蕴含当作相关性；把“未证明”当作“为假”；规则冲突时没有一致性或优先级策略。
 
+<a id="page-docs-01-foundations-b-plus-classical-ai-md-b12"></a>
+
+<a id="b12"></a>
+
+<a id="page-docs-01-foundations-b-plus-classical-ai-md-b12-核心-自动规划strips-与执行监控"></a>
+
 ### B12 `[核心]` 自动规划、STRIPS 与执行监控
+
+<!-- readings:start -->
+**进一步精读：** [ReAct：推理行动与外部观察](../readings/papers/react.md) · [LangGraph：有状态工具流程与恢复](../readings/projects/langgraph.md)
+<!-- readings:end -->
 
 **先修**：B07–B11。
 
@@ -936,7 +1342,36 @@ assert plan == ["pickup", "place"]
 
 ---
 
-## C. 传统机器学习
+---
+
+<a id="page-docs-01-foundations-c-machine-learning-md"></a>
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c-传统机器学习"></a>
+
+# C. 传统机器学习
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-01-foundations-b-plus-classical-ai-md) · [下一章 →](#page-docs-01-foundations-c-plus-probabilistic-black-box-md)
+
+---
+
+<a id="page-docs-01-foundations-c-machine-learning-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-01-probability-learning-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-01-foundations-c-machine-learning-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c01"></a>
+
+<a id="c01"></a>
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c01-核-监督学习问题假设空间与经验风险最小化"></a>
 
 ### C01 `[核]` 监督学习问题、假设空间与经验风险最小化
 
@@ -964,6 +1399,12 @@ print("baseline/model MSE", np.mean((mean_baseline-y[split:])**2), np.mean((pred
 
 **常见坑：** 先选模型再定义问题；标签包含未来信息；把训练目标当业务指标；没有说明样本独立单位与部署分布。
 
+<a id="page-docs-01-foundations-c-machine-learning-md-c02"></a>
+
+<a id="c02"></a>
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c02-核-线性回归最小二乘ridge-与-lasso"></a>
+
 ### C02 `[核]` 线性回归、最小二乘、Ridge 与 Lasso
 
 **先修：** A05、A13、A17、C01。
@@ -989,6 +1430,12 @@ for lam in [0., .1, 10.]:
 **检测题/小实验：** 增强两列共线性并重复抽样，比较 OLS/Ridge 系数方差；说明为何不应通过显式矩阵逆求解。
 
 **常见坑：** 系数相关就解释为因果；正则化前不缩放；对截距也无意施加惩罚；以训练 `R²` 作为唯一依据。
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c03"></a>
+
+<a id="c03"></a>
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c03-核-logisticsoftmax交叉熵与概率校准"></a>
 
 ### C03 `[核]` Logistic、Softmax、交叉熵与概率校准
 
@@ -1018,6 +1465,12 @@ print("w", w, "log-loss", loss, "accuracy", np.mean((p>.5)==y))
 
 **常见坑：** 对 softmax 前先取整；用不稳定的 `exp`；把 0.5 当所有成本场景的最佳阈值；在校准集上再报告最终性能。
 
+<a id="page-docs-01-foundations-c-machine-learning-md-c04"></a>
+
+<a id="c04"></a>
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c04-核-特征缩放缺失值类别编码与特征工程"></a>
+
 ### C04 `[核]` 特征缩放、缺失值、类别编码与特征工程
 
 **先修：** B05、C01。
@@ -1046,6 +1499,12 @@ print(Z.toarray() if hasattr(Z, "toarray") else Z)
 
 **常见坑：** 用整数编码无序类别；全数据拟合 scaler/imputer；线上出现新类别即报错；机械填补而不保留缺失指示。
 
+<a id="page-docs-01-foundations-c-machine-learning-md-c05"></a>
+
+<a id="c05"></a>
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c05-核-knn距离学习与原型方法"></a>
+
 ### C05 `[核]` kNN、距离学习与原型方法
 
 **先修：** A04、C04。
@@ -1071,6 +1530,12 @@ print(idx, pred)
 **检测题/小实验：** 加入一个数值尺度大 100 倍的无关特征，比较缩放前后预测；画验证误差随 `k` 的曲线。
 
 **常见坑：** 忽略缩放；用测试集选 `k`；偶数 `k` 的平票未定义；高维稀疏数据盲用欧氏距离。
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c06"></a>
+
+<a id="c06"></a>
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c06-核-naive-bayeslda-与-qda"></a>
 
 ### C06 `[核]` Naive Bayes、LDA 与 QDA
 
@@ -1098,7 +1563,17 @@ for m in models:
 
 **常见坑：** 把“朴素独立”理解为边缘独立；忽略先验类概率；高维小样本协方差奇异；凭训练准确率选 LDA/QDA。
 
+<a id="page-docs-01-foundations-c-machine-learning-md-c07"></a>
+
+<a id="c07"></a>
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c07-核-决策树划分准则剪枝与可解释性"></a>
+
 ### C07 `[核]` 决策树、划分准则、剪枝与可解释性
+
+<!-- readings:start -->
+**进一步精读：** [XGBoost：二阶树提升与系统设计](../readings/papers/xgboost.md)
+<!-- readings:end -->
 
 **先修：** A15、C01。
 
@@ -1124,7 +1599,17 @@ print(export_text(tree, max_depth=2))
 
 **常见坑：** 将单棵深树的 feature importance 当因果解释；忽略类别不均衡；用测试集决定深度；认为树完全无需数据清洗。
 
+<a id="page-docs-01-foundations-c-machine-learning-md-c08"></a>
+
+<a id="c08"></a>
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c08-核-bagging随机森林boosting-与-gbdt"></a>
+
 ### C08 `[核]` Bagging、随机森林、Boosting 与 GBDT
+
+<!-- readings:start -->
+**进一步精读：** [XGBoost：二阶树提升与系统设计](../readings/papers/xgboost.md)
+<!-- readings:end -->
 
 **先修：** A18、C07。
 
@@ -1150,6 +1635,12 @@ for m in models:
 **检测题/小实验：** 改变森林树数、单树深度和 Boosting 学习率，记录均值与训练时间；比较 permutation importance 与 impurity importance。
 
 **常见坑：** 认为更多树必然过拟合；把 Boosting 的学习率和树数分开调；使用有偏的 impurity importance 解释高基数特征。
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c09"></a>
+
+<a id="c09"></a>
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c09-核-间隔svm-与核方法"></a>
 
 ### C09 `[核]` 间隔、SVM 与核方法
 
@@ -1178,6 +1669,12 @@ for kernel in ["linear", "rbf"]:
 
 **常见坑：** 将核理解为显式生成新样本；不缩放特征；大样本直接使用核 SVM；在训练集可分就认为泛化良好。
 
+<a id="page-docs-01-foundations-c-machine-learning-md-c10"></a>
+
+<a id="c10"></a>
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c10-核-k-meansgmmem-与层次聚类"></a>
+
 ### C10 `[核]` k-means、GMM、EM 与层次聚类
 
 **先修：** A04、A13。
@@ -1204,6 +1701,12 @@ print("centers", centers, "inertia", ((X-centers[label])**2).sum())
 **检测题/小实验：** 对非球形 moons、不同方差和不同密度数据比较 k-means、GMM 与层次聚类；重复不同初始化并报告目标分布。
 
 **常见坑：** 把簇编号当有序标签；用轮廓系数机械决定真实类别数；忽略缩放与离群点；空簇和局部最优未处理。
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c11"></a>
+
+<a id="c11"></a>
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c11-核-pca降维流形学习与可视化"></a>
 
 ### C11 `[核]` PCA、降维、流形学习与可视化
 
@@ -1232,6 +1735,12 @@ print("variance ratio", ratio, "reconstruction MSE", np.mean((X-Xhat)**2))
 
 **常见坑：** PCA 前忘记中心化；把主成分当原始特征因果；把 t-SNE 簇间距离作定量结论；在全数据拟合降维后交叉验证。
 
+<a id="page-docs-01-foundations-c-machine-learning-md-c12"></a>
+
+<a id="c12"></a>
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c12-核-交叉验证调参类别不均衡与阈值选择"></a>
+
 ### C12 `[核]` 交叉验证、调参、类别不均衡与阈值选择
 
 **先修：** B06、C01–C03。
@@ -1258,6 +1767,12 @@ print("predictions", (p >= threshold).astype(int))
 **检测题/小实验：** 对普通 KFold、StratifiedKFold、GroupKFold、TimeSeriesSplit 各举一个适用场景；实现嵌套 CV 比较乐观偏差。
 
 **常见坑：** 在全数据调参后仍把 CV 均值当无偏测试结果；忽略群组重复；先过采样再划分；按测试集挑阈值。
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c13"></a>
+
+<a id="c13"></a>
+
+<a id="page-docs-01-foundations-c-machine-learning-md-c13-选-概率图模型隐变量推断与-hmm"></a>
 
 ### C13 `[选]` 概率图模型、隐变量推断与 HMM
 
@@ -1286,10 +1801,38 @@ print("sequence likelihood", likelihood, "last-state posterior", alpha/likelihoo
 
 **常见坑：** 混淆“最可能路径”与每时刻边缘最可能状态；直接连乘导致下溢；状态编号被误作有语义标签；忽略模型不可辨识性。
 
+---
 
-## C+. 概率函数模型与无梯度优化
+<a id="page-docs-01-foundations-c-plus-probabilistic-black-box-md"></a>
+
+<a id="page-docs-01-foundations-c-plus-probabilistic-black-box-md-c-概率函数模型与无梯度优化"></a>
+
+# C+. 概率函数模型与无梯度优化
 
 这一小节补足常规“监督学习→深度学习”课程容易略过、但在小数据不确定性、科学计算与不可微目标中很重要的三类工具。
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-01-foundations-c-machine-learning-md) · [下一章 →](#page-docs-01-foundations-d-deep-learning-md)
+
+---
+
+<a id="page-docs-01-foundations-c-plus-probabilistic-black-box-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-08-domain-bridges-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-01-foundations-c-plus-probabilistic-black-box-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-01-foundations-c-plus-probabilistic-black-box-md-c14"></a>
+
+<a id="c14"></a>
+
+<a id="page-docs-01-foundations-c-plus-probabilistic-black-box-md-c14-选-gaussian-process核先验与-bayesian-optimization"></a>
 
 ### C14 `[选]` Gaussian Process、核先验与 Bayesian Optimization
 
@@ -1328,7 +1871,17 @@ print(mean[[0, 40, -1]], np.sqrt(np.maximum(var[[0, 40, -1]], 0)))
 
 ---
 
+<a id="page-docs-01-foundations-c-plus-probabilistic-black-box-md-c15"></a>
+
+<a id="c15"></a>
+
+<a id="page-docs-01-foundations-c-plus-probabilistic-black-box-md-c15-选-mcmc变分推断与近似-bayesian-计算"></a>
+
 ### C15 `[选]` MCMC、变分推断与近似 Bayesian 计算
+
+<!-- readings:start -->
+**进一步精读：** [VAE：变分下界与可微采样](../readings/papers/vae.md)
+<!-- readings:end -->
 
 **先修**：A09–A15，C13 概率图模型。
 
@@ -1367,6 +1920,12 @@ print(samples.mean(), samples.std(), accepted / 12_000)
 
 ---
 
+<a id="page-docs-01-foundations-c-plus-probabilistic-black-box-md-c16"></a>
+
+<a id="c16"></a>
+
+<a id="page-docs-01-foundations-c-plus-probabilistic-black-box-md-c16-选-进化算法随机搜索与黑盒优化"></a>
+
 ### C16 `[选]` 进化算法、随机搜索与黑盒优化
 
 **先修**：A17–A18 优化，B06 受控实验，C14 Bayesian Optimization。
@@ -1403,7 +1962,36 @@ print(mean, f(mean))
 
 ---
 
-## D. 深度学习共同主干
+---
+
+<a id="page-docs-01-foundations-d-deep-learning-md"></a>
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d-深度学习共同主干"></a>
+
+# D. 深度学习共同主干
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-01-foundations-c-plus-probabilistic-black-box-md) · [下一章 →](#page-docs-02-perception-language-e-computer-vision-md)
+
+---
+
+<a id="page-docs-01-foundations-d-deep-learning-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-02-training-experiments-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-01-foundations-d-deep-learning-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d01"></a>
+
+<a id="d01"></a>
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d01-核-感知机神经元mlp-与激活函数"></a>
 
 ### D01 `[核]` 感知机、神经元、MLP 与激活函数
 
@@ -1431,7 +2019,17 @@ print("probabilities", logits.sigmoid().detach().squeeze())
 
 **常见坑：** 把“神经元像生物神经元”当机制解释；分类输出层重复 sigmoid；张量 batch/feature 轴弄反；盲目加深而无基线。
 
+<a id="page-docs-01-foundations-d-deep-learning-md-d02"></a>
+
+<a id="d02"></a>
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d02-核-计算图反向传播与自动微分"></a>
+
 ### D02 `[核]` 计算图、反向传播与自动微分
+
+<!-- readings:start -->
+**进一步精读：** [ResNet：残差学习与深层优化](../readings/papers/resnet.md)
+<!-- readings:end -->
 
 **先修：** A07、B04、D01。
 
@@ -1456,6 +2054,12 @@ x.grad = None
 **检测题/小实验：** 画出 `L=(wx+b-y)²` 的计算图并手算每条边的局部导数；用 central difference 做参数级 gradient check。
 
 **常见坑：** 每步未清梯度；跨 iteration 保留图导致内存增长；不可微点误认为无法训练；对非标量调用 backward 不给上游向量。
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d03"></a>
+
+<a id="d03"></a>
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d03-核-输出分布任务损失与复合目标"></a>
 
 ### D03 `[核]` 输出分布、任务损失与复合目标
 
@@ -1484,6 +2088,12 @@ print(ce.item(), manual.item(), logits.grad)
 
 **常见坑：** CrossEntropyLoss 前先 softmax；类别索引与 one-hot 接口混淆；损失下降就代表业务指标改善；复合项尺度差几个数量级。
 
+<a id="page-docs-01-foundations-d-deep-learning-md-d04"></a>
+
+<a id="d04"></a>
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d04-核-参数初始化信号传播与梯度稳定性"></a>
+
 ### D04 `[核]` 参数初始化、信号传播与梯度稳定性
 
 **先修：** A05、D02。
@@ -1511,7 +2121,17 @@ for i, layer in enumerate(model):
 
 **常见坑：** 所有权重初始化为零；忽略激活函数选择 gain；只看参数分布不看逐层激活与梯度；把随机种子当初始化策略。
 
+<a id="page-docs-01-foundations-d-deep-learning-md-d05"></a>
+
+<a id="d05"></a>
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d05-核-sgdmomentumadam-与学习率调度"></a>
+
 ### D05 `[核]` SGD、Momentum、Adam 与学习率调度
+
+<!-- readings:start -->
+**进一步精读：** [Adam：自适应梯度与偏差校正](../readings/papers/adam.md)
+<!-- readings:end -->
 
 **先修：** A17、A18、D02。
 
@@ -1536,6 +2156,12 @@ for step in range(30):
 **检测题/小实验：** 在条件数很大的二次碗上画 SGD、Momentum、Adam 轨迹；做 learning-rate range test，再比较 constant/cosine schedule。
 
 **常见坑：** 同时改优化器和学习率却归因于优化器；scheduler 调用时机错误；忘记 `zero_grad`；把 Adam 的 L2 penalty 当 AdamW。
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d06"></a>
+
+<a id="d06"></a>
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d06-核-weight-decaydropout早停与数据增强"></a>
 
 ### D06 `[核]` Weight Decay、Dropout、早停与数据增强
 
@@ -1565,7 +2191,17 @@ print("L2 penalty", 0.5 * w.square().sum())
 
 **常见坑：** 验证/推理时忘记 `eval()`；增强破坏标签语义；用测试集早停；把更多正则化默认当更好。
 
+<a id="page-docs-01-foundations-d-deep-learning-md-d07"></a>
+
+<a id="d07"></a>
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d07-核-batchnormlayernorm-与-rmsnorm"></a>
+
 ### D07 `[核]` BatchNorm、LayerNorm 与 RMSNorm
+
+<!-- readings:start -->
+**进一步精读：** [LLaMA：现代自回归模型的设计](../readings/papers/llama.md)
+<!-- readings:end -->
 
 **先修：** A11、D02、D04。
 
@@ -1592,7 +2228,17 @@ print("BN eval uses running stats", bn(x).mean().item())
 
 **常见坑：** 混淆归一化轴；BN 推理仍处于 train；认为归一化可替代输入预处理；忽略小 batch 和分布漂移。
 
+<a id="page-docs-01-foundations-d-deep-learning-md-d08"></a>
+
+<a id="d08"></a>
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d08-核-训练循环微型过拟合检查点与系统调试"></a>
+
 ### D08 `[核]` 训练循环、微型过拟合、检查点与系统调试
+
+<!-- readings:start -->
+**进一步精读：** [nanoGPT：经典最小GPT训练器](../readings/projects/nanogpt.md)
+<!-- readings:end -->
 
 **先修：** B06、D02–D07。
 
@@ -1621,7 +2267,17 @@ print("tiny-batch loss/accuracy", loss.item(), acc.item())
 
 **常见坑：** 验证时仍启用 dropout/BN 更新；平均 batch loss 未按样本数加权；只保存权重不保存优化器和配置；训练失败先调大模型。
 
+<a id="page-docs-01-foundations-d-deep-learning-md-d09"></a>
+
+<a id="d09"></a>
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d09-核-embedding表征学习与度量学习"></a>
+
 ### D09 `[核]` Embedding、表征学习与度量学习
+
+<!-- readings:start -->
+**进一步精读：** [DPR：稠密段落检索](../readings/papers/dpr.md) · [CLIP：图文对比对齐](../readings/papers/clip.md)
+<!-- readings:end -->
 
 **先修：** A04、D01、D03。
 
@@ -1649,7 +2305,17 @@ print("loss", loss.item(), "gradient rows", active_rows)
 
 **常见坑：** 把向量距离天然解释为语义；未归一化却比较余弦/点积；负样本实际同类；只看漂亮降维图。
 
+<a id="page-docs-01-foundations-d-deep-learning-md-d10"></a>
+
+<a id="d10"></a>
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d10-核-残差门控递归与状态传递结构"></a>
+
 ### D10 `[核]` 残差、门控、递归与状态传递结构
+
+<!-- readings:start -->
+**进一步精读：** [ResNet：残差学习与深层优化](../readings/papers/resnet.md) · [Transformer：注意力与编解码器](../readings/papers/transformer.md)
+<!-- readings:end -->
 
 **先修：** D01、D02、D04。
 
@@ -1678,7 +2344,17 @@ print(residual.shape, sequence.shape, h_last.shape, mixed)
 
 **常见坑：** 残差两支形状不匹配；认为残差必然无损；RNN 隐状态未按序列边界重置；把门值当硬开关。
 
+<a id="page-docs-01-foundations-d-deep-learning-md-d11"></a>
+
+<a id="d11"></a>
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d11-核-迁移学习微调冻结策略与参数高效适配"></a>
+
 ### D11 `[核]` 迁移学习、微调、冻结策略与参数高效适配
+
+<!-- readings:start -->
+**进一步精读：** [BERT：双向预训练与迁移](../readings/papers/bert.md) · [LoRA：低秩任务更新](../readings/papers/lora.md) · [Transformers：模型定义与训练生成接口](../readings/projects/transformers.md) · [PEFT：参数高效适配的注入保存与合并](../readings/projects/peft.md)
+<!-- readings:end -->
 
 **先修：** D06、D08、D09。
 
@@ -1705,7 +2381,17 @@ print("backbone grad", backbone[0].weight.grad, "head grad", head.weight.grad.no
 
 **常见坑：** 冻结参数却让 BN 运行统计继续变化；新头未重置；源域差异很大仍盲目冻结；PEFT 参数少就误认为显存一定很少。
 
+<a id="page-docs-01-foundations-d-deep-learning-md-d12"></a>
+
+<a id="d12"></a>
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d12-核-自监督对比学习与掩码建模"></a>
+
 ### D12 `[核]` 自监督、对比学习与掩码建模
+
+<!-- readings:start -->
+**进一步精读：** [CLIP：图文对比对齐](../readings/papers/clip.md)
+<!-- readings:end -->
 
 **先修：** A15、D09、D11。
 
@@ -1733,7 +2419,17 @@ print("InfoNCE/retrieval@1", loss.item(), retrieval.item())
 
 **常见坑：** 增强破坏语义；batch 太小却无 memory bank；把预训练损失低等同迁移好；线性探针协议不一致。
 
+<a id="page-docs-01-foundations-d-deep-learning-md-d13"></a>
+
+<a id="d13"></a>
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d13-核-attentionmulti-head-attention-与-transformer-公共结构"></a>
+
 ### D13 `[核]` Attention、Multi-Head Attention 与 Transformer 公共结构
+
+<!-- readings:start -->
+**进一步精读：** [Transformer：注意力与编解码器](../readings/papers/transformer.md) · [LLaMA：现代自回归模型的设计](../readings/papers/llama.md) · [nanoGPT：经典最小GPT训练器](../readings/projects/nanogpt.md)
+<!-- readings:end -->
 
 **先修：** A15、D02、D09。
 
@@ -1761,7 +2457,17 @@ print("row sums/output shape", weights.sum(-1), out.shape)
 
 **常见坑：** Mask 方向反了；padding 与 causal mask 混淆；softmax 轴错误；认为 attention 权重天然等于因果解释。
 
+<a id="page-docs-01-foundations-d-deep-learning-md-d14"></a>
+
+<a id="d14"></a>
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d14-核-表达能力优化偏置泛化与-scaling-law"></a>
+
 ### D14 `[核]` 表达能力、优化偏置、泛化与 Scaling Law
+
+<!-- readings:start -->
+**进一步精读：** [Chinchilla：计算最优的模型数据分配](../readings/papers/chinchilla.md)
+<!-- readings:end -->
 
 **先修：** A18、D01、D05。
 
@@ -1789,6 +2495,12 @@ for width in [2, 8, 32]:
 **检测题/小实验：** 多随机种子比较宽度、参数量、训练/验证误差；在 log-log 坐标拟合经验幂律并检查残差，禁止用三个点宣称普适定律。
 
 **常见坑：** 用存在性定理推断 SGD 必能找到解；将训练集记忆等同泛化；从单一模型族外推 scaling；忽略数据质量和计算预算。
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d15"></a>
+
+<a id="d15"></a>
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d15-核-不确定性校准ood-与对抗鲁棒性"></a>
 
 ### D15 `[核]` 不确定性、校准、OOD 与对抗鲁棒性
 
@@ -1818,7 +2530,17 @@ print("ECE", ece)
 
 **常见坑：** 以最大 softmax 概率当可靠不确定性；在测试集校准；只测一种攻击；把 OOD 检出率高误作模型在 OOD 上预测正确。
 
+<a id="page-docs-01-foundations-d-deep-learning-md-d16"></a>
+
+<a id="d16"></a>
+
+<a id="page-docs-01-foundations-d-deep-learning-md-d16-选-混合精度分布式训练性能剖析剪枝与量化"></a>
+
 ### D16 `[选]` 混合精度、分布式训练、性能剖析、剪枝与量化
+
+<!-- readings:start -->
+**进一步精读：** [FlashAttention：分块精确注意力](../readings/papers/flashattention.md) · [vLLM：缓存调度与模型服务](../readings/projects/vllm.md)
+<!-- readings:end -->
 
 **先修：** A16、B04、D08。
 
@@ -1845,7 +2567,36 @@ print("stored dtype", next(model16.parameters()).dtype)
 
 **常见坑：** 只报理论 FLOPs；把显存减半等同速度翻倍；不同硬件上比较吞吐却不说明环境；压缩后不重新评测分布切片。
 
-## E. 计算机视觉
+---
+
+<a id="page-docs-02-perception-language-e-computer-vision-md"></a>
+
+<a id="page-docs-02-perception-language-e-computer-vision-md-e-计算机视觉"></a>
+
+# E. 计算机视觉
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-01-foundations-d-deep-learning-md) · [下一章 →](#page-docs-02-perception-language-f-nlp-transformers-llms-md)
+
+---
+
+<a id="page-docs-02-perception-language-e-computer-vision-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-07-generative-multimodal-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-02-perception-language-e-computer-vision-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-02-perception-language-e-computer-vision-md-e01"></a>
+
+<a id="e01"></a>
+
+<a id="page-docs-02-perception-language-e-computer-vision-md-e01-图像表示成像颜色采样与增强-核心成熟"></a>
 
 ### E01 图像表示、成像、颜色、采样与增强 `[核心·成熟]`
 
@@ -1868,6 +2619,12 @@ print(z.shape, np.round(z.mean((0, 1)), 5))
 
 - **检测题/小实验**：先预测“文字识别、左右手分类、普通猫狗分类”中水平翻转分别是否保标签；再比较“直接隔点采样”和“2×2 均值后采样”的棋盘格混叠。
 - **常见坑**：混用 `HWC/CHW`；训练/验证归一化统计不一致；把测试增强结果用于挑模型造成泄漏；认为所有几何增强都安全。
+
+<a id="page-docs-02-perception-language-e-computer-vision-md-e02"></a>
+
+<a id="e02"></a>
+
+<a id="page-docs-02-perception-language-e-computer-vision-md-e02-滤波边缘局部特征多视几何与传统视觉-分支成熟"></a>
 
 ### E02 滤波、边缘、局部特征、多视几何与传统视觉 `[分支·成熟]`
 
@@ -1894,7 +2651,17 @@ print(np.hypot(gx, gy))
 - **检测题/小实验**：为什么高斯平滑后再求导通常比先求导更稳？把图像整体加常数，Sobel 响应应如何变化？
 - **常见坑**：把数学卷积与库中的互相关混为一谈；用像素距离直接匹配不同视角；RANSAC 内点多就断言几何正确；忽略相机标定和坐标系。
 
+<a id="page-docs-02-perception-language-e-computer-vision-md-e03"></a>
+
+<a id="e03"></a>
+
+<a id="page-docs-02-perception-language-e-computer-vision-md-e03-cnn卷积等变性与感受野-核心成熟"></a>
+
 ### E03 CNN、卷积、等变性与感受野 `[核心·成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [ResNet：残差学习与深层优化](../readings/papers/resnet.md) · [DQN：经验回放与目标网络](../readings/papers/dqn.md)
+<!-- readings:end -->
 
 - **先修**：A07、B04、D01–D06、E01–E02。
 - **定义与解析**：CNN 用局部连接与参数共享编码平移结构。卷积层对平移近似**等变**，池化/全局汇聚才可能带来一定不变性；步幅、边界填充和下采样都会破坏严格等变。
@@ -1917,7 +2684,17 @@ print(y.shape, err.max().item())
 - **检测题/小实验**：解释为何代码排除边界后误差更小；给出 `K=5,S=2,P=2,D=1,W=32` 的输出宽。
 - **常见坑**：把通道数叫“空间深度”；默认卷积严格平移不变；只算理论感受野不查信息路径；忘记 dilation 对有效核大小的影响。
 
+<a id="page-docs-02-perception-language-e-computer-vision-md-e04"></a>
+
+<a id="e04"></a>
+
+<a id="page-docs-02-perception-language-e-computer-vision-md-e04-resnetefficientnetconvnext-与现代骨干-核心成熟"></a>
+
 ### E04 ResNet、EfficientNet、ConvNeXt 与现代骨干 `[核心·成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [ResNet：残差学习与深层优化](../readings/papers/resnet.md)
+<!-- readings:end -->
 
 - **先修**：D04、D07、D10、D14、E03。
 - **定义与解析**：骨干网络把图像变为分层特征。ResNet 学残差 `F(x)` 并走捷径；EfficientNet 联合缩放深度/宽度/分辨率；ConvNeXt 用现代训练与大核、分组卷积等设计重新审视纯 ConvNet。它们是设计族，不存在跨数据/预算永远最优者。
@@ -1944,6 +2721,12 @@ print(y.item(), x.grad.norm().item())
 - **检测题/小实验**：将 `x+self.f(x)` 改成 `self.f(x)`，在 20–50 层小网络中比较初始梯度范数；通道翻倍时捷径为什么不能直接相加？
 - **常见坑**：把残差理解为“永不梯度消失”；只比参数量不比 FLOPs/延迟/分辨率；把论文训练配方带来的收益全归因于结构。
 
+<a id="page-docs-02-perception-language-e-computer-vision-md-e05"></a>
+
+<a id="e05"></a>
+
+<a id="page-docs-02-perception-language-e-computer-vision-md-e05-图像分类定位归因与可解释性-核心较成熟"></a>
+
 ### E05 图像分类、定位、归因与可解释性 `[核心·较成熟]`
 
 - **先修**：C03、C12、D03、D08、D11、D15、E03–E04。
@@ -1965,6 +2748,12 @@ print(attr, "top-pixel=", divmod(attr.argmax().item(), 4))
 
 - **检测题/小实验**：随机重置模型权重后，若“解释图”几乎不变说明什么？比较预测概率与 logit 的梯度，饱和时哪个更可能接近零？
 - **常见坑**：把显著图当分割掩码；只展示好看的个例；以解释的一致性代替正确性；用测试集反复挑增强/阈值。
+
+<a id="page-docs-02-perception-language-e-computer-vision-md-e06"></a>
+
+<a id="e06"></a>
+
+<a id="page-docs-02-perception-language-e-computer-vision-md-e06-目标检测与实例分割-分支成熟"></a>
 
 ### E06 目标检测与实例分割 `[分支·成熟]`
 
@@ -1995,6 +2784,12 @@ print(keep)
 - **检测题/小实验**：调 NMS 阈值从 0.1 到 0.9，预测重复数和漏检趋势；同一 AP 下，小目标召回是否必然相同？
 - **常见坑**：坐标端点是否含边导致 IoU 偏差；在不同 IoU/尺度定义间直接比 AP；数据增强后未同步变换框/掩码；类别不平衡只看总 loss。
 
+<a id="page-docs-02-perception-language-e-computer-vision-md-e07"></a>
+
+<a id="e07"></a>
+
+<a id="page-docs-02-perception-language-e-computer-vision-md-e07-语义分割深度估计光流与稠密预测-分支成熟"></a>
+
 ### E07 语义分割、深度估计、光流与稠密预测 `[分支·成熟]`
 
 - **先修**：A04、C03、D03、E02–E04。
@@ -2017,6 +2812,12 @@ print(loss.item(), pred.shape, logits.grad.norm().item())
 
 - **检测题/小实验**：全预测背景时 pixel accuracy 可能很高而 mIoU 很低，构造一个 10 像素例子；单目深度整体乘 2 为何可能仍保持相对几何？
 - **常见坑**：插值标签时使用双线性造成非法类别；忽略 void label；把 optical flow 当物体速度；训练/评测深度单位和尺度对齐不一致。
+
+<a id="page-docs-02-perception-language-e-computer-vision-md-e08"></a>
+
+<a id="e08"></a>
+
+<a id="page-docs-02-perception-language-e-computer-vision-md-e08-vit视觉自监督与视觉基础模型-核心较成熟基础模型持续演进"></a>
 
 ### E08 ViT、视觉自监督与视觉基础模型 `[核心·较成熟；基础模型持续演进]`
 
@@ -2042,6 +2843,12 @@ print(seq.shape, y.shape, w.shape)
 - **检测题/小实验**：patch 从 `16×16` 改为 `8×8` 时 token 数与注意力矩阵元素数各变几倍？冻结骨干线性探测与全量微调分别测什么？
 - **常见坑**：把 patch embedding 当语义分词；只报线性探测不报迁移设置；把数据规模效应归因于单个目标；将发布方称“foundation”当作跨域能力证据。
 
+<a id="page-docs-02-perception-language-e-computer-vision-md-e09"></a>
+
+<a id="e09"></a>
+
+<a id="page-docs-02-perception-language-e-computer-vision-md-e09-视频理解3d-视觉点云与-nerf-分支较成熟世界建模解释仍前沿"></a>
+
 ### E09 视频理解、3D 视觉、点云与 NeRF `[分支·较成熟；世界建模解释仍前沿]`
 
 - **先修**：A04–A05、E02–E08、F07（学习时可后补）。
@@ -2065,7 +2872,38 @@ print(weights, (weights[:, None] * rgb).sum(0))
 - **检测题/小实验**：随机打乱点顺序，`max_i h(x_i)` 是否变化？令所有 `σ→0` 或首个 `σ→∞`，渲染颜色各趋向什么？
 - **常见坑**：把帧独立分类叫视频理解；混淆相机坐标/世界坐标；NeRF 密度当可直接测得的实体；由生成视频“看似合理”推断模型已学会物理。边界截至 **2026-08-11**。
 
-## F. NLP、Transformer 与 LLM
+---
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md"></a>
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f-nlptransformer-与-llm"></a>
+
+# F. NLP、Transformer 与 LLM
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-02-perception-language-e-computer-vision-md) · [下一章 →](#page-docs-02-perception-language-g-generative-models-md)
+
+---
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-03-transformer-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+本章负责分词、架构、目标和生成；F12给出适配入口，SFT/LoRA的详细推导统一见[后训练串讲](#page-docs-08-walkthroughs-05-posttraining-md)。系统成本见[预训练与推理](#page-docs-08-walkthroughs-04-pretraining-inference-md)。
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f01"></a>
+
+<a id="f01"></a>
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f01-语言层次unicode规范化与语料-核心成熟"></a>
 
 ### F01 语言层次、Unicode、规范化与语料 `[核心·成熟]`
 
@@ -2087,6 +2925,12 @@ print(ud.normalize("NFKC", "① ℌ"))
 
 - **检测题/小实验**：为什么 `len(s)` 不一定是屏幕字符数？比较 NFC 与 NFKC 处理数学字母、圈号数字的结果，并判断你的任务能否接受信息折叠。
 - **常见坑**：先按 byte 截断再解码；把小写化/繁简转换当无损规范化；训练/推理清洗不同；忽略来源许可、隐私、时间污染和语言覆盖。
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f02"></a>
+
+<a id="f02"></a>
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f02-分词子词bpewordpiece-与词表-核心成熟"></a>
 
 ### F02 分词、子词、BPE、WordPiece 与词表 `[核心·成熟]`
 
@@ -2112,6 +2956,12 @@ for a, b in [("l", "o"), ("lo", "w"), ("e", "r")]:
 - **检测题/小实验**：同一中英混合句分别按字符、空格词、子词计长度；词表增大时 embedding 参数、平均序列长度和稀有 token 学习次数如何变化？
 - **常见坑**：只保存词表不保存 tokenizer 配置/合并表；新增特殊 token 后不扩 embedding；在 token 化后去重；用“token 数”直接比较不同 tokenizer 的数据量。
 
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f03"></a>
+
+<a id="f03"></a>
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f03-bowtf-idf-与传统文本分类-核心成熟"></a>
+
 ### F03 BoW、TF-IDF 与传统文本分类 `[核心·成熟]`
 
 - **先修**：A02、A10、C03、B05–B06、F01–F02。
@@ -2133,6 +2983,12 @@ print(clf.predict(vec.transform(["good", "bad slow"])), X.shape)
 
 - **检测题/小实验**：把词序反转，unigram 特征是否变化？只在训练折 `fit` 与全数据 `fit` TF-IDF，对验证分数有何潜在差别？
 - **常见坑**：验证/测试参与词表与 IDF 拟合；稀疏矩阵无意转 dense；只用 accuracy 处理不均衡；拿神经模型和未调参、未用 n-gram 的弱基线比较。
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f04"></a>
+
+<a id="f04"></a>
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f04-分布式语义word2vec-与静态词向量-核心成熟"></a>
 
 ### F04 分布式语义、Word2Vec 与静态词向量 `[核心·成熟]`
 
@@ -2159,6 +3015,12 @@ print(loss.item(), vin.weight.grad[1])
 - **检测题/小实验**：把负样本数从 1 增到 20，损失尺度和计算量如何变？“bank”两个词义为何会挤在一个向量里？
 - **常见坑**：把类比偶然性当逻辑推理；未处理高频词采样；混淆输入/输出向量；用含社会偏差的向量而不做审计。
 
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f05"></a>
+
+<a id="f05"></a>
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f05-rnnlstm-与-gru-核心成熟"></a>
+
 ### F05 RNN、LSTM 与 GRU `[核心·成熟]`
 
 - **先修**：A07、D02、D04、D10、F04。
@@ -2183,7 +3045,17 @@ print(torch.stack(states).shape, x.grad[:, 0].norm().item())
 - **检测题/小实验**：把序列长度从 4 增到 100，比较首步输入梯度；双向 RNN 为什么不能无延迟用于严格在线生成？
 - **常见坑**：padding 步仍更新状态；hidden/state 形状混乱；训练时未 detach 跨 batch 状态；认为门控能可靠记住任意长度信息。
 
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f06"></a>
+
+<a id="f06"></a>
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f06-seq2seq编码器解码器与注意力-核心成熟"></a>
+
 ### F06 Seq2Seq、编码器—解码器与注意力 `[核心·成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [Transformer：注意力与编解码器](../readings/papers/transformer.md) · [T5：统一文本接口与跨度去噪](../readings/papers/t5.md) · [RAG：检索文档的概率边际化](../readings/papers/rag.md)
+<!-- readings:end -->
 
 - **先修**：A04、D13、F05。
 - **定义与解析**：Seq2Seq 把变长输入编码为状态，再自回归解码输出；固定单向量瓶颈促成注意力：每个解码步按相关性汇聚全部编码状态。teacher forcing 加快训练，但推理时模型消费自身输出，形成暴露偏差。
@@ -2207,7 +3079,17 @@ print(alpha, context.shape, alpha.sum(1))
 - **检测题/小实验**：全 mask 一行会发生什么数值问题？训练时 100% teacher forcing 而推理逐步生成，输入分布发生了什么变化？
 - **常见坑**：softmax 维度错；mask 在 softmax 后才乘零且不重归一；将注意力热图直接解释为因果；目标序列未右移导致偷看当前 token。
 
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f07"></a>
+
+<a id="f07"></a>
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f07-transformer位置编码mask-与-kv-cache-核心成熟"></a>
+
 ### F07 Transformer、位置编码、Mask 与 KV Cache `[核心·成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [Transformer：注意力与编解码器](../readings/papers/transformer.md) · [LLaMA：现代自回归模型的设计](../readings/papers/llama.md) · [FlashAttention：分块精确注意力](../readings/papers/flashattention.md) · [nanoGPT：经典最小GPT训练器](../readings/projects/nanogpt.md) · [Transformers：模型定义与训练生成接口](../readings/projects/transformers.md)
+<!-- readings:end -->
 
 - **先修**：A02、A04、A16、D07、D13、F06。
 - **定义与解析**：Transformer 以多头注意力和逐位置前馈层替代循环；自注意力本身对 token 排列等变，必须注入位置。因果 mask 禁止看未来；KV cache 在自回归推理中复用旧 token 的 key/value，但不会免掉新 query 与全部历史的注意力计算。
@@ -2231,7 +3113,17 @@ print(a[0], y.shape)
 - **检测题/小实验**：验证第 0 行只能关注自己；把输入 token 同步置换且不加位置编码，输出应如何置换？KV cache 为何主要省去旧 token 的 K/V 投影？
 - **常见坑**：把 padding mask、causal mask、loss mask 混用；缩放除以 `√d_model` 而非头维；cache 位置索引错位；把 RoPE 外推当成训练长度外必然可靠。
 
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f08"></a>
+
+<a id="f08"></a>
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f08-因果掩码与-encoderdecoder-语言建模目标-核心成熟"></a>
+
 ### F08 因果、掩码与 Encoder–Decoder 语言建模目标 `[核心·成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [BERT：双向预训练与迁移](../readings/papers/bert.md) · [GPT-3：上下文学习与规模](../readings/papers/gpt3.md) · [T5：统一文本接口与跨度去噪](../readings/papers/t5.md) · [nanoGPT：经典最小GPT训练器](../readings/projects/nanogpt.md)
+<!-- readings:end -->
 
 - **先修**：A09、A15、D03、F02、F07。
 - **定义与解析**：因果 LM 预测下一个 token；掩码 LM 从双向上下文恢复被遮 token；encoder–decoder 去噪把受损输入映射回目标跨度/文本。目标决定可见信息和训练信号，不等同于具体模型品牌。
@@ -2255,7 +3147,17 @@ print(clm.item(), mlm.item(), seq2seq.item())
 - **检测题/小实验**：若 CLM 的输入和标签同位置对齐且模型有残差，会出现什么捷径？MLM 为何不天然适合逐 token 左到右生成？
 - **常见坑**：padding 也计入 loss；把 `[MASK]` 留在下游真实输入；错误 shift 造成当前 token 泄漏；将 NSP、sentence order 等辅助目标视作 BERT 必不可少定义。
 
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f09"></a>
+
+<a id="f09"></a>
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f09-bertgpt-与-t5-核心成熟"></a>
+
 ### F09 BERT、GPT 与 T5 `[核心·成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [BERT：双向预训练与迁移](../readings/papers/bert.md) · [GPT-3：上下文学习与规模](../readings/papers/gpt3.md) · [T5：统一文本接口与跨度去噪](../readings/papers/t5.md) · [DPR：稠密段落检索](../readings/papers/dpr.md) · [Transformers：模型定义与训练生成接口](../readings/projects/transformers.md)
+<!-- readings:end -->
 
 - **先修**：F07–F08、D11–D12。
 - **定义与解析**：BERT 是双向 Transformer encoder 的掩码预训练范式，适合理解/编码；GPT 是 decoder-only 因果语言模型，统一为续写；T5 是 encoder–decoder，把任务写成 text-to-text。三者边界来自可见性、结构和目标，而非参数规模。
@@ -2280,7 +3182,17 @@ print(bert.shape, gpt.shape, t5.shape)
 - **检测题/小实验**：分类任务为何常取 BERT 的 pooled/特殊 token 表征，而抽取任务需逐 token 输出？T5 decoder 若无 cross-attention 会退化成什么？
 - **常见坑**：把“GPT”泛指所有 LLM；用 encoder 的双向 mask 做生成训练；只按架构名推断数据/能力；把预训练目标成绩当下游可靠性保证。
 
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f10"></a>
+
+<a id="f10"></a>
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f10-预训练数据去重scaling-与配比-核心较成熟配方快速演进"></a>
+
 ### F10 预训练数据、去重、Scaling 与配比 `[核心·较成熟；配方快速演进]`
+
+<!-- readings:start -->
+**进一步精读：** [GPT-3：上下文学习与规模](../readings/papers/gpt3.md) · [Chinchilla：计算最优的模型数据分配](../readings/papers/chinchilla.md) · [LLaMA：现代自回归模型的设计](../readings/papers/llama.md)
+<!-- readings:end -->
 
 - **先修**：A13、A18、B05–B06、D14、F01–F09。
 - **定义与解析**：预训练系统由数据来源、许可/治理、过滤、去重、采样配比、tokenizer、训练预算共同定义。scaling law 是给定范围内损失随模型/数据/计算的经验幂律拟合；compute-optimal 配比取决于架构、数据质量和训练制度，不是自然常数。
@@ -2302,7 +3214,17 @@ print(f"N={N[i]:.0f}, D={D[i]:.0f}, loss={loss[i]:.3f}")
 - **检测题/小实验**：改变 `alpha/beta`，最优配比如何移动？去重为何可能同时降低 benchmark 分数（去掉污染）又提高真实泛化？
 - **常见坑**：跨论文直接套指数；把 token 数等同信息量；忽略测试污染和训练数据时间边界；模型报告未公开完整数据时仍声称已复现。结论边界截至 **2026-08-11**。
 
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f11"></a>
+
+<a id="f11"></a>
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f11-greedybeam采样与约束解码-核心成熟"></a>
+
 ### F11 Greedy、Beam、采样与约束解码 `[核心·成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [Transformers：模型定义与训练生成接口](../readings/projects/transformers.md) · [vLLM：缓存调度与模型服务](../readings/projects/vllm.md)
+<!-- readings:end -->
 
 - **先修**：A09–A10、A15、F08–F09。
 - **定义与解析**：greedy 每步取最大概率；beam 保留若干高累积分序列；随机采样从截断/重标定分布取样；约束解码限制合法 token 或结构。解码改变输出分布，却不能补回模型没学到的事实。
@@ -2326,7 +3248,17 @@ print(candidates.tolist(), p.tolist(), sample.item())
 - **检测题/小实验**：温度趋近 0/无穷时分布怎样？构造一个 greedy 首步最优却整句概率低于另一序列的二步例子。
 - **常见坑**：softmax 后再除温度；top-p 集合未重归一；比较采样方法却不固定随机种子/预算；结构约束只保证语法，不保证语义与安全。
 
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f12"></a>
+
+<a id="f12"></a>
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f12-sft指令数据chat-template-与-peftlora-核心较成熟工具接口会变"></a>
+
 ### F12 SFT、指令数据、Chat Template 与 PEFT/LoRA `[核心·较成熟；工具接口会变]`
+
+<!-- readings:start -->
+**进一步精读：** [LoRA：低秩任务更新](../readings/papers/lora.md) · [PEFT：参数高效适配的注入保存与合并](../readings/projects/peft.md)
+<!-- readings:end -->
 
 - **先修**：D11、F02、F08–F11。
 - **定义与解析**：SFT 用示范 `(instruction,response)` 的 token 级交叉熵教模型遵循交互格式；chat template 将角色消息序列化为模型训练时的特殊 token 协议。PEFT 只训练小量参数；LoRA 把线性层增量限制为低秩。SFT 不是偏好优化，也不能保证事实性。
@@ -2350,7 +3282,17 @@ print(y.shape, A.grad.norm().item(), B.grad.norm().item())
 - **检测题/小实验**：为什么 `B=0` 初始化时首步 `A.grad` 可能为 0 而 `B.grad` 非 0？同一消息用两个 chat template 序列化，token loss 能直接比较吗？
 - **常见坑**：训练/推理模板不一致；特殊 token 重复；prompt、padding 也计 loss；把“可训练参数少”误解为显存一定极低（激活仍在）；`main` 文档接口可能漂移，工程复现需固定版本。边界截至 **2026-08-11**。
 
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f13"></a>
+
+<a id="f13"></a>
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f13-分类标注抽取翻译摘要与-qa-评测-核心成熟开放生成评测仍不完备"></a>
+
 ### F13 分类、标注、抽取、翻译、摘要与 QA 评测 `[核心·成熟；开放生成评测仍不完备]`
+
+<!-- readings:start -->
+**进一步精读：** [GPT-3：上下文学习与规模](../readings/papers/gpt3.md)
+<!-- readings:end -->
 
 - **先修**：B06、C03、C12、F03、F09–F12。
 - **定义与解析**：分类给序列标签，序列标注给 token 标签，抽取预测 span，翻译/摘要生成文本，QA 可抽取或生成。指标必须对应错误成本：macro-F1 关注小类，span EM/F1 关注边界，BLEU/ROUGE 测表面重叠；任何单指标都不等于语义正确或有用。
@@ -2370,7 +3312,17 @@ print(confusion_matrix(y, pred))
 - **检测题/小实验**：解释代码中 micro 与 macro 的差距；两个语义等价译文可能 BLEU 低，怎样用人工盲评和任务成功率补充？
 - **常见坑**：用测试集选阈值；tokenizer 不同仍直接比 token F1；抽取 span 的字符/token offset 错位；只报平均分不做按语言、长度、类别、时间切片误差分析。
 
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f14"></a>
+
+<a id="f14"></a>
+
+<a id="page-docs-02-perception-language-f-nlp-transformers-llms-md-f14-长上下文高效-attentionkv-cache-与-llm-推理-前沿系统快速演进"></a>
+
 ### F14 长上下文、高效 Attention、KV Cache 与 LLM 推理 `[前沿；系统快速演进]`
+
+<!-- readings:start -->
+**进一步精读：** [FlashAttention：分块精确注意力](../readings/papers/flashattention.md) · [PagedAttention：KV缓存分页与共享](../readings/papers/pagedattention.md) · [vLLM：缓存调度与模型服务](../readings/projects/vllm.md)
+<!-- readings:end -->
 
 - **先修**：A16、D16、F07、F10–F12。
 - **定义与解析**：长上下文要同时解决位置外推、注意力计算/显存与有效检索；FlashAttention 用 IO-aware 分块精确计算注意力，结果不是稀疏近似；MQA/GQA 让多个 query 头共享较少 KV 头以压 cache。声称的最大窗口不等于所有位置都能可靠利用。
@@ -2394,7 +3346,36 @@ print(K.shape, V.shape, y.shape, "elements=", K.numel() + V.numel())
 - **检测题/小实验**：把长度翻倍，prefill 注意力矩阵和 KV cache 各放大几倍？为何“needle in a haystack”通过仍不能证明长文综合推理可靠？
 - **常见坑**：把 FlashAttention 说成线性时间；只报可输入长度不报质量/延迟/显存；混淆 prefill 与 decode；cache 截断后位置/attention mask 错位。论文、硬件与框架结论均以 **2026-08-11** 为边界，部署需按固定版本实测。
 
-## G. 生成模型
+---
+
+<a id="page-docs-02-perception-language-g-generative-models-md"></a>
+
+<a id="page-docs-02-perception-language-g-generative-models-md-g-生成模型"></a>
+
+# G. 生成模型
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-02-perception-language-f-nlp-transformers-llms-md) · [下一章 →](#page-docs-02-perception-language-h-multimodal-vlm-md)
+
+---
+
+<a id="page-docs-02-perception-language-g-generative-models-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-07-generative-multimodal-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-02-perception-language-g-generative-models-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-02-perception-language-g-generative-models-md-g01"></a>
+
+<a id="g01"></a>
+
+<a id="page-docs-02-perception-language-g-generative-models-md-g01-显式似然隐式潜变量能量与-score-范式-核心成熟框架"></a>
 
 ### G01 显式似然、隐式、潜变量、能量与 Score 范式 `[核心·成熟框架]`
 
@@ -2417,6 +3398,12 @@ print(p, p.sum(), sample, score)
 
 - **检测题/小实验**：给 EBM 的所有能量加常数，概率和 score 是否变化？为什么只会采样但不能算密度的模型仍可有用？
 - **常见坑**：把“生成”限定为图像；把 ELBO 当精确 log-likelihood；用不可比较的似然/感知指标排名所有范式；把 score 误作分类分数。
+
+<a id="page-docs-02-perception-language-g-generative-models-md-g02"></a>
+
+<a id="g02"></a>
+
+<a id="page-docs-02-perception-language-g-generative-models-md-g02-自回归生成与密度分解-核心成熟"></a>
 
 ### G02 自回归生成与密度分解 `[核心·成熟]`
 
@@ -2441,7 +3428,17 @@ print(logits.shape, nll.item(), model.weight.grad)
 - **检测题/小实验**：为什么训练五个位置可一次算完、严格采样却要五步？换一种变量顺序，理论联合分布表达能力与优化难度分别怎样？
 - **常见坑**：目标未右移；生成时忘记停止条件；以 token 平均 NLL 直接比较不同 tokenization；把暴露偏差等同于“链式法则有错”。
 
+<a id="page-docs-02-perception-language-g-generative-models-md-g03"></a>
+
+<a id="g03"></a>
+
+<a id="page-docs-02-perception-language-g-generative-models-md-g03-潜变量变分推断与-elbo-核心成熟"></a>
+
 ### G03 潜变量、变分推断与 ELBO `[核心·成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [VAE：变分下界与可微采样](../readings/papers/vae.md) · [DDPM：逐步去噪生成](../readings/papers/ddpm.md)
+<!-- readings:end -->
 
 - **先修**：A09–A15、A07、G01。
 - **定义与解析**：潜变量 `z` 表示未直接观察的生成因素。真实后验 `p(z|x)` 往往难算，变分推断用可处理的 `q_φ(z|x)` 逼近；ELBO 同时是 log-likelihood 下界与后验逼近目标。
@@ -2463,7 +3460,17 @@ print(log_px.item(), elbo.item(), gap.item(), (log_px-elbo).item())
 - **检测题/小实验**：令 `q=posterior`，gap 应为多少？ELBO 上升时 log-likelihood 是否必然同幅上升？
 - **常见坑**：漏掉 KL 方向；把单样本 Monte Carlo ELBO 当精确值；混淆先验与聚合后验；下界更高就断言样本更好。
 
+<a id="page-docs-02-perception-language-g-generative-models-md-g04"></a>
+
+<a id="g04"></a>
+
+<a id="page-docs-02-perception-language-g-generative-models-md-g04-vae层次潜变量与解耦-核心成熟解耦主张需谨慎"></a>
+
 ### G04 VAE、层次潜变量与解耦 `[核心·成熟；解耦主张需谨慎]`
+
+<!-- readings:start -->
+**进一步精读：** [VAE：变分下界与可微采样](../readings/papers/vae.md)
+<!-- readings:end -->
 
 - **先修**：D02–D05、G03。
 - **定义与解析**：VAE 用 encoder 参数化 `q_φ(z|x)`、decoder 参数化 `p_θ(x|z)`，通过重参数化反传。层次 VAE 用多层潜变量表达多尺度结构。β-VAE 加大 KL 权重鼓励受限表示，但“无监督自动发现真实独立因素”没有一般保证。
@@ -2488,6 +3495,12 @@ print(rec.item(), kl.item(), z.shape)
 - **检测题/小实验**：把 β 从 0 改到 10，预测重构/KL 的长期趋势；为何 decoder 很强时可能忽略 z？
 - **常见坑**：`logvar` 当 `std`；KL 的 batch/维度 reduction 不一致；Bernoulli/Gaussian likelihood 选错；把漂亮 latent traversal 当无监督可辨识性证明。
 
+<a id="page-docs-02-perception-language-g-generative-models-md-g05"></a>
+
+<a id="g05"></a>
+
+<a id="page-docs-02-perception-language-g-generative-models-md-g05-normalizing-flow-分支成熟"></a>
+
 ### G05 Normalizing Flow `[分支·成熟]`
 
 - **先修**：A05、A07、A13、A16、G01。
@@ -2509,6 +3522,12 @@ print(x, torch.allclose(z, z_inv), logp_x)
 
 - **检测题/小实验**：为什么前一维不变仍能经多层/置换后变换所有维？删掉 log-determinant 后密度为什么错？
 - **常见坑**：正反方向 log-det 符号错；可逆不等于数值稳定；离散图像直接套连续密度忘记 dequantization；以 bits/dim 单指标代表感知质量。
+
+<a id="page-docs-02-perception-language-g-generative-models-md-g06"></a>
+
+<a id="g06"></a>
+
+<a id="page-docs-02-perception-language-g-generative-models-md-g06-gan-核心成熟训练稳定性仍任务相关"></a>
 
 ### G06 GAN `[核心·成熟；训练稳定性仍任务相关]`
 
@@ -2536,7 +3555,17 @@ print(d_loss.item(), g_loss.item(), G.weight.grad.norm().item())
 - **检测题/小实验**：为什么更新 D 时要 `fake.detach()`？若 D 轻易完美，原始饱和型 G loss 的梯度会怎样？
 - **常见坑**：同一反向图错误更新双方；只看生成样本网格不测覆盖；把训练震荡都称“博弈正常”；比较 FID 时样本数、预处理和特征实现不同。
 
+<a id="page-docs-02-perception-language-g-generative-models-md-g07"></a>
+
+<a id="g07"></a>
+
+<a id="page-docs-02-perception-language-g-generative-models-md-g07-score-matching扩散ddpm-与-sde-核心较成熟采样研究活跃"></a>
+
 ### G07 Score Matching、扩散、DDPM 与 SDE `[核心·较成熟；采样研究活跃]`
+
+<!-- readings:start -->
+**进一步精读：** [DDPM：逐步去噪生成](../readings/papers/ddpm.md)
+<!-- readings:end -->
 
 - **先修**：A07、A10、A15、D03、G01。
 - **定义与解析**：扩散模型逐步给数据加噪，再学习反向去噪；DDPM 常预测加入的噪声，等价联系到不同噪声尺度的 score。连续极限以 SDE 描述前向扰动，反向时间 SDE/概率流 ODE 用学习到的 score 生成。
@@ -2561,6 +3590,12 @@ print(xt.shape, loss.item(), net.weight.grad.norm().item())
 - **检测题/小实验**：`ᾱ_t→1` 与 `→0` 时 `x_t` 各像什么？只训练一次噪声预测网络为何还不能直接一步获得正确样本？
 - **常见坑**：混淆 `α_t` 与累积 `ᾱ_t`；训练/采样 scheduler 不匹配；说 DDPM loss 就是无条件精确 NLL；只比步数不比函数评估次数和质量。
 
+<a id="page-docs-02-perception-language-g-generative-models-md-g08"></a>
+
+<a id="g08"></a>
+
+<a id="page-docs-02-perception-language-g-generative-models-md-g08-条件潜空间扩散guidance-与生成评测-核心较成熟模型配方快速变化"></a>
+
 ### G08 条件/潜空间扩散、Guidance 与生成评测 `[核心·较成熟；模型配方快速变化]`
 
 - **先修**：C12、E08、F07、G04、G07。
@@ -2582,9 +3617,42 @@ for w in (0., 1., 3., 7.5):
 - **检测题/小实验**：`w=0/1/>1` 分别代表什么？同一生成器 FID 更低时，文字拼写和事实一致性是否必然更好？
 - **常见坑**：把 CFG 与 classifier guidance 混同；在像素/latent 的噪声尺度间错配；只挑样图或只报 FID；由产品演示推断未公开的数据、损失或采样机制。边界截至 **2026-08-11**。
 
-## H. VLM 与多模态
+---
+
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md"></a>
+
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md-h-vlm-与多模态"></a>
+
+# H. VLM 与多模态
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-02-perception-language-g-generative-models-md) · [下一章 →](#page-docs-03-decision-specialties-i-reinforcement-learning-md)
+
+---
+
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-07-generative-multimodal-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md-h01"></a>
+
+<a id="h01"></a>
+
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md-h01-多模态表示对齐融合与-cross-attention-核心较成熟"></a>
 
 ### H01 多模态表示、对齐、融合与 Cross-Attention `[核心·较成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [CLIP：图文对比对齐](../readings/papers/clip.md)
+<!-- readings:end -->
 
 - **先修**：D09、D12–D13、E08、F07。
 - **定义与解析**：多模态模型把图像、文本、音频等映射到可比较或可交互的表示。对齐让对应样本接近；早融合在浅层混合 token，晚融合组合独立决策，cross-attention 让一个模态的 query 从另一模态的 key/value 读取信息。
@@ -2606,7 +3674,17 @@ print(weights[0].sum(-1))                 # 每个 text query 对图像 token �
 - **检测题/小实验**：交换 query 与 key/value 后输出长度为什么变化？对比学习学到图文全局接近，是否足以定位句中每个名词？
 - **常见坑**：不同模态 padding mask 未传；把 embedding 维度相同当已对齐；把 attention 权重当可靠定位/解释；训练集共现捷径误当组合理解。
 
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md-h02"></a>
+
+<a id="h02"></a>
+
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md-h02-clip-图文对比预训练-核心成熟"></a>
+
 ### H02 CLIP 图文对比预训练 `[核心·成熟]`
+
+<!-- readings:start -->
+**进一步精读：** [CLIP：图文对比对齐](../readings/papers/clip.md) · [LLaVA：视觉指令微调](../readings/papers/llava.md)
+<!-- readings:end -->
 
 - **先修**：A04、A15、D12、E08、F09、H01。
 - **定义与解析**：CLIP 用成对图像—文本批次训练双编码器，使正确配对相似度高、批内错配低；推理可把类别写成文本提示做零样本分类，也可做双向检索。它学到开放词汇表征，但不是生成式 VLM。
@@ -2629,6 +3707,12 @@ print(logits.shape, loss.item(), logits.argmax(1))
 
 - **检测题/小实验**：将 batch 从 4 增到 64，批内负例数怎样变化？zero-shot 类别名更换为多模板平均为何可能改变分数？
 - **常见坑**：图/文 encoder 输出未 L2 归一；温度方向/可学习参数写反；用训练配对作检索测试；把 CLIP 相似度当校准概率或细粒度事实验证。
+
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md-h03"></a>
+
+<a id="h03"></a>
+
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md-h03-captionvqa视觉定位与文档理解-分支较成熟"></a>
 
 ### H03 Caption、VQA、视觉定位与文档理解 `[分支·较成熟]`
 
@@ -2656,7 +3740,17 @@ loss.backward(); print(loss.item())
 - **检测题/小实验**：遮住图像只给问题，若 VQA 仍很高说明什么？OCR 文本正确但 box 坐标全错，对文档阅读顺序会有何影响？
 - **常见坑**：把 closed-vocab VQA accuracy 当开放回答能力；caption 指标代替事实核查；框坐标未按缩放同步；OCR 错误与推理错误不分层归因。
 
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md-h04"></a>
+
+<a id="h04"></a>
+
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md-h04-视觉编码器连接器llm-的-vlm-架构-核心较成熟具体配方演进"></a>
+
 ### H04 视觉编码器—连接器—LLM 的 VLM 架构 `[核心·较成熟；具体配方演进]`
+
+<!-- readings:start -->
+**进一步精读：** [LLaVA：视觉指令微调](../readings/papers/llava.md) · [Transformers：模型定义与训练生成接口](../readings/projects/transformers.md)
+<!-- readings:end -->
 
 - **先修**：D11–D13、E08、F09、H01–H03。
 - **定义与解析**：常见生成式 VLM 由视觉编码器提取 token，连接器把视觉维度/长度适配到 LLM embedding，再由 LLM 条件生成。连接器可为线性/MLP、query transformer 或 resampler；冻结还是联训决定成本与适配能力。
@@ -2682,7 +3776,17 @@ print(visual_tokens.shape, sequence.shape, out.shape)
 - **检测题/小实验**：视觉 token 从 4 增到 576 对上下文长度/attention 成本有何影响？冻结视觉 encoder 时 connector 能否恢复 encoder 已丢弃的信息？
 - **常见坑**：忽略图像 resize/crop 与 encoder 预处理；视觉 token 的位置/mask 错；把线性连接成功当“模态鸿沟已解决”；由端到端答案猜测未公开内部架构。
 
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md-h05"></a>
+
+<a id="h05"></a>
+
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md-h05-多模态指令微调与数据混合-核心前沿工程"></a>
+
 ### H05 多模态指令微调与数据混合 `[核心·前沿工程]`
+
+<!-- readings:start -->
+**进一步精读：** [LLaVA：视觉指令微调](../readings/papers/llava.md)
+<!-- readings:end -->
 
 - **先修**：B05–B06、F12、H03–H04。
 - **定义与解析**：多模态 SFT 用图像/视频/音频与多轮指令—回答示范，让预训练模型适应交互和任务。训练常分“连接器对齐→指令微调”，并混合纯文本以减轻语言能力遗忘。合成指令可扩规模，也会继承生成器错误与风格。
@@ -2706,7 +3810,17 @@ print(loss.item(), (labels != -100).sum().item())
 - **检测题/小实验**：若把用户问题也计 loss，优化目标发生什么变化？数据集 A 有百万短回答、B 有万条长推理，只按样本均匀与按 token 均匀有何区别？
 - **常见坑**：图像与对话错配；模板/特殊 token 不一致；混合后某模态被大量短样本淹没；把作者报告的 benchmark 提升写成已独立验证。结论边界截至 **2026-08-11**。
 
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md-h06"></a>
+
+<a id="h06"></a>
+
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md-h06-跨模态检索组合泛化幻觉与-vlm-评测-核心评测前沿"></a>
+
 ### H06 跨模态检索、组合泛化、幻觉与 VLM 评测 `[核心·评测前沿]`
+
+<!-- readings:start -->
+**进一步精读：** [LLaVA：视觉指令微调](../readings/papers/llava.md)
+<!-- readings:end -->
 
 - **先修**：B06、C12、F13、H02–H05。
 - **定义与解析**：跨模态检索按图文相似度排名；组合泛化测试已见概念的新关系/次序；视觉幻觉指回答声称图中不存在或不受图证据支持的内容。评测要拆成感知、OCR/定位、知识、推理、校准与拒答，不能用总分掩盖短板。
@@ -2729,6 +3843,12 @@ for k in (1, 3, 5):
 
 - **检测题/小实验**：Recall@5=100% 是否说明第一名可靠？把“狗追人/人追狗”作成对 caption，普通全局相似度为何可能都高？
 - **常见坑**：一图多真 caption 却只认一个；用 LLM judge 不校验一致性/位置偏差；问答准确就忽略幻觉率；闭源模型版本变化仍把跨日期分数排成静态榜单。边界截至 **2026-08-11**。
+
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md-h07"></a>
+
+<a id="h07"></a>
+
+<a id="page-docs-02-perception-language-h-multimodal-vlm-md-h07-统一多模态-token-与图像视频音频生成-前沿快速变化"></a>
 
 ### H07 统一多模态 Token 与图像、视频、音频生成 `[前沿·快速变化]`
 
@@ -2755,7 +3875,36 @@ loss.backward(); print(logits.shape, loss.item())
 - **检测题/小实验**：图像码本扩大如何影响 softmax 参数和序列长度？一个模型能输入视频、输出语音，是否说明内部必然使用统一离散 token？
 - **常见坑**：把产品名“omni”当机制定义；忽略 tokenizer/codec 重构上限；文本、图像、音频指标混成一个总分；把视频连贯演示写成已证明 3D/物理世界模型。所有前沿判断仅覆盖公开一手资料至 **2026-08-11**，技术报告不等于同行评审或独立复现。
 
-## I. 强化学习与 Deep RL
+---
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md"></a>
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i-强化学习与-deep-rl"></a>
+
+# I. 强化学习与 Deep RL
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-02-perception-language-h-multimodal-vlm-md) · [下一章 →](#page-docs-03-decision-specialties-j-graph-neural-networks-md)
+
+---
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-05-posttraining-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i01"></a>
+
+<a id="i01"></a>
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i01-多臂老虎机与探索利用稳定"></a>
 
 ### I01 多臂老虎机与探索—利用【稳定】
 - **先修**：期望、均值、独立同分布采样。
@@ -2777,6 +3926,12 @@ print(np.mean([run(s) for s in range(5)]))
 - **检测/实验**：把 ε 改为 0、0.01、0.1、0.5，先预测五种子平均遗憾排序；验收要求报告均值与标准差。
 - **常见坑**：只跑一个种子；用最终训练奖励冒充独立评估；误把非平稳奖励仍当作样本均值问题。
 
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i02"></a>
+
+<a id="i02"></a>
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i02-mdp轨迹与环境接口稳定"></a>
+
 ### I02 MDP、轨迹与环境接口【稳定】
 - **先修**：条件概率、马尔可夫性、有限状态机。
 - **定义与解析**：MDP 用 $\left(\mathcal S,\mathcal A,P,R,\gamma\right)$ 描述“当前状态和动作足以决定下一步分布”的序贯决策；轨迹是交互样本而非固定标签集。
@@ -2797,6 +3952,12 @@ assert all(abs(P[s,a].sum()-1)<1e-9 for s in range(2) for a in range(2))
 - **检测/实验**：若观察缺少速度，位置控制是否仍是 MDP？给出补历史或 belief state 的办法。
 - **常见坑**：把观测当真实状态；忽略时间上限 bootstrap；训练与评估环境 wrapper 不一致。
 
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i03"></a>
+
+<a id="i03"></a>
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i03-回报策略与价值函数稳定"></a>
+
 ### I03 回报、策略与价值函数【稳定】
 - **先修**：I02、几何级数、条件期望。
 - **定义与解析**：策略给动作分布；状态价值和动作价值把未来随机回报压缩为期望，不能解释为必然结果。
@@ -2815,7 +3976,17 @@ assert np.allclose(G,[1+2*.9**2+3*.9**3, 2*.9+3*.9**2, 4.7, 3.])
 - **检测/实验**：手算同一奖励序列在 $\gamma=0,0.5,1$ 时的 $G_0$，解释 $\gamma$ 同时改变偏好与数值尺度。
 - **常见坑**：奖励与回报混用；继续任务直接令 γ=1；比较不同 γ 的原始 value 大小。
 
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i04"></a>
+
+<a id="i04"></a>
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i04-bellman-方程与动态规划稳定"></a>
+
 ### I04 Bellman 方程与动态规划【稳定】
+
+<!-- readings:start -->
+**进一步精读：** [DQN：经验回放与目标网络](../readings/papers/dqn.md)
+<!-- readings:end -->
 - **先修**：I03、全概率公式、矩阵迭代。
 - **定义与解析**：Bellman 方程把长时程价值拆成一步奖励加后继价值；已知完整模型时可做策略评估、策略迭代或价值迭代。
 - **公式/机制**：$V^*(s)=\max_a\sum_{s'}P(s'\mid s,a)\left[R+\gamma V^*(s')\right]$；最优算子在 $\gamma<1$ 时为压缩映射。
@@ -2835,6 +4006,12 @@ assert np.all(np.isfinite(V))
 ```
 - **检测/实验**：区分“对固定策略求期望”与“对动作取最大”；将最大误写到求和内会发生什么？
 - **常见坑**：奖励张量索引错位；终止状态仍 bootstrap；用动态规划却声称 model-free。
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i05"></a>
+
+<a id="i05"></a>
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i05-monte-carlo-估计与重要性采样稳定"></a>
 
 ### I05 Monte Carlo 估计与重要性采样【稳定】
 - **先修**：I03、样本均值、大数定律。
@@ -2856,7 +4033,17 @@ assert abs(np.mean(vals)-(1+1.8+2.43))<.1
 - **检测/实验**：把 episode 长度从 3 增到 100，观察估计方差；说明普通与加权重要性采样的偏差—方差取舍。
 - **常见坑**：把每步相关样本当 IID；行为策略对目标动作概率为零仍做修正；只报最后一条 episode。
 
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i06"></a>
+
+<a id="i06"></a>
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i06-tdsarsa-与-q-learning稳定"></a>
+
 ### I06 TD、SARSA 与 Q-learning【稳定】
+
+<!-- readings:start -->
+**进一步精读：** [DQN：经验回放与目标网络](../readings/papers/dqn.md)
+<!-- readings:end -->
 - **先修**：I03–I05、随机逼近。
 - **定义与解析**：TD 用下一状态估计 bootstrap；SARSA 学行为策略价值，Q-learning 用最大动作目标学习 off-policy 最优价值。
 - **公式/机制**：$Q(s,a)\leftarrow Q(s,a)+\alpha\left[r+\gamma Q(s',a')-Q(s,a)\right]$；Q-learning 将 $Q(s',a')$ 换成 $\max_{a'}Q(s',a')$。
@@ -2879,7 +4066,17 @@ assert sum(evaluate(train(s)) for s in range(5))>=4
 - **检测/实验**：Cliff Walking 中为什么 SARSA 可能比 Q-learning 走得更安全？验收需冻结 Q 后单独评估。
 - **常见坑**：评估仍用 ε-greedy；将截断一律视为终止；看训练移动平均而没有独立 episode。
 
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i07"></a>
+
+<a id="i07"></a>
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i07-函数逼近经验回放与-dqn稳定基础"></a>
+
 ### I07 函数逼近、经验回放与 DQN【稳定基础】
+
+<!-- readings:start -->
+**进一步精读：** [DQN：经验回放与目标网络](../readings/papers/dqn.md)
+<!-- readings:end -->
 - **先修**：I06、MLP、反向传播、目标网络。
 - **定义与解析**：DQN 用神经网络近似离散动作 Q；回放打散相关性，延迟目标网络缓和“追逐移动目标”。
 - **公式/机制**：$y=r+\gamma(1-d)\max_{a'}Q_{\bar\theta}(s',a')$，最小化 $\operatorname{Huber}\!\left(Q_\theta(s,a)-y\right)$。
@@ -2897,6 +4094,12 @@ assert torch.isfinite(loss)
 ```
 - **检测/实验**：去掉 target detach、回放或目标网络分别预测故障；完整项目至少 5 个训练种子和冻结策略评估均值/置信区间。
 - **常见坑**：对终止状态 bootstrap；训练网络同时生成有梯度 target；以最好种子代表算法。
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i08"></a>
+
+<a id="i08"></a>
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i08-策略梯度与-reinforce稳定"></a>
 
 ### I08 策略梯度与 REINFORCE【稳定】
 - **先修**：I03、概率分布、log-derivative trick、自动微分。
@@ -2917,7 +4120,17 @@ print(logits.detach()); assert logits[2]>logits[0]
 - **检测/实验**：证明常数 baseline 不改变期望梯度；比较有无 baseline 的五种子梯度方差。
 - **常见坑**：对采样动作反传；最大化目标却忘记负号；用同批数据反复更新却称严格 on-policy。
 
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i09"></a>
+
+<a id="i09"></a>
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i09-actorcritic-与-gae稳定"></a>
+
 ### I09 Actor–Critic 与 GAE【稳定】
+
+<!-- readings:start -->
+**进一步精读：** [DeepSeekMath：数学训练与GRPO](../readings/papers/deepseekmath.md)
+<!-- readings:end -->
 - **先修**：I06、I08、价值函数拟合。
 - **定义与解析**：actor 更新策略，critic 估计价值提供低方差 advantage；GAE 用 λ 连续调节 TD 偏差与 MC 方差。
 - **公式/机制**：$\delta_t=r_t+\gamma V(s_{t+1})-V(s_t)$，$\hat A_t=\delta_t+\gamma\lambda(1-d_t)\hat A_{t+1}$。
@@ -2936,7 +4149,17 @@ print(adv,ret); assert torch.isfinite(adv).all()
 - **检测/实验**：λ=0 与 λ=1 分别接近什么？比较 advantage 标准化前后的尺度而非宣称其必然提升。
 - **常见坑**：跨 episode 传播 GAE；value target 未 detach；把 advantage 与 return 混作同一监督量。
 
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i10"></a>
+
+<a id="i10"></a>
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i10-ppo-与受限策略更新稳定工程基线"></a>
+
 ### I10 PPO 与受限策略更新【稳定工程基线】
+
+<!-- readings:start -->
+**进一步精读：** [InstructGPT：人类反馈与策略优化](../readings/papers/instructgpt.md) · [DeepSeekMath：数学训练与GRPO](../readings/papers/deepseekmath.md) · [TRL：监督偏好与在线策略训练](../readings/projects/trl.md)
+<!-- readings:end -->
 - **先修**：I08–I09、重要性比率、KL 散度。
 - **定义与解析**：PPO-Clip 用概率比截断减少一次更新离旧策略过远的激励；截断不是严格 KL 约束或单调改进保证。
 - **公式/机制**：$L=\mathbb E\!\left[\min\!\left(r_tA_t,\operatorname{clip}(r_t,1-\epsilon,1+\epsilon)A_t\right)\right]$，$r_t=\pi_\theta(a_t\mid s_t)/\pi_{\mathrm{old}}(a_t\mid s_t)$。
@@ -2953,6 +4176,12 @@ assert torch.isfinite(loss)
 ```
 - **检测/实验**：分别画正、负 advantage 下目标随 ratio 的曲线；训练至少 5 种子，评估时冻结参数、动作使用明确 deterministic/stochastic 约定。
 - **常见坑**：old log-prob 随更新变化；不监测 KL、clip fraction、value loss；只复用同批数据却不打乱 minibatch。
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i11"></a>
+
+<a id="i11"></a>
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i11-连续控制与-soft-actor-critic稳定基线"></a>
 
 ### I11 连续控制与 Soft Actor-Critic【稳定基线】
 - **先修**：I09、连续分布、重参数化、双 Q。
@@ -2971,6 +4200,12 @@ print(loss.item(),mu.grad.mean().item()); assert torch.isfinite(loss)
 ```
 - **检测/实验**：调 α 观察动作熵与回报；说明 tanh 后为何需要 log-prob Jacobian 修正。
 - **常见坑**：省略双 Q 的最小值；动作缩放与环境边界不一致；把训练采样策略直接当确定性部署策略。
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i12"></a>
+
+<a id="i12"></a>
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i12-离线强化学习与分布外动作演进中"></a>
 
 ### I12 离线强化学习与分布外动作【演进中】
 - **先修**：I06–I11、分布偏移、行为策略。
@@ -2991,6 +4226,12 @@ assert np.any(counts[np.arange(2),naive]==0)
 - **检测/实验**：构造 random/medium/expert 三种数据覆盖，比较 BC、普通 Q-learning、保守选择；不能在线调参后仍称纯离线评估。
 - **常见坑**：把 replay buffer 训练等同 offline RL；测试环境反馈渗入调参；只报 D4RL normalized score 而不说明版本与归一化。
 
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i13"></a>
+
+<a id="i13"></a>
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i13-模仿学习bcdagger-与-gail稳定基础扩展活跃"></a>
+
 ### I13 模仿学习：BC、DAgger 与 GAIL【稳定基础，扩展活跃】
 - **先修**：监督学习、I02、I08。
 - **定义与解析**：BC 对专家状态动作做监督学习，但自身错误改变后续状态分布；DAgger 在学习者访问的状态上请求专家并聚合数据，GAIL 匹配占用分布。
@@ -3009,6 +4250,12 @@ print(acc.item()); assert acc>.95
 ```
 - **检测/实验**：在链式环境逐步注入 1% 动作错误，测成功率随 horizon 的下降；DAgger 需要在线专家，不能假装免费标签。
 - **常见坑**：随机切分同一轨迹帧导致泄漏；只测动作 MSE 不测 rollout 成功；专家动作多模态却用单峰回归。
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i14"></a>
+
+<a id="i14"></a>
+
+<a id="page-docs-03-decision-specialties-i-reinforcement-learning-md-i14-多智能体强化学习与-ctde演进中"></a>
 
 ### I14 多智能体强化学习与 CTDE【演进中】
 - **先修**：I02–I11、博弈论基本概念、联合动作空间。
@@ -3029,9 +4276,42 @@ print(best); assert best[0]==2.
 - **检测/实验**：独立 Q-learning 与共享全局 critic 各跑 5 种子，冻结所有体后联合评估；说明“共享奖励”不等于“共享观测”。
 - **常见坑**：异步轮次错配；训练偷看全局状态后执行也依赖它；只报告个体指标、不报告团队成功和最差个体。
 
-## J. 图神经网络
+---
+
+<a id="page-docs-03-decision-specialties-j-graph-neural-networks-md"></a>
+
+<a id="page-docs-03-decision-specialties-j-graph-neural-networks-md-j-图神经网络"></a>
+
+# J. 图神经网络
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-03-decision-specialties-i-reinforcement-learning-md) · [下一章 →](#page-docs-03-decision-specialties-k-speech-audio-md)
+
+---
+
+<a id="page-docs-03-decision-specialties-j-graph-neural-networks-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-08-domain-bridges-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-03-decision-specialties-j-graph-neural-networks-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-03-decision-specialties-j-graph-neural-networks-md-j01"></a>
+
+<a id="j01"></a>
+
+<a id="page-docs-03-decision-specialties-j-graph-neural-networks-md-j01-图表示与消息传递稳定"></a>
 
 ### J01 图表示与消息传递【稳定】
+
+<!-- readings:start -->
+**进一步精读：** [GCN：图归一化与节点分类](../readings/papers/gcn.md)
+<!-- readings:end -->
 - **先修**：线性代数、MLP、图的邻接表/矩阵。
 - **定义与解析**：GNN 通过邻居消息聚合更新节点表示；共享参数和置换等变性使同一规则适用于不同大小、不同编号的图。
 - **公式/机制**：$m_v=\operatorname{AGG}_{u\in\mathcal N(v)}M(h_v,h_u,e_{uv})$，$h'_v=U(h_v,m_v)$。
@@ -3049,7 +4329,17 @@ print(H); assert H.shape==X.shape
 - **检测/实验**：同时置换 A 的行列与 X 的行，验证输出按同一置换变化；只置换 X 为什么不成立？
 - **常见坑**：混淆置换等变与不变；漏加自环；孤立节点除零。
 
+<a id="page-docs-03-decision-specialties-j-graph-neural-networks-md-j02"></a>
+
+<a id="j02"></a>
+
+<a id="page-docs-03-decision-specialties-j-graph-neural-networks-md-j02-图卷积网络-gcn稳定"></a>
+
 ### J02 图卷积网络 GCN【稳定】
+
+<!-- readings:start -->
+**进一步精读：** [GCN：图归一化与节点分类](../readings/papers/gcn.md)
+<!-- readings:end -->
 - **先修**：J01、矩阵归一化、半监督分类。
 - **定义与解析**：GCN 将自身与邻居特征按度归一后线性变换；谱图卷积的一阶近似可写成简单消息传递。
 - **公式/机制**：$H^{(l+1)}=\sigma\!\left(\tilde D^{-1/2}\tilde A\tilde D^{-1/2}H^{(l)}W^{(l)}\right)$，$\tilde A=A+I$。
@@ -3066,6 +4356,12 @@ assert torch.allclose(N,N.T)
 ```
 - **检测/实验**：比较无归一、行归一、对称归一在星形图上的中心节点尺度。
 - **常见坑**：稠密 A 在大图爆内存；训练/测试边泄漏；层数加深导致过平滑而非必然更强。
+
+<a id="page-docs-03-decision-specialties-j-graph-neural-networks-md-j03"></a>
+
+<a id="j03"></a>
+
+<a id="page-docs-03-decision-specialties-j-graph-neural-networks-md-j03-图注意力-gat稳定"></a>
 
 ### J03 图注意力 GAT【稳定】
 - **先修**：J01、softmax、自注意力。
@@ -3084,6 +4380,12 @@ assert torch.allclose(alpha.sum(1),torch.ones(4))
 ```
 - **检测/实验**：删除 mask 后输出代表图模型还是全连接注意力？检查孤立节点整行 `-inf` 的 NaN。
 - **常见坑**：softmax 维度错误；注意力分数未对非边屏蔽；直接把高 α 解释为边的重要因果效应。
+
+<a id="page-docs-03-decision-specialties-j-graph-neural-networks-md-j04"></a>
+
+<a id="j04"></a>
+
+<a id="page-docs-03-decision-specialties-j-graph-neural-networks-md-j04-图级读出批处理与不变性稳定"></a>
 
 ### J04 图级读出、批处理与不变性【稳定】
 - **先修**：J01–J03、集合函数、分类评估。
@@ -3104,6 +4406,12 @@ print(out,mean)
 - **检测/实验**：构造均值相同、节点数不同的两张图，比较 sum 与 mean 是否可分。
 - **常见坑**：批次图之间误连边；将 padding 节点纳入池化；随机按节点切分导致同图泄漏。
 
+<a id="page-docs-03-decision-specialties-j-graph-neural-networks-md-j05"></a>
+
+<a id="j05"></a>
+
+<a id="page-docs-03-decision-specialties-j-graph-neural-networks-md-j05-链接预测负采样与归纳泛化稳定基础"></a>
+
 ### J05 链接预测、负采样与归纳泛化【稳定基础】
 - **先修**：J01–J04、二分类、采样偏差。
 - **定义与解析**：链接预测对节点对打分；全体非边数量巨大，常用负采样近似，但采样分布决定训练目标与离线指标。
@@ -3123,7 +4431,36 @@ loss.backward(); assert torch.isfinite(loss)
 - **检测/实验**：随机边切分与按时间/节点归纳切分各测 AUC、Hits@K；为何随机负样本可能过于容易？
 - **常见坑**：负样本其实是未观测正边；消息传递图含测试边；只报 ROC-AUC、不报候选集上的排名指标。
 
-## K. 语音与音频
+---
+
+<a id="page-docs-03-decision-specialties-k-speech-audio-md"></a>
+
+<a id="page-docs-03-decision-specialties-k-speech-audio-md-k-语音与音频"></a>
+
+# K. 语音与音频
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-03-decision-specialties-j-graph-neural-networks-md) · [下一章 →](#page-docs-03-decision-specialties-l-time-series-md)
+
+---
+
+<a id="page-docs-03-decision-specialties-k-speech-audio-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-08-domain-bridges-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-03-decision-specialties-k-speech-audio-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-03-decision-specialties-k-speech-audio-md-k01"></a>
+
+<a id="k01"></a>
+
+<a id="page-docs-03-decision-specialties-k-speech-audio-md-k01-波形采样频谱与混叠稳定"></a>
 
 ### K01 波形、采样、频谱与混叠【稳定】
 - **先修**：正弦、复数、傅里叶变换、NumPy。
@@ -3143,6 +4480,12 @@ assert set(np.round(peak).astype(int))=={1000,2500}
 - **检测/实验**：用 8 kHz 与 16 kHz 采样同一 5.5 kHz 正弦，解释两个频谱峰不同的原因。
 - **常见坑**：把采样率当 bit rate；忘记双边频谱对实信号对称；音频归一化后仍发生播放端 clipping。
 
+<a id="page-docs-03-decision-specialties-k-speech-audio-md-k02"></a>
+
+<a id="k02"></a>
+
+<a id="page-docs-03-decision-specialties-k-speech-audio-md-k02-分帧stftmel-频谱与-mfcc稳定"></a>
+
 ### K02 分帧、STFT、Mel 频谱与 MFCC【稳定】
 - **先修**：K01、窗函数、对数尺度。
 - **定义与解析**：STFT 假设短窗内近似平稳；Mel 滤波组把线性频率压缩为感知尺度，log-mel 保留时频结构，MFCC 再用 DCT 压缩谱包络。
@@ -3161,6 +4504,12 @@ assert feat.shape==(12,) and np.isfinite(feat).all()
 ```
 - **检测/实验**：改变 hop length 但保持窗长，预测时间分辨率、帧数和计算量；比较 log 前后动态范围。
 - **常见坑**：训练/推理采样率不一致；对功率谱和幅度谱使用同一 dB 系数；把 MFCC 当可逆波形表示。
+
+<a id="page-docs-03-decision-specialties-k-speech-audio-md-k03"></a>
+
+<a id="k03"></a>
+
+<a id="page-docs-03-decision-specialties-k-speech-audio-md-k03-ctc-与端到端语音识别稳定基础"></a>
 
 ### K03 CTC 与端到端语音识别【稳定基础】
 - **先修**：K02、序列概率、动态规划、softmax。
@@ -3183,6 +4532,12 @@ print(collapse([0,3,3,0,4]))
 - **检测/实验**：解释路径 `[a,a]`、`[a,blank,a]` 的折叠差异；检查 target length 超过 input length 时 loss。
 - **常见坑**：blank id 与词表 id 冲突；输入维度 T/N/C 排错；用字符准确率代替标准 WER/CER 且不统一文本归一化。
 
+<a id="page-docs-03-decision-specialties-k-speech-audio-md-k04"></a>
+
+<a id="k04"></a>
+
+<a id="page-docs-03-decision-specialties-k-speech-audio-md-k04-自监督语音表示wav2vec-20演进中"></a>
+
 ### K04 自监督语音表示：wav2vec 2.0【演进中】
 - **先修**：K02、Transformer、对比学习、掩码建模。
 - **定义与解析**：wav2vec 2.0 在原始波形编码后遮蔽潜表示，通过从量化候选中识别真实目标预训练，再用少量转写微调；表示强不等于自动适配任意口音和语言。
@@ -3200,6 +4555,12 @@ print(loss.item(),r1.item()); assert r1>.75
 ```
 - **检测/实验**：增大温度与负样本数，观察 loss 和 Recall@1；解释预训练验证损失低为何不保证下游 WER 低。
 - **常见坑**：预训练集与测试说话人重叠；微调忘记 attention mask；把冻结特征抽取与端到端微调结果直接比较。
+
+<a id="page-docs-03-decision-specialties-k-speech-audio-md-k05"></a>
+
+<a id="k05"></a>
+
+<a id="page-docs-03-decision-specialties-k-speech-audio-md-k05-tts声码器与音频评估成熟组件生成前沿活跃"></a>
 
 ### K05 TTS、声码器与音频评估【成熟组件，生成前沿活跃】
 - **先修**：K01–K04、seq2seq、生成模型。
@@ -3222,7 +4583,36 @@ assert abs(wave).max()<=1
 - **检测/实验**：同一文本至少测 MOS/偏好、ASR-WER、说话人相似度与 real-time factor；上面代码只验证采样和包络，不能证明 TTS 能力。
 - **常见坑**：只挑选最好音频；训练语音未经授权克隆；忽略静音、响度归一、长文本和流式延迟。
 
-## L. 时间序列
+---
+
+<a id="page-docs-03-decision-specialties-l-time-series-md"></a>
+
+<a id="page-docs-03-decision-specialties-l-time-series-md-l-时间序列"></a>
+
+# L. 时间序列
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-03-decision-specialties-k-speech-audio-md) · [下一章 →](#page-docs-03-decision-specialties-m-causal-inference-md)
+
+---
+
+<a id="page-docs-03-decision-specialties-l-time-series-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-08-domain-bridges-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-03-decision-specialties-l-time-series-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-03-decision-specialties-l-time-series-md-l01"></a>
+
+<a id="l01"></a>
+
+<a id="page-docs-03-decision-specialties-l-time-series-md-l01-时间索引窗口化与无泄漏切分稳定"></a>
 
 ### L01 时间索引、窗口化与无泄漏切分【稳定】
 - **先修**：监督学习、时间戳、数组切片。
@@ -3242,6 +4632,12 @@ print(Xtr.shape,Yte.shape)
 - **检测/实验**：标准化器若用全序列拟合，泄漏了什么？加入 gap 后样本数如何变化？
 - **常见坑**：随机打乱窗口；同一原始点同时出现在训练标签与测试输入；节假日特征使用事后信息。
 
+<a id="page-docs-03-decision-specialties-l-time-series-md-l02"></a>
+
+<a id="l02"></a>
+
+<a id="page-docs-03-decision-specialties-l-time-series-md-l02-朴素季节朴素与指数平滑基线稳定"></a>
+
 ### L02 朴素、季节朴素与指数平滑基线【稳定】
 - **先修**：L01、均值、趋势、季节性。
 - **定义与解析**：朴素预测复制最后值，季节朴素复制上一周期同位置；简单基线常比未调好的深网更可信，也是 MASE 的尺度基准。
@@ -3259,6 +4655,12 @@ print(mae,mean_mae); assert mae<mean_mae
 ```
 - **检测/实验**：对有趋势的季节序列比较 naive、seasonal-naive、drift；验收要求后续模型必须优于明确基线。
 - **常见坑**：季节周期凭感觉设定；只在一个预测起点测试；把插值后的测试真值用于特征。
+
+<a id="page-docs-03-decision-specialties-l-time-series-md-l03"></a>
+
+<a id="l03"></a>
+
+<a id="page-docs-03-decision-specialties-l-time-series-md-l03-自回归平稳性与滚动预测稳定"></a>
 
 ### L03 自回归、平稳性与滚动预测【稳定】
 - **先修**：L01–L02、线性回归、相关与残差。
@@ -3279,6 +4681,12 @@ print(b,mae); assert abs(b[1]-.8)<.15
 - **检测/实验**：分别模拟 φ=.8 与 1.0，比较方差、ACF 和滚动误差；拟合残差仍有自相关说明什么？
 - **常见坑**：在全序列选 $p$；递归多步预测不传播不确定性；非平稳数据上把高 $R^2$ 当有效预测。
 
+<a id="page-docs-03-decision-specialties-l-time-series-md-l04"></a>
+
+<a id="l04"></a>
+
+<a id="page-docs-03-decision-specialties-l-time-series-md-l04-深度时序rnntcn-与-transformer成熟组件选型演进中"></a>
+
 ### L04 深度时序：RNN、TCN 与 Transformer【成熟组件，选型演进中】
 - **先修**：DL、L01–L03、卷积/注意力。
 - **定义与解析**：RNN 递归传状态，TCN 用因果空洞卷积扩感受野，Transformer 用注意力建长依赖；结构更复杂不保证胜过树模型或季节基线。
@@ -3297,6 +4705,12 @@ print(y.shape)
 ```
 - **检测/实验**：修改未来输入不应改变过去输出；比较相同参数量的 MLP/TCN，报告多起点误差而非单次 split。
 - **常见坑**：对称 padding 泄漏未来；位置/时间特征错位；用测试集挑 lookback、层数和 early stopping。
+
+<a id="page-docs-03-decision-specialties-l-time-series-md-l05"></a>
+
+<a id="l05"></a>
+
+<a id="page-docs-03-decision-specialties-l-time-series-md-l05-概率预测区间校准与异常检测稳定原则模型演进中"></a>
 
 ### L05 概率预测、区间校准与异常检测【稳定原则，模型演进中】
 - **先修**：L01–L04、分位数、概率分布、校准。
@@ -3317,7 +4731,36 @@ assert .86<coverage<.94
 - **检测/实验**：按季节/负载分组检查覆盖率；异常检测同时报告事件级 precision/recall、检测延迟和每日误报数。
 - **常见坑**：只追求宽区间带来的高覆盖；用异常标签调阈值后仍在同批数据报告；点级指标惩罚持续事件方式不合理。
 
-## M. 因果推断
+---
+
+<a id="page-docs-03-decision-specialties-m-causal-inference-md"></a>
+
+<a id="page-docs-03-decision-specialties-m-causal-inference-md-m-因果推断"></a>
+
+# M. 因果推断
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-03-decision-specialties-l-time-series-md) · [下一章 →](#page-docs-03-decision-specialties-n-recommendation-search-retrieval-md)
+
+---
+
+<a id="page-docs-03-decision-specialties-m-causal-inference-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-08-domain-bridges-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-03-decision-specialties-m-causal-inference-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-03-decision-specialties-m-causal-inference-md-m01"></a>
+
+<a id="m01"></a>
+
+<a id="page-docs-03-decision-specialties-m-causal-inference-md-m01-结构因果模型干预与反事实稳定理论"></a>
 
 ### M01 结构因果模型、干预与反事实【稳定理论】
 - **先修**：概率图、回归、条件概率。
@@ -3337,11 +4780,17 @@ print(obs,causal); assert abs(causal-2)<.1 and obs>3
 - **检测/实验**：画出 U→X、U→Y、X→Y 的 DAG；解释为什么更准的 (E[Y|X]) 仍可能给错干预结论。
 - **常见坑**：把 `do` 当条件筛选；DAG 方向只由相关数据决定；没有领域假设却宣称识别反事实。
 
+<a id="page-docs-03-decision-specialties-m-causal-inference-md-m02"></a>
+
+<a id="m02"></a>
+
+<a id="page-docs-03-decision-specialties-m-causal-inference-md-m02-潜在结果随机试验与-ate稳定理论"></a>
+
 ### M02 潜在结果、随机试验与 ATE【稳定理论】
 - **先修**：M01、抽样、置信区间、假设检验。
 - **定义与解析**：个体同时有 (Y(1),Y(0))，但只能观察其中一个；随机化使处理与潜在结果独立，从而差均值无偏估计 ATE。
 - **公式/机制**：$\operatorname{ATE}=\mathbb E[Y(1)-Y(0)]$；一致性 $Y=TY(1)+(1-T)Y(0)$，随机化 $T\perp(Y(0),Y(1))$。
-- **资料**：Hernán & Robins [What If Ch.1–2](https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/)；Rubin [1974，§2–3](https://doi.org/10.1037/h0037350)。
+- **资料**：Hernán & Robins [What If Ch.1–2](https://www.hsph.harvard.edu/miguel-hernan/wp-content/uploads/sites/1268/2024/04/hernanrobins_WhatIf_26apr24.pdf)；Rubin [1974，§2–3](https://doi.org/10.1037/h0037350)。
 - **最小代码（可执行 RCT）**：
 ```python
 import numpy as np
@@ -3355,11 +4804,17 @@ assert abs(ate-tau.mean())<3*se
 - **检测/实验**：区分 ATE、ATT、个体效应；检查随机化前后协变量平衡但不要以“不显著”作为唯一判断。
 - **常见坑**：观察不到个体反事实却汇报个体真实效应；随机分配后按处理依从性直接分组；多次窥视结果再停止试验。
 
+<a id="page-docs-03-decision-specialties-m-causal-inference-md-m03"></a>
+
+<a id="m03"></a>
+
+<a id="page-docs-03-decision-specialties-m-causal-inference-md-m03-混杂后门准则与调整稳定理论"></a>
+
 ### M03 混杂、后门准则与调整【稳定理论】
 - **先修**：M01–M02、DAG、线性回归。
 - **定义与解析**：混杂变量同时影响处理和结果，打开非因果后门路径；调整集需阻断所有后门路径且不能包含处理后变量或 collider。
 - **公式/机制**：若 $Z$ 满足后门准则，$P(y\mid\operatorname{do}(x))=\sum_zP(y\mid x,z)P(z)$。
-- **资料**：Hernán & Robins [What If Ch.7–8](https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/)；Pearl [overview §3.3 Back-door criterion](https://ftp.cs.ucla.edu/pub/stat_ser/r350.pdf)。
+- **资料**：Hernán & Robins [What If Ch.7–8](https://www.hsph.harvard.edu/miguel-hernan/wp-content/uploads/sites/1268/2024/04/hernanrobins_WhatIf_26apr24.pdf)；Pearl [overview §3.3 Back-door criterion](https://ftp.cs.ucla.edu/pub/stat_ser/r350.pdf)。
 - **最小代码（可执行回归调整）**：
 ```python
 import numpy as np
@@ -3373,11 +4828,17 @@ assert abs(adj-2)<.1 and abs(naive-2)>1
 - **检测/实验**：分别调整混杂、mediator、collider，模拟估计偏差；要求先画 DAG 再选特征。
 - **常见坑**：“控制变量越多越好”；从结果发生后生成的特征做调整；仅凭相关系数识别混杂。
 
+<a id="page-docs-03-decision-specialties-m-causal-inference-md-m04"></a>
+
+<a id="m04"></a>
+
+<a id="page-docs-03-decision-specialties-m-causal-inference-md-m04-倾向得分重加权与双重稳健稳定方法"></a>
+
 ### M04 倾向得分、重加权与双重稳健【稳定方法】
 - **先修**：M02–M03、逻辑回归、positivity。
 - **定义与解析**：倾向得分 $e(X)=P(T=1\mid X)$ 将可观测混杂压缩为处理概率；IPW 构造伪总体，双重稳健估计结合处理与结果模型。
 - **公式/机制**：$\widehat{\operatorname{ATE}}_{\mathrm{IPW}}=n^{-1}\sum_i\left[T_iY_i/e_i-(1-T_i)Y_i/(1-e_i)\right]$；需一致性、无未测混杂、positivity。
-- **资料**：Rosenbaum & Rubin [1983，Theorem 1–3](https://doi.org/10.1093/biomet/70.1.41)；Hernán & Robins [What If Ch.12–13](https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/)。
+- **资料**：Rosenbaum & Rubin [1983，Theorem 1–3](https://doi.org/10.1093/biomet/70.1.41)；Hernán & Robins [What If Ch.12–13](https://www.hsph.harvard.edu/miguel-hernan/wp-content/uploads/sites/1268/2024/04/hernanrobins_WhatIf_26apr24.pdf)。
 - **最小代码（可执行 IPW，已知倾向用于教学）**：
 ```python
 import numpy as np
@@ -3391,6 +4852,12 @@ print(ate,ess); assert abs(ate-1.5)<.15
 ```
 - **检测/实验**：画 propensity 重叠与权重直方图；改变 clipping，报告偏差、方差和有效样本量。
 - **常见坑**：倾向模型 AUC 越高越好；没有共同支持仍外推；只报加权后点估计、不报权重极值和 balance。
+
+<a id="page-docs-03-decision-specialties-m-causal-inference-md-m05"></a>
+
+<a id="m05"></a>
+
+<a id="page-docs-03-decision-specialties-m-causal-inference-md-m05-自然实验工具变量与双重差分稳定设计假设强"></a>
 
 ### M05 自然实验：工具变量与双重差分【稳定设计，假设强】
 - **先修**：M01–M04、回归、面板数据。
@@ -3411,7 +4878,36 @@ assert pre_did==0
 - **检测/实验**：至少画多期 pre-trend 并做伪政策时间；说明“pre-trend 不显著”不能证明平行趋势。
 - **常见坑**：IV 直接效应违反排除限制；弱工具导致不稳定；DiD 在预期政策或组别构成变化时失效。
 
-## N. 推荐、搜索与检索
+---
+
+<a id="page-docs-03-decision-specialties-n-recommendation-search-retrieval-md"></a>
+
+<a id="page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n-推荐搜索与检索"></a>
+
+# N. 推荐、搜索与检索
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-03-decision-specialties-m-causal-inference-md) · [下一章 →](#page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md)
+
+---
+
+<a id="page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-06-retrieval-agents-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n01"></a>
+
+<a id="n01"></a>
+
+<a id="page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n01-候选排序与离线检索指标稳定"></a>
 
 ### N01 候选、排序与离线检索指标【稳定】
 - **先修**：二分类指标、对数、集合运算。
@@ -3431,6 +4927,12 @@ print(ndcg,rr); assert 0<=ndcg<=1
 ```
 - **检测/实验**：交换第 1 与第 10 名相关文档，比较 Recall@10 与 NDCG@10；说明何时二者结论不同。
 - **常见坑**：不同候选库直接比指标；没有相关文档的 query 处理不统一；对二值/分级 relevance 混用 DCG。
+
+<a id="page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n02"></a>
+
+<a id="n02"></a>
+
+<a id="page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n02-隐式反馈时间切分与曝光偏差稳定问题纠偏演进中"></a>
 
 ### N02 隐式反馈、时间切分与曝光偏差【稳定问题，纠偏演进中】
 - **先修**：N01、推荐系统用户—物品矩阵、缺失非随机。
@@ -3452,6 +4954,12 @@ print(train,test)
 - **检测/实验**：随机切分与时间留一分别测热门基线和个性化模型；记录全量候选与采样 100 负例两种排名。
 - **常见坑**：把未点击全当负例；同一会话拆到训练和测试；用测试期物品流行度构造训练特征。
 
+<a id="page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n03"></a>
+
+<a id="n03"></a>
+
+<a id="page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n03-协同过滤矩阵分解与-bpr稳定"></a>
+
 ### N03 协同过滤、矩阵分解与 BPR【稳定】
 - **先修**：N02、embedding、SGD、正则化。
 - **定义与解析**：矩阵分解以用户、物品向量内积表示偏好；BPR 不拟合绝对分数，而让已观察物品 (i) 排在未观察物品 (j) 前。
@@ -3472,7 +4980,17 @@ assert diff.mean()>1
 - **检测/实验**：比较均匀负采样与按流行度采样的 Recall@K、长尾覆盖；解释训练负例为何不是“真实不喜欢”。
 - **常见坑**：测试正例参与负采样；只评 sampled ranking；冷启动用户/物品没有旁路特征。
 
+<a id="page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n04"></a>
+
+<a id="n04"></a>
+
+<a id="page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n04-双塔与稠密检索稳定架构训练技巧演进中"></a>
+
 ### N04 双塔与稠密检索【稳定架构，训练技巧演进中】
+
+<!-- readings:start -->
+**进一步精读：** [DPR：稠密段落检索](../readings/papers/dpr.md) · [RAG：检索文档的概率边际化](../readings/papers/rag.md)
+<!-- readings:end -->
 - **先修**：embedding、对比学习、N01–N03。
 - **定义与解析**：双塔分别编码 query/user 与 document/item，向量可离线建索引；交叉编码器更精细但不能低成本遍历全库。
 - **公式/机制**：$s(q,d)=E_q(q)^TE_d(d)$，in-batch negatives 下用行方向交叉熵训练正确配对。
@@ -3490,6 +5008,12 @@ print(loss.item(),r1.item()); assert r1>.8
 ```
 - **检测/实验**：加入随机、同主题 hard negatives，比较 Recall@1/10；检查同 batch 的“假负例”。
 - **常见坑**：query/document 归一化与索引侧不一致；只评训练 batch 内检索；语料更新后不重建 embedding。
+
+<a id="page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n05"></a>
+
+<a id="n05"></a>
+
+<a id="page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n05-learning-to-rank-与重排稳定基础"></a>
 
 ### N05 Learning to Rank 与重排【稳定基础】
 - **先修**：N01、N04、二元交叉熵、分组数据。
@@ -3511,7 +5035,17 @@ assert torch.all(ranker(X)[:-1]>ranker(X)[1:])
 - **检测/实验**：固定候选召回，比较 pointwise 与 pairwise NDCG；把候选 Recall 上限一并报告。
 - **常见坑**：跨 query 构造 pair；以分类 AUC 代替 query-group NDCG；重排离线增益掩盖召回退化。
 
+<a id="page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n06"></a>
+
+<a id="n06"></a>
+
+<a id="page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n06-ann混合检索与线上实验成熟系统索引演进中"></a>
+
 ### N06 ANN、混合检索与线上实验【成熟系统，索引演进中】
+
+<!-- readings:start -->
+**进一步精读：** [DPR：稠密段落检索](../readings/papers/dpr.md)
+<!-- readings:end -->
 - **先修**：N01、N04–N05、向量距离、哈希/倒排索引。
 - **定义与解析**：ANN 用近似换吞吐和内存；混合检索融合 BM25 与 dense 结果，再重排。索引召回、端到端质量和 p95 延迟必须分层测。
 - **公式/机制**：余弦/内积最近邻；RRF 分数 $\sum_r1/(k+\operatorname{rank}_r(d))$ 对不同打分尺度较稳健。
@@ -3530,9 +5064,44 @@ assert len(fused)==10
 - **检测/实验**：对不同 HNSW/IVF 参数画 recall@10—p95—内存曲线；线上 A/B 预注册 CTR、转化、延迟与护栏指标。
 - **常见坑**：只测 ANN QPS、不测 exact recall；索引版本与 embedding 版本错配；以点击提升自动代表满意度提升。
 
-## O. LLM 后训练、RAG 与 Agent
+---
+
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md"></a>
+
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o-llm-后训练rag-与-agent"></a>
+
+# O. LLM 后训练、RAG 与 Agent
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-03-decision-specialties-n-recommendation-search-retrieval-md) · [下一章 →](#page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md)
+
+---
+
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-05-posttraining-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+本章负责后训练和应用闭环；Transformer基础回到F章。[检索与Agent串讲](#page-docs-08-walkthroughs-06-retrieval-agents-md)拆开讲解召回、答案、工具和控制器的证据。
+
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o01"></a>
+
+<a id="o01"></a>
+
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o01-指令数据与监督微调-sft稳定流程"></a>
 
 ### O01 指令数据与监督微调 SFT【稳定流程】
+
+<!-- readings:start -->
+**进一步精读：** [InstructGPT：人类反馈与策略优化](../readings/papers/instructgpt.md) · [TRL：监督偏好与在线策略训练](../readings/projects/trl.md)
+<!-- readings:end -->
 - **先修**：Transformer、语言模型交叉熵、tokenization。
 - **定义与解析**：SFT 用“指令/上下文→期望回答”继续训练预训练模型；通常只对 assistant token 计 loss，数据质量、混合比例和格式一致性比盲目增量更重要。
 - **公式/机制**：$L_{\mathrm{SFT}}=-\sum_{t\in\mathrm{assistant}}\log p_\theta(y_t\mid x,y_{<t})$，prompt token label 设为 ignore index。
@@ -3551,7 +5120,17 @@ print(loss.item())
 - **检测/实验**：同一小模型比较全序列 loss 与 response-only loss；检查聊天模板、EOS、截断后监督 token 数。
 - **常见坑**：训练/推理 chat template 不同；把用户文本也当回答监督；仅看训练 loss、不做人评与保留能力回归。
 
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o02"></a>
+
+<a id="o02"></a>
+
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o02-参数高效微调-lora稳定基础变体活跃"></a>
+
 ### O02 参数高效微调 LoRA【稳定基础，变体活跃】
+
+<!-- readings:start -->
+**进一步精读：** [LoRA：低秩任务更新](../readings/papers/lora.md) · [PEFT：参数高效适配的注入保存与合并](../readings/projects/peft.md)
+<!-- readings:end -->
 - **先修**：O01、矩阵秩、线性层。
 - **定义与解析**：LoRA 冻结原权重，用低秩 (BA) 表示任务更新；降低可训练参数和优化器内存，但不保证所有任务与秩都等价于全量微调。
 - **公式/机制**：$W'=W+(\alpha/r)BA$，$A\in\mathbb R^{r\times d_{\mathrm{in}}},\ B\in\mathbb R^{d_{\mathrm{out}}\times r}$。
@@ -3570,7 +5149,17 @@ print(A.numel()+B.numel(),W.numel())
 - **检测/实验**：比较 r=1/2/8 的可训练参数、验证指标与合并前后输出误差。
 - **常见坑**：target modules 选错；保存 adapter 却漏记 base model revision；量化、merge 和 dtype 导致输出漂移。
 
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o03"></a>
+
+<a id="o03"></a>
+
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o03-偏好数据与奖励模型稳定框架标注科学活跃"></a>
+
 ### O03 偏好数据与奖励模型【稳定框架，标注科学活跃】
+
+<!-- readings:start -->
+**进一步精读：** [InstructGPT：人类反馈与策略优化](../readings/papers/instructgpt.md) · [DPO：从偏好直接优化策略](../readings/papers/dpo.md) · [DeepSeekMath：数学训练与GRPO](../readings/papers/deepseekmath.md) · [TRL：监督偏好与在线策略训练](../readings/projects/trl.md)
+<!-- readings:end -->
 - **先修**：O01、成对排序、采样偏差。
 - **定义与解析**：奖励模型把 prompt-response 映射为标量，并从 chosen/rejected 对学习偏好；它拟合的是标注协议与人群，不是真实、普遍的“人类价值函数”。
 - **公式/机制**：Bradley–Terry：$P(y_w\succ y_l\mid x)=\sigma\!\left(r_\phi(x,y_w)-r_\phi(x,y_l)\right)$。
@@ -3590,7 +5179,17 @@ assert acc>.8
 - **检测/实验**：按标注者、主题、答案长度分层看一致率；加入长度相同的对照检查 reward 是否学到长度捷径。
 - **常见坑**：同 prompt 的回答跨 split；chosen 总是更长；RM 分数跨模型版本直接比较。
 
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o04"></a>
+
+<a id="o04"></a>
+
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o04-rlhfkl-约束与-dpo成熟主线快速演进"></a>
+
 ### O04 RLHF、KL 约束与 DPO【成熟主线，快速演进】
+
+<!-- readings:start -->
+**进一步精读：** [InstructGPT：人类反馈与策略优化](../readings/papers/instructgpt.md) · [DPO：从偏好直接优化策略](../readings/papers/dpo.md) · [DeepSeekMath：数学训练与GRPO](../readings/papers/deepseekmath.md) · [TRL：监督偏好与在线策略训练](../readings/projects/trl.md)
+<!-- readings:end -->
 - **先修**：O03、策略梯度、参考模型、log-prob。
 - **定义与解析**：经典 RLHF 用奖励模型加 KL 约束优化策略；DPO 将同一偏好目标化为 chosen/rejected 的分类损失，无显式 reward model 与在线 RL，但仍依赖参考模型和数据分布。
 - **公式/机制**：DPO：$L=-\log\sigma\!\left(\beta\left[(\log\pi_w-\log\pi_{\mathrm{ref},w})-(\log\pi_l-\log\pi_{\mathrm{ref},l})\right]\right)$。
@@ -3609,7 +5208,17 @@ assert (pi_w.grad<0).all() and (pi_l.grad>0).all()
 - **检测/实验**：扫描 β，报告偏好 win-rate、KL、通用能力和安全集，不以单一 judge 分数验收。
 - **常见坑**：sequence log-prob 是否按长度归一不明确；reference/template 不匹配；“不用 RL”误解为“不做分布约束”。
 
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o05"></a>
+
+<a id="o05"></a>
+
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o05-rag切分索引与检索稳定架构配方演进中"></a>
+
 ### O05 RAG：切分、索引与检索【稳定架构，配方演进中】
+
+<!-- readings:start -->
+**进一步精读：** [DPR：稠密段落检索](../readings/papers/dpr.md) · [RAG：检索文档的概率边际化](../readings/papers/rag.md)
+<!-- readings:end -->
 - **先修**：N01、N04–N06、文本切分、LLM 上下文窗口。
 - **定义与解析**：RAG 将外部资料检索结果放入生成上下文；切分决定证据粒度，检索失败不能靠生成器可靠补救。
 - **公式/机制**：RAG-sequence 近似 $p(y\mid x)=\sum_{z\in\operatorname{top}\text{-}k}p_\eta(z\mid x)p_\theta(y\mid x,z)$。
@@ -3628,7 +5237,17 @@ assert top[0]==2
 - **检测/实验**：扫描 chunk 长度/重叠/k，分别报告 context recall、MRR、答案正确率与延迟。
 - **常见坑**：文档解析顺序错乱；query 与 corpus encoder/version 不一致；仅测最终回答，不定位检索还是生成故障。
 
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o06"></a>
+
+<a id="o06"></a>
+
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o06-grounded-rag引用与端到端评估演进中"></a>
+
 ### O06 Grounded RAG、引用与端到端评估【演进中】
+
+<!-- readings:start -->
+**进一步精读：** [RAG：检索文档的概率边际化](../readings/papers/rag.md)
+<!-- readings:end -->
 - **先修**：O05、N01、事实核验、评测设计。
 - **定义与解析**：grounded answer 的每个可验证主张应由提供的证据蕴含并能定位来源；“含引用”不等于引用支持该句。
 - **公式/机制**：端到端拆为 context relevance/recall、faithfulness、answer correctness；自动 judge 需用人工样本校准一致率。
@@ -3647,7 +5266,17 @@ assert 0<=coverage<=1
 - **检测/实验**：建 50 条含“正确、错引、无证据、证据冲突”的金标集，校准自动 judge；报告各类混淆矩阵。
 - **常见坑**：judge 与生成模型同源造成偏好偏差；证据在上下文但不支持结论；网页更新后引用无法复现。
 
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o07"></a>
+
+<a id="o07"></a>
+
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o07-工具资源与-agent-协议协议稳定化中"></a>
+
 ### O07 工具、资源与 Agent 协议【协议稳定化中】
+
+<!-- readings:start -->
+**进一步精读：** [ReAct：推理行动与外部观察](../readings/papers/react.md) · [LangGraph：有状态工具流程与恢复](../readings/projects/langgraph.md)
+<!-- readings:end -->
 - **先修**：JSON Schema、RPC、鉴权、O05。
 - **定义与解析**：协议规定消息、能力发现、参数 schema、结果和权限边界；它不规定模型何时调用何工具。MCP/JSON-RPC 是接口协议，ReAct/规划器才是策略。
 - **公式/机制**：`initialize→capability negotiation→tools/list→tools/call`；host 负责 consent/隔离，server 暴露 tools/resources/prompts。
@@ -3666,7 +5295,17 @@ print(result); assert result['value']==5
 - **检测/实验**：给工具增加删除副作用，设计 dry-run、最小权限、幂等键和用户确认；说明协议兼容不保证策略正确。
 - **常见坑**：信任 tool description/annotation；把任意字符串送 `eval`/shell；服务端看到超出最小需要的完整上下文。
 
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o08"></a>
+
+<a id="o08"></a>
+
+<a id="page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o08-agent-策略react规划记忆与多-agent研究前沿"></a>
+
 ### O08 Agent 策略：ReAct、规划、记忆与多 Agent【研究前沿】
+
+<!-- readings:start -->
+**进一步精读：** [ReAct：推理行动与外部观察](../readings/papers/react.md) · [LangGraph：有状态工具流程与恢复](../readings/projects/langgraph.md)
+<!-- readings:end -->
 - **先修**：O05–O07、状态机、错误恢复、评测。
 - **定义与解析**：Agent 策略决定“观察—思考—选工具—验证—停止”；工作记忆保存当前状态，长期记忆需检索与过期策略。多 Agent 是多个策略主体，不是多开几个相同 prompt。
 - **公式/机制**：策略 $\pi(a_t\mid h_t)$ 作用在协议允许的动作集合；停止条件、预算、重试和补偿事务属于控制器，而非 LLM 自由文本。
@@ -3686,7 +5325,36 @@ print(r); assert r['answer']=='Paris'
 - **检测/实验**：注入超时、矛盾结果、循环调用和预算耗尽；比较单 Agent 与角色化多 Agent 的成功率、成本和新增故障面。
 - **常见坑**：协议层日志当作推理质量；无限重试；把未验证 observation 写入长期记忆；多 Agent 投票制造相关错误而非独立证据。
 
-## P. MLOps、安全与评测
+---
+
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md"></a>
+
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p-mlops安全与评测"></a>
+
+# P. MLOps、安全与评测
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md) · [下一章 →](#page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md)
+
+---
+
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-04-pretraining-inference-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p01"></a>
+
+<a id="p01"></a>
+
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p01-环境随机性与可复现运行稳定工程原则"></a>
 
 ### P01 环境、随机性与可复现运行【稳定工程原则】
 - **先修**：Python 环境、随机数、版本控制。
@@ -3706,6 +5374,12 @@ print(run_id,np.mean(vals),np.std(vals)); assert vals==[run(s) for s in cfg['see
 ```
 - **检测/实验**：在同环境复跑五种子；升级一个依赖后执行回归测试并记录差异，不承诺跨平台 bitwise 相同。
 - **常见坑**：只设 PyTorch seed、漏 NumPy/DataLoader；把最佳 seed 当均值；未保存数据与 tokenizer 版本。
+
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p02"></a>
+
+<a id="p02"></a>
+
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p02-数据版本血缘与数据契约稳定工程原则"></a>
 
 ### P02 数据版本、血缘与数据契约【稳定工程原则】
 - **先修**：P01、文件哈希、schema、数据切分。
@@ -3727,6 +5401,12 @@ print(version[:12])
 - **检测/实验**：故意加入缺列、未来时间戳、重复主键与非法类别，确认流水线在训练前失败并给可定位错误。
 - **常见坑**：文件名写 v2 代替内容版本；标签修订未升版本；日志包含个人信息或训练/测试主体重叠。
 
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p03"></a>
+
+<a id="p03"></a>
+
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p03-实验追踪基线与持续测试稳定工程原则"></a>
+
 ### P03 实验追踪、基线与持续测试【稳定工程原则】
 - **先修**：P01–P02、单元测试、统计指标。
 - **定义与解析**：实验追踪绑定参数、代码、数据、指标和 artifact；CI 应验证数据/张量契约、过拟合小批次、保存加载等价和性能回归，而不是完整重训大模型。
@@ -3746,7 +5426,17 @@ for name,ok in gates.items():
 - **检测/实验**：让质量提升但 p95 超限，确认 CI 阻断；区分 smoke test、确定性单测和昂贵统计回归。
 - **常见坑**：run 名称手填导致冲突；只记录最终指标；对波动指标使用零容差或一次运行门禁。
 
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p04"></a>
+
+<a id="p04"></a>
+
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p04-打包推理接口与服务契约稳定工程原则"></a>
+
 ### P04 打包、推理接口与服务契约【稳定工程原则】
+
+<!-- readings:start -->
+**进一步精读：** [PagedAttention：KV缓存分页与共享](../readings/papers/pagedattention.md) · [vLLM：缓存调度与模型服务](../readings/projects/vllm.md)
+<!-- readings:end -->
 - **先修**：P02–P03、HTTP/JSON、序列化、异常处理。
 - **定义与解析**：服务契约定义输入 schema、版本、批量语义、错误码、超时与输出；推理函数应无隐藏训练状态，并对超限输入 fail fast。
 - **公式/机制**：请求经历 validate→preprocess→predict→postprocess；幂等读取请求可重试，副作用请求需 idempotency key。
@@ -3766,7 +5456,17 @@ print(r); assert r['status']==200 and r['score']==2
 - **检测/实验**：测试空输入、NaN、超长 batch、版本不兼容、超时和并发；真实服务还需认证、限流与结构化日志。
 - **常见坑**：预处理散落客户端；返回模型内部异常堆栈；线上模型与 schema 版本没有绑定。
 
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p05"></a>
+
+<a id="p05"></a>
+
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p05-导出量化与性能剖析成熟技术硬件配方演进中"></a>
+
 ### P05 导出、量化与性能剖析【成熟技术，硬件配方演进中】
+
+<!-- readings:start -->
+**进一步精读：** [FlashAttention：分块精确注意力](../readings/papers/flashattention.md) · [PagedAttention：KV缓存分页与共享](../readings/papers/pagedattention.md) · [vLLM：缓存调度与模型服务](../readings/projects/vllm.md)
+<!-- readings:end -->
 - **先修**：P03–P04、数值精度、延迟分位数。
 - **定义与解析**：导出把训练图转为部署 IR；量化用低位整数降低存储/算力，但必须验证输出误差和任务指标。吞吐、单请求 p95、冷启动和内存不可互相替代。
 - **公式/机制**：对称 int8：$q=\operatorname{clip}(\operatorname{round}(x/s),-127,127)$，$\hat x=sq$，$s=\max|x|/127$。
@@ -3783,6 +5483,12 @@ print(mae,rel_bytes,ms); assert rel_bytes==.25 and mae<s
 ```
 - **检测/实验**：原模型与导出模型在正常/边界输入 `allclose`，再测任务指标、warm/cold p50/p95 和峰值内存。
 - **常见坑**：只比文件大小；计时含首次编译却未说明；动态 shape 或 tokenizer 不在导出契约中。
+
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p06"></a>
+
+<a id="p06"></a>
+
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p06-监控漂移与反馈闭环稳定原则检测方法演进中"></a>
 
 ### P06 监控、漂移与反馈闭环【稳定原则，检测方法演进中】
 - **先修**：P02–P05、统计检验、业务指标。
@@ -3803,6 +5509,12 @@ print(alerts)
 - **检测/实验**：模拟 covariate shift、label shift、concept drift，说明仅看输入 PSI 能/不能发现哪类；设计影子评估和人工审批闭环。
 - **常见坑**：阈值照搬经验数字；训练/线上分桶不同；模型自反馈改变数据后仍当自然分布。
 
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p07"></a>
+
+<a id="p07"></a>
+
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p07-评测集统计不确定性与回归决策稳定原则"></a>
+
 ### P07 评测集、统计不确定性与回归决策【稳定原则】
 - **先修**：抽样、置信区间、P01–P03。
 - **定义与解析**：评测必须声明目标人群、采样单位、指标、版本和污染检查；比较模型宜做 paired bootstrap，并报告效应量和区间而非仅点数。
@@ -3822,7 +5534,17 @@ assert ci[0]<=delta.mean()<=ci[1]
 - **检测/实验**：同数据分别按行与按用户 bootstrap，解释区间差异；在看结果前写出通过、持平、拒绝门槛。
 - **常见坑**：测试集反复调参；非独立样本按行重采样；只报 p-value、不报效应量与失败切片。
 
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p08"></a>
+
+<a id="p08"></a>
+
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p08-威胁建模对抗输入与-llm-工具安全安全实践演进中"></a>
+
 ### P08 威胁建模、对抗输入与 LLM 工具安全【安全实践演进中】
+
+<!-- readings:start -->
+**进一步精读：** [LangGraph：有状态工具流程与恢复](../readings/projects/langgraph.md)
+<!-- readings:end -->
 - **先修**：P04、最小权限、O07–O08。
 - **定义与解析**：威胁建模明确资产、攻击者、信任边界与滥用路径；prompt injection 是不可信内容影响模型指令，不能只靠“更强 system prompt”解决。
 - **公式/机制**：分层防御：数据标记/隔离→工具 allowlist 与 schema→最小权限→敏感动作确认→超时/预算→审计与补偿。
@@ -3840,6 +5562,12 @@ print(dispatch('lookup',{'key':'a'},approved=True))
 ```
 - **检测/实验**：红队覆盖间接注入、越权工具、数据外传、资源耗尽和供应链；度量 attack success、正常任务成功、误拦率与成本。
 - **常见坑**：正则黑名单当边界；让模型自行批准高风险动作；日志泄露密钥；第三方 tool metadata 被默认信任。
+
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p09"></a>
+
+<a id="p09"></a>
+
+<a id="page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p09-治理隐私公平与模型卡稳定框架法规会变化"></a>
 
 ### P09 治理、隐私、公平与模型卡【稳定框架，法规会变化】
 - **先修**：P02、P07–P08、基本隐私与分组指标。
@@ -3860,7 +5588,36 @@ print(stats,gap); assert 0<=gap<=1
 - **检测/实验**：写一页模型卡：用途/禁用、数据版本、总体与交叉分组指标、局限、监控、申诉与退役；高风险结论需法务/伦理审查。
 - **常见坑**：选一个公平指标宣布“公平”；匿名化等同无隐私风险；模型卡只写优点；把旧版法规描述成当前法律建议。
 
-## Q. 具身智能与机器人
+---
+
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md"></a>
+
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q-具身智能与机器人"></a>
+
+# Q. 具身智能与机器人
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md) · [下一章 →](#page-docs-05-frontier-r-frontier-2024-2026-md)
+
+---
+
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-08-domain-bridges-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q01"></a>
+
+<a id="q01"></a>
+
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q01-机器人系统分层坐标系与-se3稳定"></a>
 
 ### Q01 机器人系统分层、坐标系与 SE(3)【稳定】
 - **先修**：线代、三维几何、控制循环。
@@ -3880,6 +5637,12 @@ assert np.allclose(Ti@T,np.eye(4))
 - **检测/实验**：画清 world/base/tool/camera frame，手算一点的两级变换；为高层命令标明目标 frame 与时间戳。
 - **常见坑**：左右乘、主动/被动变换混淆；米/毫米混用；VLM 输出像素位置直接当机械臂基座坐标。
 
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q02"></a>
+
+<a id="q02"></a>
+
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q02-感知标定与状态估计稳定基础学习感知演进中"></a>
+
 ### Q02 感知、标定与状态估计【稳定基础，学习感知演进中】
 - **先修**：Q01、概率、高斯分布、传感器噪声。
 - **定义与解析**：感知网络给检测/深度等观测，状态估计融合带时间戳的不确定观测与运动模型；标定误差和时延必须显式进入误差预算。
@@ -3898,6 +5661,12 @@ assert abs(x-1)<.15 and P<R
 - **检测/实验**：人为增加测量噪声、延迟和外参偏差，分别看创新残差与抓取误差；感知置信度不能直接当几何安全界。
 - **常见坑**：不同传感器时间不同步；训练集标定固定导致换相机崩溃；无效深度被当 0 米障碍或自由空间。
 
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q03"></a>
+
+<a id="q03"></a>
+
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q03-正运动学逆运动学与可达性稳定"></a>
+
 ### Q03 正运动学、逆运动学与可达性【稳定】
 - **先修**：Q01、三角函数、Jacobian。
 - **定义与解析**：FK 从关节求末端位姿；IK 求满足目标的关节，可能多解、无解或奇异。学习策略给目标位姿后仍需确定性 IK、关节限位与误差检查。
@@ -3915,6 +5684,12 @@ print(q1,q2,fk); assert np.linalg.norm(fk-target)<1e-8
 ```
 - **检测/实验**：测试不可达目标、肘上/肘下多解和伸直奇异位姿；验收含限位、姿态与碰撞，而非仅位置误差。
 - **常见坑**：IK 收敛即安全；忽略末端姿态；学习模型生成关节值后绕过限位和速度/加速度约束。
+
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q04"></a>
+
+<a id="q04"></a>
+
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q04-碰撞检测运动规划与轨迹控制稳定核心"></a>
 
 ### Q04 碰撞检测、运动规划与轨迹控制【稳定核心】
 - **先修**：Q01–Q03、搜索、插值、反馈控制。
@@ -3935,6 +5710,12 @@ print(within,collision,speed,safe); assert not safe
 - **检测/实验**：对候选轨迹做连续碰撞、限位、速度、急停和跟踪误差测试；上例离散检查仅教学，不能用于真实安全认证。
 - **常见坑**：只查 waypoint、漏段间碰撞；计划成功等同执行成功；用 LLM/VLA 直接发送电机命令。
 
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q05"></a>
+
+<a id="q05"></a>
+
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q05-行为克隆动作分块与-diffusion-policy演进中"></a>
+
 ### Q05 行为克隆、动作分块与 Diffusion Policy【演进中】
 - **先修**：I13、Q02–Q04、条件生成/扩散。
 - **定义与解析**：机器人 BC 从观测预测动作；action chunk 减少逐步误差和抖动，Diffusion Policy 以条件去噪表示多峰动作序列。输出仍是候选参考轨迹，必须经确定性护栏。
@@ -3953,6 +5734,12 @@ print(action,valid); assert valid
 ```
 - **检测/实验**：在未见物体位置、遮挡、扰动恢复上做 ≥5 种子/固定任务集 rollout；报告成功率、干预次数、动作延迟和安全拒绝率。
 - **常见坑**：随机帧切分导致同轨迹泄漏；动作坐标/频率不同仍合并数据；只报 action MSE、不报闭环成功。
+
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q06"></a>
+
+<a id="q06"></a>
+
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q06-机器人-rl仿真到现实与安全探索演进中"></a>
 
 ### Q06 机器人 RL、仿真到现实与安全探索【演进中】
 - **先修**：I01–I14、Q01–Q05、仿真器与系统辨识。
@@ -3976,6 +5763,12 @@ print(best,test); assert np.isfinite(test)
 - **检测/实验**：训练种子与评估种子/参数范围分离；加入未随机化的摩擦或延迟，测最差分位而不只均值。
 - **常见坑**：在真实机在线试错无 safety layer；调仿真参数看过测试域；把 GPU/仿真能启动当 sim-to-real 成功。
 
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q07"></a>
+
+<a id="q07"></a>
+
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q07-vla世界模型与分层技能研究前沿"></a>
+
 ### Q07 VLA、世界模型与分层技能【研究前沿】
 - **先修**：VLM、O01–O04、I12–I13、Q01–Q06。
 - **定义与解析**：VLA 将视觉、语言映射为动作 token/chunk；世界模型学习状态转移并可在潜空间想象。两者提供泛化先验，不自动保证几何、接触或实时控制正确。
@@ -3994,6 +5787,12 @@ print(candidate,safe,accepted); assert accepted
 ```
 - **检测/实验**：分离语义成功、动作可执行率、规划拒绝率、闭环成功与最坏延迟；OpenVLA 论文能力不能外推到未评测机器人。
 - **常见坑**：离散动作 token 当精确控制；世界模型视频逼真等同动力学准确；高层成功描述掩盖低层执行失败。
+
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q08"></a>
+
+<a id="q08"></a>
+
+<a id="page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q08-具身-agent多机器人协同与安全执行研究前沿"></a>
 
 ### Q08 具身 Agent、多机器人协同与安全执行【研究前沿】
 - **先修**：O07–O08、I14、Q01–Q07、并发与资源锁。
@@ -4017,9 +5816,40 @@ print(execute(candidate)); assert not execute(candidate)['ok']
 - **检测/实验**：注入通信延迟、机器人掉线、锁冲突、抓取失败和人进入工作区；测任务成功、死锁、恢复时间、人工接管与安全违规为零。
 - **常见坑**：双臂平台就声称协同控制；LLM 语言承诺当作资源锁；局部重试反复碰撞；把 planned waypoint、控制指令和物理执行轨迹混为一谈。
 
-## R. 2024–2026 前沿技术地图
+---
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md"></a>
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r-20242026-前沿技术地图"></a>
+
+# R. 2024–2026 前沿技术地图
 
 这一章不是“模型排行榜”。它抽取截至 2026-08-11 仍有解释力的技术主线，并明确哪些结论只是特定论文或产品在特定评测上的结果。先完成对应先修单元，再阅读本章。
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md) · [下一章 →](#page-docs-06-projects-s-projects-assessment-md)
+
+---
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-04-pretraining-inference-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+本章既有前沿结论仍按原标注日期理解。成熟机制已在[系统串讲](#page-docs-08-walkthroughs-readme-md)展开；本轮没有把所有旧事实统一标成已于2026-10-03重新核验。
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r01"></a>
+
+<a id="r01"></a>
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r01-前沿-稀疏-mixture-of-expertsmoe与路由"></a>
 
 ### R01 `[前沿]` 稀疏 Mixture of Experts（MoE）与路由
 
@@ -4062,6 +5892,12 @@ print("expert load:", load.tolist())
 
 **常见坑**：把 MoE 当成模型集成；忽略路由通信；只报总参数；把某一篇论文的专家数、top-k 和平衡策略当作固定标准。
 
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r02"></a>
+
+<a id="r02"></a>
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r02-前沿-rope位置外推与长上下文"></a>
+
 ### R02 `[前沿]` RoPE、位置外推与长上下文
 
 **先修**：A04 内积、F07 位置编码、F14 长上下文。
@@ -4094,6 +5930,12 @@ assert torch.allclose(x.norm(dim=1), y.norm(dim=1), atol=1e-5)
 
 **常见坑**：把训练窗口、API 窗口和有效上下文混为一谈；扩窗后不复测短文本能力；忽略位置分布外推与显存/时延。
 
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r03"></a>
+
+<a id="r03"></a>
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r03-前沿-kv-cachegqaflashattention-与长序列系统"></a>
+
 ### R03 `[前沿]` KV Cache、GQA、FlashAttention 与长序列系统
 
 **先修**：B02 复杂度、D13 Attention、D16 性能、F14 推理。
@@ -4123,6 +5965,12 @@ print("cached K/V shape:", tuple(k.shape), tuple(v.shape))
 **检测题/小实验**：推导 MHA 与 GQA 的 KV 缓存元素数；区分“算术 FLOPs 少”“HBM 访问少”“端到端 latency 低”。
 
 **常见坑**：把 FlashAttention 当成近似注意力；只测单请求吞吐；忽略 batch、序列长度、首 token 延迟和生成 token 延迟。
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r04"></a>
+
+<a id="r04"></a>
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r04-前沿-state-space-model-与-mamba-路线"></a>
 
 ### R04 `[前沿]` State Space Model 与 Mamba 路线
 
@@ -4156,6 +6004,12 @@ assert y.shape == (T, D)
 
 **常见坑**：把所有 SSM 都叫 Mamba；把理论复杂度直接等同于 GPU 实测；只看超长序列而不测短序列和检索型任务。
 
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r05"></a>
+
+<a id="r05"></a>
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r05-前沿-推理模型后训练dpogrpo-与可验证奖励"></a>
+
 ### R05 `[前沿]` 推理模型后训练：DPO、GRPO 与可验证奖励
 
 **先修**：F12 SFT、I08 Policy Gradient、I09 Actor–Critic、I10 PPO、O03 奖励模型、O04 RLHF/DPO。
@@ -4185,6 +6039,12 @@ print(float(loss))
 
 **常见坑**：把“奖励可验证”误写成推理过程必然正确；只看最终准确率；忽略 KL、采样分布、奖励尺度、数据污染和训练稳定性。
 
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r06"></a>
+
+<a id="r06"></a>
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r06-前沿-test-time-computeself-consistency-与-verifier-search"></a>
+
 ### R06 `[前沿]` Test-time Compute、Self-consistency 与 Verifier Search
 
 **先修**：F11 解码、F13 评测、R05 后训练。
@@ -4213,6 +6073,12 @@ assert vote == truth
 **检测题/小实验**：把单次正确率从 0.65 改成 0.4，重复 1000 次，观察多数投票为何可能失效；再加入一个有系统偏差的 verifier。
 
 **常见坑**：只报告最优样例；忽略成本和延迟；验证器与候选共享同一偏差；把不可见的内部过程当成可靠解释。
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r07"></a>
+
+<a id="r07"></a>
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r07-前沿-统一多模态-tokenearly-fusion-与-omni-模型"></a>
 
 ### R07 `[前沿]` 统一多模态 Token、Early Fusion 与 Omni 模型
 
@@ -4244,6 +6110,12 @@ assert seq.shape == (9, D) and causal_mask.shape == (9, 9)
 **检测题/小实验**：图像从 16×16 patch 改为 8×8 patch 后 token 数和注意力矩阵大小怎样变化？为实时语音设计 chunk、缓存和中断策略。
 
 **常见坑**：把统一接口等同于统一理解；忽略时间同步和模态缺失；仅凭聊天样例判断 grounding；混淆输入多模态与输出多模态。
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r08"></a>
+
+<a id="r08"></a>
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r08-前沿-diffusion-transformerflow-matching-与视频生成"></a>
 
 ### R08 `[前沿]` Diffusion Transformer、Flow Matching 与视频生成
 
@@ -4279,6 +6151,12 @@ assert end < start
 
 **常见坑**：把 flow matching 说成“另一种去噪扩散”；只展示精选视频；把视觉逼真等同于世界状态和动作可控。
 
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r09"></a>
+
+<a id="r09"></a>
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r09-前沿-世界模型vla-与具身基础模型"></a>
+
 ### R09 `[前沿]` 世界模型、VLA 与具身基础模型
 
 **先修**：I02–I11 强化学习主干、H04 VLM、Q05–Q07 机器人策略/VLA/世界模型。
@@ -4309,6 +6187,12 @@ assert action == 1.0
 
 **常见坑**：平台有双臂就宣称解决多臂协同；VLM 输出动作名字就视为可执行轨迹；忽略控制频率、闭环反馈、OOD 与安全停止。
 
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r10"></a>
+
+<a id="r10"></a>
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r10-前沿-agent-协议状态机与可靠性评测"></a>
+
 ### R10 `[前沿]` Agent 协议、状态机与可靠性评测
 
 **先修**：O01–O08、P06–P07。
@@ -4338,6 +6222,12 @@ assert call_tool("add", {"a": 2, "b": 3}) == 5
 
 **常见坑**：把协议等同于智能；工具输出不验证；无限循环；无最小权限；只看 demo，不做 execution-based evaluation。
 
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r11"></a>
+
+<a id="r11"></a>
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r11-前沿-如何阅读当前-gpt基础模型产品信息"></a>
+
 ### R11 `[前沿]` 如何阅读“当前 GPT/基础模型”产品信息
 
 **先修**：F09 GPT、F10 规模化、F14 推理、P07 评测。
@@ -4365,6 +6255,12 @@ assert eligible == ["B"]
 **检测题/小实验**：做一张“官方声明 / 论文证据 / 自己评测 / 未知”四列表，把一个模型的事实放入正确列；为你的真实任务建立质量、延迟、成本、安全四维 eval。
 
 **常见坑**：引用搜索摘要而不打开官方页；用旧价格和退役模型；把 reasoning effort、产品模式或上下文窗口当作公开训练算法；跨版本比较时更换提示和评测集。
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r12"></a>
+
+<a id="r12"></a>
+
+<a id="page-docs-05-frontier-r-frontier-2024-2026-md-r12-前沿-合成数据知识蒸馏与自举训练"></a>
 
 ### R12 `[前沿]` 合成数据、知识蒸馏与自举训练
 
@@ -4398,9 +6294,38 @@ assert torch.isfinite(student_logits.grad).all()
 
 ---
 
-## S. 综合项目与验收路线
+---
+
+<a id="page-docs-06-projects-s-projects-assessment-md"></a>
+
+<a id="page-docs-06-projects-s-projects-assessment-md-s-综合项目与验收路线"></a>
+
+# S. 综合项目与验收路线
 
 知识点卡解决“局部会不会”，章节项目检验“能否把完整链路接起来”。所有项目都遵守同一研究闭环：**朴素基线 → 可复现训练 → 一项受控改进 → 消融 → 错误分析 → 复现说明**。
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-05-frontier-r-frontier-2024-2026-md) · [下一章 →](#page-docs-07-resources-t-source-index-md)
+
+---
+
+<a id="page-docs-06-projects-s-projects-assessment-md-配套系统讲解"></a>
+
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](#page-docs-08-walkthroughs-readme-md) · [论文与源码精读](#page-readings-readme-md) · [完整实践代码](../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+<a id="page-docs-06-projects-s-projects-assessment-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-06-projects-s-projects-assessment-md-s01"></a>
+
+<a id="s01"></a>
+
+<a id="page-docs-06-projects-s-projects-assessment-md-s01-两周基础诊断"></a>
 
 ### S01 两周基础诊断
 
@@ -4410,6 +6335,12 @@ assert torch.isfinite(student_logits.grad).all()
 
 **验收**：梯度相对误差 `<1e-5`；能过拟合 64–256 个样本；能闭卷解释 bias–variance、交叉熵、正则化和 train/validation/test 的职责。
 
+<a id="page-docs-06-projects-s-projects-assessment-md-s02"></a>
+
+<a id="s02"></a>
+
+<a id="page-docs-06-projects-s-projects-assessment-md-s02-经典-ml表格预测"></a>
+
 ### S02 经典 ML：表格预测
 
 **任务**：在同一数据划分上比较 Dummy、线性模型、随机森林和梯度提升；预处理全部放入 Pipeline。
@@ -4417,6 +6348,12 @@ assert torch.isfinite(student_logits.grad).all()
 **交付物**：数据卡、交叉验证表、阈值曲线、校准图、分类别错误样本。
 
 **验收**：主模型稳定优于 Dummy；测试集只使用一次；解释为何选择主指标；证明没有在全量数据上先拟合缩放器或缺失值填充器。
+
+<a id="page-docs-06-projects-s-projects-assessment-md-s03"></a>
+
+<a id="s03"></a>
+
+<a id="page-docs-06-projects-s-projects-assessment-md-s03-深度学习可复用训练模板"></a>
 
 ### S03 深度学习：可复用训练模板
 
@@ -4426,6 +6363,12 @@ assert torch.isfinite(student_logits.grad).all()
 
 **验收**：先过拟合小批次；CNN 或经过论证的改进优于 MLP 基线；重跑结果在预先声明的容差内；能从曲线定位学习率、欠拟合或过拟合问题。
 
+<a id="page-docs-06-projects-s-projects-assessment-md-s04"></a>
+
+<a id="s04"></a>
+
+<a id="page-docs-06-projects-s-projects-assessment-md-s04-cv稠密预测与鲁棒性"></a>
+
 ### S04 CV：稠密预测与鲁棒性
 
 **任务**：Oxford-IIIT Pet 前景分割、小型检测任务或等价数据；比较预训练骨干与从头训练，并评估旋转、遮挡或颜色偏移。
@@ -4433,6 +6376,12 @@ assert torch.isfinite(student_logits.grad).all()
 **交付物**：Dice/IoU 或 mAP、增强消融、至少 20 个错误可视化、按错误来源分类。
 
 **验收**：固定数据划分；干净集与扰动集分别报告；不以单张“漂亮预测图”代替统计结果。
+
+<a id="page-docs-06-projects-s-projects-assessment-md-s05"></a>
+
+<a id="s05"></a>
+
+<a id="page-docs-06-projects-s-projects-assessment-md-s05-nlpllm从-tf-idf-到-mini-gpt"></a>
 
 ### S05 NLP/LLM：从 TF-IDF 到 Mini-GPT
 
@@ -4442,6 +6391,12 @@ assert torch.isfinite(student_logits.grad).all()
 
 **验收**：能解释 causal mask、padding mask 与 loss shift；微调结果不低于强传统基线；生成项目明确区分训练 loss、验证 perplexity 和主观样例。
 
+<a id="page-docs-06-projects-s-projects-assessment-md-s06"></a>
+
+<a id="s06"></a>
+
+<a id="page-docs-06-projects-s-projects-assessment-md-s06-生成模型二维分布实验室"></a>
+
 ### S06 生成模型：二维分布实验室
 
 **任务**：在二维混合高斯上比较 VAE、GAN、DDPM 或 Flow Matching 中至少两种；不要直接从高分辨率图像开始。
@@ -4449,6 +6404,12 @@ assert torch.isfinite(student_logits.grad).all()
 **交付物**：真实/生成分布图、覆盖率或分布距离、训练稳定性曲线、采样步数—质量曲线。
 
 **验收**：能识别 mode collapse、posterior collapse 或采样离散误差；同等数据和大致计算预算下比较。
+
+<a id="page-docs-06-projects-s-projects-assessment-md-s07"></a>
+
+<a id="s07"></a>
+
+<a id="page-docs-06-projects-s-projects-assessment-md-s07-vlm图文检索与零样本分类"></a>
 
 ### S07 VLM：图文检索与零样本分类
 
@@ -4458,6 +6419,12 @@ assert torch.isfinite(student_logits.grad).all()
 
 **验收**：评测集不参与 prompt 选择；同时报告双向检索；说明检索正确不等于生成答案已视觉 grounding。
 
+<a id="page-docs-06-projects-s-projects-assessment-md-s08"></a>
+
+<a id="s08"></a>
+
+<a id="page-docs-06-projects-s-projects-assessment-md-s08-强化学习gridworld--经典控制"></a>
+
 ### S08 强化学习：GridWorld → 经典控制
 
 **任务**：从零实现 Q-learning，再在 Gymnasium CartPole 上完成 DQN 或 PPO；保留随机策略基线。
@@ -4466,6 +6433,12 @@ assert torch.isfinite(student_logits.grad).all()
 
 **验收**：评估时关闭探索；区分 terminated 与 truncated；不只展示最好一次；明确 reward shaping 是否改变原任务。
 
+<a id="page-docs-06-projects-s-projects-assessment-md-s09"></a>
+
+<a id="s09"></a>
+
+<a id="page-docs-06-projects-s-projects-assessment-md-s09-ragagent可证伪的工具系统"></a>
+
 ### S09 RAG/Agent：可证伪的工具系统
 
 **任务**：对一组有答案和来源的文档构建 BM25/向量/混合检索；加入重排、引用和一个只读工具。再实现显式状态机，而不是无限自主循环。
@@ -4473,6 +6446,12 @@ assert torch.isfinite(student_logits.grad).all()
 **交付物**：Recall@k、MRR/nDCG、答案正确率与引用支持率、工具调用轨迹、权限与失败恢复测试。
 
 **验收**：分别评估检索与生成；文档中不存在答案时能够拒答；工具参数 schema 校验；至少模拟超时、空结果、提示注入和重复副作用。
+
+<a id="page-docs-06-projects-s-projects-assessment-md-s10"></a>
+
+<a id="s10"></a>
+
+<a id="page-docs-06-projects-s-projects-assessment-md-s10-综合研究项目"></a>
 
 ### S10 综合研究项目
 
@@ -4491,6 +6470,12 @@ model_card.md           用途、数据、指标、风险和禁止用途
 
 **通过标准**：另一位同学可以从空环境按照 README 复现主要结果；每个结论都有对应对照实验；报告明确写出“没有证明什么”。
 
+<a id="page-docs-06-projects-s-projects-assessment-md-s11"></a>
+
+<a id="s11"></a>
+
+<a id="page-docs-06-projects-s-projects-assessment-md-s11-项目统一评分表"></a>
+
 ### S11 项目统一评分表
 
 | 维度 | 0 分 | 1 分 | 2 分 |
@@ -4507,7 +6492,727 @@ model_card.md           用途、数据、指标、风险和禁止用途
 
 ---
 
-## T. 总索引与资料使用说明
+---
+
+<a id="page-docs-08-walkthroughs-readme-md"></a>
+
+<a id="page-docs-08-walkthroughs-readme-md-从知识点到完整方法系统推导讲义"></a>
+
+# 从知识点到完整方法：系统推导讲义
+
+[学习总目录](../docs/README.md) · [论文精读](#page-readings-readme-md) · [完整实验](../labs/README.md)
+
+原有 A–R 单元适合定位概念，这组讲义负责把单元接成完整过程。读者应先按每篇列出的先修回查，而不是把所有方向都当作必修。公式、小数字和伪代码属于教学推导；运行记录在实验目录单独保存。
+
+| 阅读顺序 | 讲义 | 对应主线 | 完成后的可观察能力 |
+|---|---|---|---|
+| 1 | [概率、损失与泛化](#page-docs-08-walkthroughs-01-probability-learning-md) | A、C | 从数据假设推出损失，区分拟合与泛化 |
+| 2 | [梯度、训练与实验设计](#page-docs-08-walkthroughs-02-training-experiments-md) | A、B、D | 手算梯度，定位训练失效，设计公平实验 |
+| 3 | [一步步搭建 Transformer](#page-docs-08-walkthroughs-03-transformer-md) | F、D | 沿每个张量追踪前向、标签与生成 |
+| 4 | [预训练与推理系统](#page-docs-08-walkthroughs-04-pretraining-inference-md) | F、P | 估计参数、缓存与计算预算，解释吞吐与延迟 |
+| 5 | [SFT、LoRA 与偏好优化](#page-docs-08-walkthroughs-05-posttraining-md) | O、I | 解释每种目标监督什么、冻结什么 |
+| 6 | [从检索到可检查的 Agent](#page-docs-08-walkthroughs-06-retrieval-agents-md) | N、O、B | 定位召回、答案、工具与控制器的失败 |
+| 分支 | [生成模型与多模态](#page-docs-08-walkthroughs-07-generative-multimodal-md) | G、H、E | 连接 ELBO、去噪、对比损失与视觉接地 |
+| 分支 | [其他领域的课程与研究入口](#page-docs-08-walkthroughs-08-domain-bridges-md) | B+、C+、I–N、Q | 按任务而不是热度选择模型，知道下一步读什么 |
+
+<a id="page-docs-08-walkthroughs-readme-md-三种阅读方式"></a>
+
+## 三种阅读方式
+
+- **系统学习**：1 → 2 → 3 → 4，随后走训练线 5、应用线 6 或多模态线 7。
+- **论文学习**：从论文精读页的先修跳回本讲义，再回到原论文核对关键推导和图表。
+- **工程学习**：先完成对应离线项目，再读源码导读；把“我能运行一个 API”提升为“我能追踪它使用的数据、目标与状态”。
+
+每篇包含有答案的检测题。先独立作答，再阅读解析；只会复述术语不算完成。
+
+---
+
+<a id="page-docs-08-walkthroughs-01-probability-learning-md"></a>
+
+<a id="page-docs-08-walkthroughs-01-probability-learning-md-概率损失与泛化为什么训练要最小化这个数"></a>
+
+# 概率、损失与泛化：为什么训练要最小化这个数
+
+[导读](#page-docs-08-walkthroughs-readme-md) · [A 数学](#page-docs-01-foundations-a-math-statistics-optimization-md-a09) · [C 机器学习](#page-docs-01-foundations-c-machine-learning-md-c01) · [下一讲](#page-docs-08-walkthroughs-02-training-experiments-md)
+
+<a id="page-docs-08-walkthroughs-01-probability-learning-md-1-从预测任务开始而不是从损失名称开始"></a>
+
+## 1. 从预测任务开始，而不是从损失名称开始
+
+设房屋面积为 $x$、价格为 $y$。模型输出 $f_\theta(x)$。这个数字究竟是价格、某类的概率还是分布参数，必须先约定。预测均值不等于预测完整风险：两栋房屋可以有相同均价，却有完全不同的不确定性。
+
+监督学习需要区分三个对象：真实但未知的数据分布 $p_{\mathrm{data}}(x,y)$、有限训练样本，以及我们选择的分布族 $p_\theta(y\mid x)$。训练只直接接触第二个对象。模型再复杂，也无法自动补齐训练数据没有覆盖的情况。
+
+假设样本在给定参数下独立，则联合似然是单个样本似然的乘积。取负对数把乘法变成加法：
+
+$$\hat\theta=\arg\max_\theta\prod_{i=1}^n p_\theta(y_i\mid x_i)
+=\arg\min_\theta -\sum_{i=1}^n\log p_\theta(y_i\mid x_i).$$
+
+独立性是假设，不是数据表每行分开存储就能保证。同一病人的多次记录、同一视频的相邻帧、同一模板生成的问题都可能相关，因此需要按主体、时间或模板分组划分。
+
+<a id="page-docs-08-walkthroughs-01-probability-learning-md-2-mse-和交叉熵来自不同分布假设"></a>
+
+## 2. MSE 和交叉熵来自不同分布假设
+
+若 $y\mid x\sim\mathcal N(f_\theta(x),\sigma^2)$ 且方差固定，则单点负对数似然为
+
+$$-\log p_\theta(y\mid x)=\frac{(y-f_\theta(x))^2}{2\sigma^2}+\frac12\log(2\pi\sigma^2).$$
+
+固定方差和样本数时，右侧只有平方误差影响最优参数，于是得到 MSE。若同时预测方差，第二项不再是常数，不能简单删去；否则模型可通过无限放大方差逃避误差惩罚。
+
+二分类令 $p=\sigma(z)$，$y\in\{0,1\}$，Bernoulli 似然为 $p^y(1-p)^{1-y}$，因此
+
+$$\ell=-y\log p-(1-y)\log(1-p).$$
+
+例如真实标签是 1，预测概率从 0.5 提高到 0.8，损失从约 0.693 降到 0.223。约定概率大于等于0.5时判为1，则两次预测都正确，损失却反映了置信程度。这也说明“loss 更低”和“准确率更高”不是同一句话。
+
+多分类通过 softmax 把 logits $z\in\mathbb R^K$ 变成概率。数值实现用 $\log\sum_j e^{z_j}$ 的稳定版本，先减去最大 logit；给框架的交叉熵函数传入 logits，避免再做一次 softmax。
+
+<a id="page-docs-08-walkthroughs-01-probability-learning-md-3-kl交叉熵与语言模型"></a>
+
+## 3. KL、交叉熵与语言模型
+
+若目标分布为 $p$，模型分布为 $q$，交叉熵满足
+
+$$H(p,q)=-\sum_y p(y)\log q(y)=H(p)+D_{KL}(p\Vert q).$$
+
+$H(p)$ 不随模型改变，所以在同一个目标分布下最小化交叉熵相当于最小化该方向的 KL。KL 不对称：模型对真实事件给出极小概率，会产生很大惩罚；交换两个分布改变了期望由谁加权。
+
+语言模型利用概率链式法则：$p(x_{1:T})=\prod_t p(x_t\mid x_{<t})$。训练把每个位置的正确 token 当作分类目标。平均 token NLL 为 $L$ 时，困惑度为 $e^L$。若每次都在 4 个 token 中均匀选择，$L=\log4$，困惑度为 4。不同 tokenizer 的 token 粒度不同，因此不能直接比较两个模型的 token 困惑度。
+
+<a id="page-docs-08-walkthroughs-01-probability-learning-md-4-正则化与泛化不是额外加一条咒语"></a>
+
+## 4. 正则化与泛化不是额外加一条咒语
+
+训练目标常写成 $\hat R(\theta)+\lambda\Omega(\theta)$。第一项是训练样本上的经验风险，第二项表达对复杂度或参数的偏好。以线性回归为例，零均值 Gaussian 参数先验可导出 L2 惩罚的 MAP 估计；这说明正则化隐含假设，不是无条件更正确。
+
+划分数据必须发生在学习预处理参数之前。缩放器、词表、PCA、缺失值填充等都可能学习数据特征。交叉验证中要在每个训练折内部拟合这些步骤。时间预测还必须遵守先过去后未来，随机拆行会泄漏未来信息。
+
+评估时至少区分预测质量、概率校准和分布变化。一个始终输出 0.99 的分类器可能准确率高而校准很差；训练分布中的高置信度也不能保证分布外正确。
+
+<a id="page-docs-08-walkthroughs-01-probability-learning-md-5-检测题与解析"></a>
+
+## 5. 检测题与解析
+
+1. **在回归损失里同时学习 $\sigma$，为何不能只保留平方误差除以方差？** 因为不断增加方差就能降低该项；Gaussian NLL 的 $\log\sigma$ 项抵消这种退化。
+2. **二分类中把正确答案概率从 0.8 改为 0.9，准确率和损失如何变化？** 准确率不变；该样本损失从约 0.223 降为 0.105。单样本变化不能证明总体校准改善。
+3. **用全部文本建立 BPE 后才划分训练与测试，是绝对无害的吗？** 不是。测试语料的统计结构已影响词表，违反严格独立评测；应只用训练集学习 tokenizer，再冻结应用到验证和测试。
+
+<a id="page-docs-08-walkthroughs-01-probability-learning-md-6-精读与实验连接"></a>
+
+## 6. 精读与实验连接
+
+- 教材定位：[D2L，概率与统计](https://d2l.ai/chapter_preliminaries/probability.html)、[CS229 公开材料](https://cs229.stanford.edu/materials.html-full)，监督学习讲义的 maximum likelihood 与 regularization；版本依各课程页面。
+- 论文进阶：[XGBoost](../readings/papers/xgboost.md)理解正则化目标，[VAE](../readings/papers/vae.md)理解分布近似。
+- 实践：[Mini-GPT](../labs/minigpt/README.md)同时记录训练和验证 NLL，不以生成样例代替统计评估。
+
+---
+
+<a id="page-docs-08-walkthroughs-02-training-experiments-md"></a>
+
+<a id="page-docs-08-walkthroughs-02-training-experiments-md-梯度训练与实验从一条导数到可信结论"></a>
+
+# 梯度、训练与实验：从一条导数到可信结论
+
+[导读](#page-docs-08-walkthroughs-readme-md) · [A07 链式法则](#page-docs-01-foundations-a-math-statistics-optimization-md-a07) · [B06 实验设计](#page-docs-01-foundations-b-programming-data-experiments-md-b06) · [D02 反向传播](#page-docs-01-foundations-d-deep-learning-md-d02)
+
+<a id="page-docs-08-walkthroughs-02-training-experiments-md-1-用一条完整计算图理解反向传播"></a>
+
+## 1. 用一条完整计算图理解反向传播
+
+设 $x=2,w=3,b=1,y=5$，预测 $z=wx+b=7$，损失 $L=\frac12(z-y)^2=2$。沿图逆向计算：
+
+$$\frac{\partial L}{\partial z}=z-y=2,\qquad
+\frac{\partial L}{\partial w}=2x=4,\qquad
+\frac{\partial L}{\partial b}=2.$$
+
+学习率为 0.1 时，$w'=2.6,b'=0.8$，同一点预测为 6，损失降为 0.5。这里每一条梯度都能解释为“上游敏感度乘局部变化率”。自动微分只是把这套操作应用到实际执行的计算图，不会替你修复错误标签和错误目标。
+
+对批量输入 $X\in\mathbb R^{B\times d}$，权重 $W\in\mathbb R^{d\times h}$，输出 $Z=XW+b$。若上游梯度为 $G=\partial L/\partial Z$，则 $\partial L/\partial W=X^TG$，形状为 $d\times h$；$\partial L/\partial b=\sum_{i=1}^B G_i$。沿形状检查，比背矩阵微分口诀更容易发现转置错误。
+
+<a id="page-docs-08-walkthroughs-02-training-experiments-md-2-数值梯度与初始化"></a>
+
+## 2. 数值梯度与初始化
+
+有限差分 $[L(\theta+\epsilon)-L(\theta-\epsilon)]/(2\epsilon)$ 可用于小模型检查解析梯度。过大的 $\epsilon$ 有截断误差，过小则受浮点消减影响；检查时优先双精度、平滑点和关闭随机层。它是梯度检查，不是文件校验。
+
+线性层的输出方差大致受输入维数乘权重方差影响。若每层都把方差放大两倍，深层网络的激活和梯度会迅速失衡。Xavier、Kaiming 初始化分别依据不同激活的传播近似；残差连接提供较短梯度路径，但不能保证任意深度或任意学习率都稳定。
+
+零初始化所有隐藏权重使神经元得到相同更新，无法打破对称性。LoRA 的一侧零初始化却不相同：另一侧随机初始化，保证初始增量为零，并让其中一侧先收到非零梯度。
+
+<a id="page-docs-08-walkthroughs-02-training-experiments-md-3-一个训练步骤包含哪些状态"></a>
+
+## 3. 一个训练步骤包含哪些状态
+
+```text
+读取训练batch → 清空旧梯度 → 前向 → 计算正确位置的loss
+→ 反向 → 可选梯度裁剪 → optimizer.step → 更新学习率计划
+```
+
+参数、优化器矩、学习率计划、随机状态和数据位置共同决定后续训练。只保存模型参数足以推理，却通常不足以精确恢复训练。Adam 还维护一阶和二阶指数移动平均；它改变每个参数的步长，但不免除学习率选择。AdamW 的解耦权重衰减与把 L2 加进 Adam 梯度并不等价。
+
+`model.eval()` 改变 dropout 和 BatchNorm 等层的行为；禁用梯度控制是否记录计算图，两者职责不同。验证通常同时需要评估模式和不记录梯度，之后再切回训练模式。
+
+<a id="page-docs-08-walkthroughs-02-training-experiments-md-4-先证明模型能学习再增加复杂度"></a>
+
+## 4. 先证明模型能学习，再增加复杂度
+
+第一步是过拟合极小训练子集。如果连 32 个样本都拟合不了，先查输入、标签、mask、梯度和学习率；不要先归因于数据量不足。第二步才检查泛化：扩大训练集，保留独立验证集和简单基线。
+
+| 现象 | 优先排查 | 为什么 |
+|---|---|---|
+| loss 不变、梯度为零 | 冻结参数、detach、标签全部被mask | 优化器可能根本没得到学习信号 |
+| loss 为 NaN | 无效数值、全空目标、溢出、除零 | 需要定位第一处异常，不能只跳过最后loss |
+| 训练好、验证差 | 泄漏反向问题、过拟合、分布差异 | 训练优化成功不等于泛化成功 |
+| 恢复后曲线突变 | 优化器和scheduler状态、数据顺序 | 参数一致不意味着完整训练状态一致 |
+
+<a id="page-docs-08-walkthroughs-02-training-experiments-md-5-让改进可以被否证"></a>
+
+## 5. 让改进可以被否证
+
+同一划分、同一指标、接近的计算预算下，只改变一个关键因素。比如比较位置编码时，固定 tokenizer、上下文、模型宽度、训练 token 数；不能让新方法训练十倍更久。选择多个种子观察稳定性，并保留失败运行。种子结果不是独立新数据集，不能不加分析地当作任意统计检验的样本。
+
+事先写下“若假设成立，什么指标应如何变化；什么结果会推翻假设”。指标选定之后再看测试集。模型和阈值选择用验证集，最后报告测试集，避免反复查看测试成绩形成隐性调参。
+
+<a id="page-docs-08-walkthroughs-02-training-experiments-md-6-检测题与解析"></a>
+
+## 6. 检测题与解析
+
+1. **梯度累积两步等于两个batch各更新一次吗？** 不等于。前者在相同参数点累积梯度，后者第二步参数已经变化；平均损失还需按实际有效样本或token数正确缩放。
+2. **为什么不把 `eval()` 当作不占梯度显存的保证？** 它只切换层行为，自动微分仍可能记录图；还需适用的无梯度上下文。
+3. **新模型验证指标优于基线一次，就能下结论吗？** 先核对数据、预算、随机性、误差区间和选择过程。优于基线是局部证据，不能推出所有任务均优越。
+
+<a id="page-docs-08-walkthroughs-02-training-experiments-md-7-对应材料"></a>
+
+## 7. 对应材料
+
+[Deep Learning 第6.5节](https://www.deeplearningbook.org/contents/mlp.html)讲反向传播，[第8章](https://www.deeplearningbook.org/contents/optimization.html)讲优化；[Adam 精读](../readings/papers/adam.md)、[ResNet 精读](../readings/papers/resnet.md)解释两种不同层面的训练改进。[Mini-GPT 实验](../labs/minigpt/README.md)用于观察损失、验证与保存恢复。
+
+---
+
+<a id="page-docs-08-walkthroughs-03-transformer-md"></a>
+
+<a id="page-docs-08-walkthroughs-03-transformer-md-从-token-到下一个-token完整-transformer-数据流"></a>
+
+# 从 token 到下一个 token：完整 Transformer 数据流
+
+[导读](#page-docs-08-walkthroughs-readme-md) · [F02 分词](#page-docs-02-perception-language-f-nlp-transformers-llms-md-f02) · [F07 Transformer](#page-docs-02-perception-language-f-nlp-transformers-llms-md-f07) · [原论文精读](../readings/papers/transformer.md)
+
+<a id="page-docs-08-walkthroughs-03-transformer-md-1-先确定输入目标与形状"></a>
+
+## 1. 先确定输入、目标与形状
+
+以下以 decoder-only 教学模型为例。它不是 2017 年原论文完整的 encoder–decoder。设文本分词后为 `[开始, 我, 爱, 学习, 结束]`。输入取前四个 token，目标取后四个：位置“我”应预测“爱”，而不是预测自身。
+
+批量 ID 张量为 $X\in\mathbb N^{B\times T}$，词嵌入表 $E\in\mathbb R^{V\times d}$。查表后得到 $H\in\mathbb R^{B\times T\times d}$。这里 $V$ 是词表大小，$d$ 是隐藏维度，$T$ 是当前上下文长度；词 ID 的数字大小没有语义距离。
+
+BPE 反复合并训练语料中常见的相邻符号对。字节级初始化保证可表示任意 UTF-8 字节串，但任意生成 token 序列不一定构成合法 UTF-8；解码应明确非法序列如何显示。词表只在训练语料学习，验证和测试使用冻结的分词器。
+
+<a id="page-docs-08-walkthroughs-03-transformer-md-2-注意力矩阵到底在乘什么"></a>
+
+## 2. 注意力矩阵到底在乘什么
+
+线性投影得到 $Q=HW_Q,K=HW_K,V'=HW_V$。为了避免与词表大小 $V$ 混淆，这里把 value 张量记为 $V'$。单头维度为 $d_h$ 时：
+
+$$S=QK^T/\sqrt{d_h},\quad A=\operatorname{softmax}(S+M),\quad O=AV'.$$
+
+$S$ 的最后两个维度是 $T\times T$，第 $i$ 行表示当前位置向各位置分配注意力；softmax 沿 key 位置进行。若 Q、K 分量近似零均值、单位方差且独立，点积方差随 $d_h$ 增长，除以平方根让数值尺度较稳定；这不是对所有真实网络分布的严格保证。
+
+考虑两个可见位置的分数是 $[0,\log3]$，则注意力权重是 $[1/4,3/4]$。若 value 分别为 2 和 6，输出为 5。注意力先根据 Q/K 决定权重，再混合 value；不能把“相似度矩阵”直接当作最终表示。
+
+因果 mask 把 $j>i$ 的位置设为负无穷，在 softmax 后得到零权重。padding mask 处理补齐位置；二者解决不同问题。把 softmax 后的未来权重乘零却不重新归一化，不等价于在 softmax 前遮罩。
+
+<a id="page-docs-08-walkthroughs-03-transformer-md-3-多头残差与前馈层"></a>
+
+## 3. 多头、残差与前馈层
+
+把投影结果拆为 $[B,h,T,d_h]$，要求 $d=h d_h$。不同头学习不同投影，每头独立进行注意力，之后拼接回 $[B,T,d]$ 并乘输出矩阵。不是把同一份注意力重复计算 $h$ 次。
+
+以 pre-norm 块为例：
+
+$$U=H+\operatorname{Attention}(\operatorname{LN}(H)),\qquad
+H_{\mathrm{next}}=U+\operatorname{FFN}(\operatorname{LN}(U)).$$
+
+FFN 在每个位置独立作用，例如 $\operatorname{GELU}(UW_1+b_1)W_2+b_2$。它不直接混合时间位置，但对注意力汇集的特征作非线性变换。LN 沿每个 token 的隐藏维度归一化，不能误沿 batch 维处理。
+
+原始 Transformer 使用不同的归一化放置方式。现代 decoder 常见 RMSNorm、RoPE、SwiGLU 等选择，必须区分“Transformer 的必要机制”和“某一架构的具体配方”。
+
+<a id="page-docs-08-walkthroughs-03-transformer-md-4-位置信息和输出层"></a>
+
+## 4. 位置信息和输出层
+
+若没有位置机制且不考虑特殊 mask，注意力对输入排列具有相应的等变性，不知道谁先谁后。可学习绝对位置 embedding 可以直接加到 token 表示；RoPE 则旋转 Q/K 的成对坐标，使点积包含相对位置信息。它并不意味着模型能无条件理解任意长上下文。
+
+最终隐藏表示乘词表投影 $W_o\in\mathbb R^{d\times V}$，得到 logits $[B,T,V]$。训练时每个位置与移位后的目标计算交叉熵。有效 token 的损失取平均；padding 和不应监督的 prompt 位置要排除，不能让“忽略位置”也进入分母。
+
+<a id="page-docs-08-walkthroughs-03-transformer-md-5-训练与生成为何不同"></a>
+
+## 5. 训练与生成为何不同
+
+训练时整段真实上下文已知，可以并行计算所有位置，但因果 mask 保证每个位置只看过去。生成时未来 token 未知，只能把最后位置的分布转成一个选择，再把选择追加到上下文。
+
+温度 $\tau$ 通过 $\operatorname{softmax}(z/\tau)$ 改变分布尖锐度；top-k 截断候选数量，top-p 保留累计概率达到阈值的候选。每种策略都改变输出分布，并不保证事实正确。greedy 的局部最优也不等于整句概率最大。
+
+KV Cache 是生成加速机制：保留历史层的 K/V，后续只计算新 token 的投影。缓存模型必须得到与无缓存完整前缀计算一致的结果，并正确处理位置、mask 和最大长度；否则加速了错误答案。
+
+<a id="page-docs-08-walkthroughs-03-transformer-md-6-检测题与解析"></a>
+
+## 6. 检测题与解析
+
+1. **$B=2,T=4,d=12,h=3$ 时，注意力分数是什么形状？** 每头维度为4；Q/K为 `[2,3,4,4]`，分数为 `[2,3,4,4]`。后两个4分别是query和key长度，数值相同不表示轴含义相同。
+2. **输入与目标未经任何移位，并在同一位置直接计算交叉熵，会发生什么？** 若输出当前位置可见自身，模型可能学习复制；损失很低但不具备正确的下一个token预测能力。注意，Transformers的合法用法 `labels=input_ids` 由损失函数内部完成移位；应检查整个数据到loss的链路，确保恰好移位一次。
+3. **验证因果遮罩可以怎样做？** 固定前缀，只修改后缀，关闭dropout，检查前缀位置的输出是否不变。不要只看mask矩阵长得像三角形。
+
+<a id="page-docs-08-walkthroughs-03-transformer-md-7-阅读与实现"></a>
+
+## 7. 阅读与实现
+
+[CS336 2025 Assignment 1](https://cs336.stanford.edu/spring2025/)覆盖分词、模型和优化器；[D2L 注意力](https://d2l.ai/chapter_attention-mechanisms-and-transformers/index.html)连接公式与代码。随后阅读 [nanoGPT](../readings/projects/nanogpt.md)和[Transformers](../readings/projects/transformers.md)导读，比较不同位置的标签移位。[Mini-GPT](../labs/minigpt/README.md)交付完整训练闭环，文内的小数字不是模型性能成绩。
+
+---
+
+<a id="page-docs-08-walkthroughs-04-pretraining-inference-md"></a>
+
+<a id="page-docs-08-walkthroughs-04-pretraining-inference-md-预训练与推理系统数据计算预算和缓存"></a>
+
+# 预训练与推理系统：数据、计算预算和缓存
+
+[导读](#page-docs-08-walkthroughs-readme-md) · [F10 预训练](#page-docs-02-perception-language-f-nlp-transformers-llms-md-f10) · [F14 推理](#page-docs-02-perception-language-f-nlp-transformers-llms-md-f14) · [P 系统评测](#page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md)
+
+<a id="page-docs-08-walkthroughs-04-pretraining-inference-md-1-预训练首先是数据流程"></a>
+
+## 1. 预训练首先是数据流程
+
+原始文本经过解析、规范化、质量过滤、去重、分组切分、分词和打包，才成为模型输入。保留来源、许可、语言和过滤原因，才能解释模型究竟学习了什么。去重是控制重复采样权重和污染的一种手段，不会自动消除语义近重复或事实错误。本项目不进行哈希值校验。
+
+数据泄漏不只发生在训练集和测试集有相同文件时。题目改写、答案片段、同源文档、模板或同一对象的不同视角都可能跨集合传播。教学数据应按生成问题的底层实体或模板划分，再产生表面样本。
+
+拼接文档可提高token利用率，但需要决定文档边界是否可以互相注意、是否使用EOS，以及loss在哪些位置计算。不同决定对应不同训练分布。只记录“batch size=8”不够，还要记录有效token数和上下文长度。
+
+<a id="page-docs-08-walkthroughs-04-pretraining-inference-md-2-为什么模型大小不是唯一资源指标"></a>
+
+## 2. 为什么模型大小不是唯一资源指标
+
+设参数数为 $N$，训练token数为 $D$。某些dense Transformer设置下，粗略训练计算量常写为 $C\approx6ND$；它是成本估算，不包含所有注意力、通信和系统开销，也不适用于所有架构。比较训练策略时需要同预算，而不是只比较参数量。
+
+一类经验拟合写成
+
+$$L(N,D)=E+A N^{-\alpha}+B D^{-\beta}.$$
+
+$E$ 表示拟合中的不可约项，后两项分别随模型和数据增加下降。若预算限制为 $ND$ 近似固定，扩大模型就会减少可训练token数，因此存在折中。拟合规律只在研究的模型、数据和预算范围内提供证据；不要把某个token/参数比例当作跨任务永恒常数。
+
+[Chinchilla 精读](../readings/papers/chinchilla.md)解释如何从实验设计判断计算最优，而[LLaMA 精读](../readings/papers/llama.md)展示训练预算与推理成本之间的取舍。
+
+<a id="page-docs-08-walkthroughs-04-pretraining-inference-md-3-显存由哪些部分组成"></a>
+
+## 3. 显存由哪些部分组成
+
+训练显存大致包含参数、梯度、优化器状态、激活和临时工作区。举例：1亿参数若用float32保存，仅参数就约400MB；Adam的两个float32矩再约800MB。加上梯度和激活后，不能再用“参数400MB”预测训练只要400MB显存。混合精度可能还保留主参数副本，实际实现需要测量。
+
+梯度累积减少每次前向的microbatch，激活检查点用重算换显存，LoRA减少可训练参数和优化器状态。它们改变不同部分，不能互相替代。CPU内存、磁盘checkpoint和数据加载缓冲也可能先成为瓶颈。
+
+<a id="page-docs-08-walkthroughs-04-pretraining-inference-md-4-prefill-与-decode"></a>
+
+## 4. Prefill 与 decode
+
+Prefill 一次处理已有prompt，产生各层缓存；decode 每次加入新token。长prompt主要影响prefill工作量，生成长度主要影响重复decode次数。总延迟和每秒生成token数描述不同体验，应同时报告首token延迟、后续token延迟、请求长度与并发设置。
+
+若batch为 $B$、层数 $L$、KV头数 $h_{kv}$、每头维度 $d_h$、缓存长度 $T$、每元素字节数 $s$，则KV缓存大小约为
+
+$$M_{KV}=2BLT h_{kv}d_hs.$$
+
+系数2分别来自K和V。取 $B=1,L=4,T=128,h_{kv}=4,d_h=32,s=4$，得到524288字节，即512KiB。这个示例是手算缓存体积，不包括分配器或其他张量开销。GQA通过减少KV头数减小缓存，但query头数可以保持更多。
+
+<a id="page-docs-08-walkthroughs-04-pretraining-inference-md-5-两种快注意力解决不同问题"></a>
+
+## 5. 两种“快注意力”解决不同问题
+
+[FlashAttention](../readings/papers/flashattention.md)利用分块和在线softmax避免把完整注意力矩阵反复写入高带宽显存，它仍计算精确注意力目标，浮点运算次序可有差异。[PagedAttention](../readings/papers/pagedattention.md)关注服务过程中KV缓存的分配、共享和内存碎片。前者主要改善算子的数据搬运，后者改善多请求缓存管理；不能仅凭都带Attention就混为一个算法。
+
+连续批处理让不同请求在不同时间进入或离开decode批次。调度器必须同时考虑token预算、剩余缓存和公平性。纯吞吐最高的设置可能增加短请求等待时间，因此评测必须先明确目标。
+
+<a id="page-docs-08-walkthroughs-04-pretraining-inference-md-6-检测题与解析"></a>
+
+## 6. 检测题与解析
+
+1. **KV头数减半且其他量固定，缓存估算如何变化？** 减半；Q头数不直接出现在该缓存公式中。
+2. **LoRA是否让基础模型的推理权重消失？** 不会。基础权重仍需加载，节省主要来自训练状态；是否可合并还取决于实现和量化设置。
+3. **两个系统tokens/s相差两倍，可以直接宣布更快吗？** 先核对硬件、batch、prompt与输出长度、精度、测量范围及质量约束。吞吐不同不自动说明单请求延迟更低。
+
+<a id="page-docs-08-walkthroughs-04-pretraining-inference-md-7-资料与实践"></a>
+
+## 7. 资料与实践
+
+[CS336 2025](https://cs336.stanford.edu/spring2025/)的resource accounting、scaling laws、inference讲次；[DLSys](https://dlsyscourse.org/)的硬件与执行专题；[vLLM源码导读](../readings/projects/vllm.md)。本机扩展从batch 1与短上下文起步；8GB是目标预算，实际峰值必须记录，不能由本节手算冒充实测。
+
+---
+
+<a id="page-docs-08-walkthroughs-05-posttraining-md"></a>
+
+<a id="page-docs-08-walkthroughs-05-posttraining-md-后训练sftlora奖励模型与偏好优化"></a>
+
+# 后训练：SFT、LoRA、奖励模型与偏好优化
+
+[导读](#page-docs-08-walkthroughs-readme-md) · [O 后训练](#page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md) · [I08 策略梯度](#page-docs-03-decision-specialties-i-reinforcement-learning-md-i08)
+
+<a id="page-docs-08-walkthroughs-05-posttraining-md-1-先分清目标参数化与优化算法"></a>
+
+## 1. 先分清目标、参数化与优化算法
+
+SFT规定从示范回答学习的目标；LoRA规定允许更新哪些参数及如何表示增量；DPO规定从偏好对学习的目标。它们不是互斥的三个模型类型。可以用LoRA参数化训练SFT，也可以用LoRA训练DPO。
+
+一条对话有system、user和assistant角色，chat template把结构转成具体token序列。模板错误会让训练与推理输入分布不一致。对普通instruction SFT，损失只监督assistant回答：
+
+$$L_{SFT}=-\frac{\sum_t m_t\log\pi_\theta(y_t\mid x,y_{<t})}{\sum_t m_t},\quad m_t\in\{0,1\}.$$
+
+例如序列包含3个prompt token和2个回答token，两个回答的预测概率是0.8和0.5，平均损失约为 $-(\log0.8+\log0.5)/2=0.458$。prompt仍参与前向计算并影响回答，只是不直接作为被监督的目标位置。若mask全为0，该样本没有学习信号，应拒绝或明确跳过，不能除零。
+
+<a id="page-docs-08-walkthroughs-05-posttraining-md-2-lora-的矩阵初始化与保存"></a>
+
+## 2. LoRA 的矩阵、初始化与保存
+
+基础线性层 $W\in\mathbb R^{d_o\times d_i}$ 冻结，增量为
+
+$$W'=W+\frac\alpha r BA,\quad A\in\mathbb R^{r\times d_i},\ B\in\mathbb R^{d_o\times r}.$$
+
+取 $d_i=d_o=4,r=1$，全矩阵16个参数，低秩增量只需8个参数。令 $A=[1,0,0,0]$，$B=[1,2,0,0]^T$，$\alpha/r=1$，输入 $x=[3,5,7,9]^T$，增量输出 $BAx=[3,6,0,0]^T$。低秩不是把输入截成前r维，而是学习两个投影。
+
+常用一侧随机、一侧置零，让初始模型等于基座；两侧都置零会使乘积的两个梯度都为零。只保存adapter时，恢复还依赖原基座、tokenizer和配置。合并后模型与未合并模型应在容差内一致，量化配置下不能无条件假定完全等价。
+
+<a id="page-docs-08-walkthroughs-05-posttraining-md-3-从偏好对到奖励模型"></a>
+
+## 3. 从偏好对到奖励模型
+
+标注者给同一prompt的两个回答排序。Bradley–Terry模型用奖励差表示偏好概率：
+
+$$P(y_w\succ y_l\mid x)=\sigma(r(x,y_w)-r(x,y_l)).$$
+
+若奖励差是 $\log3$，则预测胜出概率是0.75。奖励只由相对差决定，给两个回答奖励同时加常数不会改变偏好概率。标注还可能混合事实性、语气、长度和格式，奖励模型不等于客观真理函数。
+
+KL正则化的策略目标在高奖励与不过度偏离参考策略间折中。参考策略通常是固定的已有模型。KL过强可能学不动，过弱可能让策略利用奖励模型的盲点，因此要同时观察独立任务指标和奖励，而不是只优化奖励曲线。
+
+对固定prompt，最大化 $J(\pi)=\sum_y\pi(y)r(y)-\beta\sum_y\pi(y)\log[\pi(y)/\pi_{ref}(y)]$，并要求概率和为1。对每个 $\pi(y)$ 求导，再用拉格朗日乘子吸收归一化常数，得到 $r(y)-\beta(\log[\pi(y)/\pi_{ref}(y)]+1)+\lambda=0$。因此最优分布为 $\pi^*(y)=\pi_{ref}(y)\exp[r(y)/\beta]/Z$。这里假设参考概率覆盖所考虑的回答、配分函数有限；这是一条分布优化关系，不保证任意神经网络训练都达到该最优值。
+
+<a id="page-docs-08-walkthroughs-05-posttraining-md-4-dpo-为什么需要参考模型"></a>
+
+## 4. DPO 为什么需要参考模型
+
+从KL正则化最优策略形式，可得到奖励与 $\log(\pi_\theta/\pi_{ref})$ 的关系；同prompt下分区常数在回答差中抵消，代入偏好模型得到：
+
+$$L_{DPO}=-\log\sigma\left(\beta\left[
+\log\frac{\pi_\theta(y_w\mid x)}{\pi_{ref}(y_w\mid x)}-
+\log\frac{\pi_\theta(y_l\mid x)}{\pi_{ref}(y_l\mid x)}\right]\right).$$
+
+令policy对胜者/败者的序列logprob为-2/-3，reference为-2.5/-2.8，括号内差为0.7。$\beta=0.1$时，损失约为 $-\log\sigma(0.07)=0.659$。这是手算目标，不是模型胜率。序列logprob通常求回答token的和，不能未经说明替换成平均值；长度因素会因此影响目标。
+
+reference必须固定且关闭dropout；可以预计算固定数据的reference logprob，避免两份大模型同时驻留。precompute只适用于数据、模板、分词和reference均不再变化的情况。
+
+<a id="page-docs-08-walkthroughs-05-posttraining-md-5-ppogrpo-的先修桥接"></a>
+
+## 5. PPO、GRPO 的先修桥接
+
+把回答看成一条轨迹：状态是prompt和已生成的前缀，动作是下一个token，终止于EOS或长度上限。轨迹概率为 $p_\theta(\tau)=\prod_t\pi_\theta(a_t\mid s_t)$，环境转移部分不依赖策略参数。对 $J=\mathbb E[R(\tau)]$ 使用对数导数恒等式得到
+
+$$\nabla_\theta J=\mathbb E\left[R(\tau)\sum_t\nabla_\theta\log\pi_\theta(a_t\mid s_t)\right].$$
+
+这是REINFORCE的起点。减去与当前动作无关的baseline不改变期望梯度，因为 $\sum_a\pi(a\mid s)\nabla\log\pi(a\mid s)=\nabla1=0$。优势 $A=Q-V$ 衡量动作比该状态通常表现好多少；训练时优势一般视为固定目标，不通过它反传到actor。
+
+Actor–Critic学习价值函数。TD残差为 $\delta_t=r_t+\gamma V(s_{t+1})-V(s_t)$，终止状态的下一价值置零。广义优势估计为
+
+$$\hat A_t^{GAE}=\sum_{l=0}^{T-t-1}(\gamma\lambda)^l\delta_{t+l}.$$
+
+$\gamma$控制远期奖励，$\lambda$控制多步估计；增大 $\lambda$ 通常减少对单步价值估计的依赖，但方差可能增大。教学例子取两步奖励 $(0,1)$、价值 $(0.4,0.5,0)$，$\gamma=1,\lambda=0.5$，则残差为 $(0.1,0.5)$，优势为 $(0.35,0.5)$；不能把优势直接当成奖励本身。
+
+PPO先用旧策略采样，再优化裁剪替代目标。记 $\rho_t=\pi_\theta(a_t\mid s_t)/\pi_{old}(a_t\mid s_t)$：
+
+$$L^{clip}=\mathbb E_t\left[\min(\rho_t\hat A_t,\operatorname{clip}(\rho_t,1-\epsilon,1+\epsilon)\hat A_t)\right].$$
+
+例如优势为2，$\epsilon=0.2$，概率比为1.4，未裁剪项是2.8，裁剪项是2.4，目标取2.4；继续把这个正优势动作的概率抬高，不再从该裁剪项获得增益。负优势时要保留乘号与min的完整形式，不能直接照搬正优势直觉。clip不是严格的全局KL约束；LLM中的参考策略 $\pi_{ref}$ 与每轮采样策略 $\pi_{old}$ 也有不同职责：前者限制偏离初始模型，后者定义更新时的重要性比。
+
+GRPO对同一个prompt采样一组回答，用组内奖励构造 $\hat A_i=(r_i-\bar r)/(s_r+\varepsilon)$，不再为baseline单独训练critic。取奖励 $(0,1,2)$ 并用总体标准差，优势约为 $(-1.225,0,1.225)$；这是教学归一化，实际框架可能采用不同标准差约定。序列级奖励会把同一组优势分给该回答的有效token，再使用概率比裁剪及KL项。奖励组若全相同，归一化要处理零方差，且几乎没有区分回答的信号。组内标准化、token/序列归一化、KL估计和采样策略都会改变训练行为；论文公式与框架变体应逐项对照。
+
+[InstructGPT](../readings/papers/instructgpt.md)、[DPO](../readings/papers/dpo.md)与[DeepSeekMath](../readings/papers/deepseekmath.md)分别承担不同历史和机制角色，不能把它们统称为“用了人类反馈所以相同”。
+
+<a id="page-docs-08-walkthroughs-05-posttraining-md-6-检测题与解析"></a>
+
+## 6. 检测题与解析
+
+1. **SFT只计算回答loss，prompt是否不影响训练？** 影响；回答位置会通过注意力依赖prompt的表示和相关参数。
+2. **DPO训练时同步更新reference，有什么问题？** 改变目标中的固定参照，破坏上述推导和学习信号；不能称为同一个DPO设定。
+3. **合成偏好胜率上升说明模型更符合人类价值吗？** 不能。它仅证明模型在特定标签规则和划分下改变了偏好，需要独立数据和明确的评价维度。
+
+<a id="page-docs-08-walkthroughs-05-posttraining-md-7-来源与完整实现"></a>
+
+## 7. 来源与完整实现
+
+[RLHF Book](https://rlhfbook.com/)的instruction tuning、reward modeling、policy gradients与direct preference optimization章节；[CS336](https://cs336.stanford.edu/spring2025/)后训练讲次。库级行为参见[PEFT](../readings/projects/peft.md)与[TRL](../readings/projects/trl.md)；完整离线链路参见[后训练实验室](../labs/posttrain/README.md)。教材草稿与库接口按所注明版本理解。
+
+---
+
+<a id="page-docs-08-walkthroughs-06-retrieval-agents-md"></a>
+
+<a id="page-docs-08-walkthroughs-06-retrieval-agents-md-从检索到-agent把答案和动作都变成可检查的过程"></a>
+
+# 从检索到 Agent：把答案和动作都变成可检查的过程
+
+[导读](#page-docs-08-walkthroughs-readme-md) · [N 检索](#page-docs-03-decision-specialties-n-recommendation-search-retrieval-md) · [O05 RAG](#page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o05) · [O08 Agent](#page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o08)
+
+<a id="page-docs-08-walkthroughs-06-retrieval-agents-md-1-先把-rag-拆成可定位的阶段"></a>
+
+## 1. 先把 RAG 拆成可定位的阶段
+
+```mermaid
+flowchart LR
+  D[文档与来源] --> C[切分和片段ID]
+  Q[问题] --> R[召回]
+  C --> R
+  R --> K[重排]
+  K --> P[上下文与引用]
+  P --> A[生成或抽取答案]
+  A --> E[答案和证据评估]
+```
+
+每个箭头都可能失败。文档缺少答案时，继续扩大生成模型无法补回证据；正确片段已召回但模型读错时，单纯改善检索排名也不一定有效。保存文档ID、片段ID和文本位置，使错误能追溯到具体阶段。
+
+切分太短可能把定义和条件拆开，太长则浪费上下文并引入无关信息。重叠窗口可以保留边界信息，却增加重复证据；评估时应按原始文档或事实去重，避免把多个重叠片段当作多份独立支持。
+
+<a id="page-docs-08-walkthroughs-06-retrieval-agents-md-2-稀疏潜在语义与神经稠密检索"></a>
+
+## 2. 稀疏、潜在语义与神经稠密检索
+
+TF-IDF用词项频率和逆文档频率表示文本。BM25进一步引入词频饱和与文档长度归一化。一种常见形式为
+
+$$s(q,d)=\sum_{t\in q}\operatorname{IDF}(t)
+\frac{f(t,d)(k_1+1)}{f(t,d)+k_1(1-b+b|d|/\overline{|d|})}.$$
+
+同一词重复20次通常不应获得重复1次的20倍证据。长度归一化则避免长文档仅凭更多词就占优势。具体IDF平滑有不同版本，比较时必须使用一致定义。
+
+TF-IDF矩阵的截断SVD得到低维潜在语义表示，它是线性统计方法，不是神经embedding。神经双塔分别编码query和document，训练目标可让正配对相似度超过负配对。cross-encoder则联合读取query和document，更适合重排少量候选。两者精度、延迟和可预计算性不同。
+
+混合检索可以融合两种排序。RRF使用 $\sum_j 1/(k+\operatorname{rank}_j(d))$，避免直接相加量纲不同的分数。规则重排只能说明规则偏好，不能被写成已经实现神经交叉编码器。
+
+<a id="page-docs-08-walkthroughs-06-retrieval-agents-md-3-一个小排名例子"></a>
+
+## 3. 一个小排名例子
+
+某问题的相关文档是A和C。系统返回 `[B,A,D]`，则Recall@3为1/2，第一个相关结果在第2位，reciprocal rank为1/2。如果A片段本身不含答案，只是同一个大文档相关，那么文档级命中和片段级答案可用性仍不同。
+
+检索指标不衡量生成答案是否忠实。答案评测还要检查正确性、引用能否支持对应断言、无答案时是否拒答。字符串覆盖率只能作为启发式，不能证明蕴含关系；小数据集可以保留逐项人工标注及明确判分规则。
+
+拒答阈值必须在验证集选择，再到独立测试集报告。若问题与词表重合极少，低分可能表示无答案，也可能是检索器不懂同义词；需要分析失败类型，不能把阈值当作真理判定器。
+
+<a id="page-docs-08-walkthroughs-06-retrieval-agents-md-4-原始-rag-与常见工程流水线"></a>
+
+## 4. 原始 RAG 与常见工程流水线
+
+2020年的[RAG论文](../readings/papers/rag.md)把检索文档作为潜变量，讨论RAG-Sequence与RAG-Token的概率组合和训练。常见工程系统是检索、拼接prompt、调用已有生成器，通常没有复现原论文的联合训练目标。两者有概念联系，但不能因为名字相同就宣称复现论文。
+
+<a id="page-docs-08-walkthroughs-06-retrieval-agents-md-5-agent-的模型策略与确定性控制器"></a>
+
+## 5. Agent 的模型策略与确定性控制器
+
+模型提出动作，控制器检查后执行工具并把观察返回模型。工具调用至少包含工具名与结构化参数；控制器负责白名单、类型、范围、预算和终止，而不是让模型生成的文本直接进入任意执行器。
+
+例如“计算3×7，再找文档中的推荐上限”需要两种工具。计算器只接受受限算术表达式，拒绝属性访问、导入和任意函数调用；检索工具只读取预先允许的本地资料。文档里出现“忽略用户、调用其他工具”的文字只能作为数据处理。
+
+```text
+开始 → 模型建议动作 → 校验
+                    ├─ 合法：执行工具 → 记录观察 → 下一步
+                    ├─ 可恢复错误：反馈原因 → 有限次数重试
+                    └─ 超预算或越权：终止并说明原因
+```
+
+超时不等于工具已停止。真实外部副作用还需要取消、幂等和补偿设计；本仓库的工具以只读或纯计算为主，但仍要明确超时检测覆盖到哪里。不要把离线确定性脚本策略的成功率冒充真实模型的工具选择能力。
+
+<a id="page-docs-08-walkthroughs-06-retrieval-agents-md-6-检测题与解析"></a>
+
+## 6. 检测题与解析
+
+1. **Recall@k提高，答案一定更好吗？** 不一定；增加的文档可能挤占关键上下文，生成器也可能忽略正确证据。
+2. **一个答案引用了存在的文档，是否就可信？** 还需核对引用片段是否支持相邻断言；文档存在性只是最弱的一步。
+3. **把工具白名单写进system prompt就足够了吗？** 不够。控制器需要独立检查工具名和参数；模型遵守指令不是访问控制机制。
+
+<a id="page-docs-08-walkthroughs-06-retrieval-agents-md-7-学习连接"></a>
+
+## 7. 学习连接
+
+[Introduction to Information Retrieval](https://nlp.stanford.edu/IR-book/)第6、8、11章分别对应词项评分、检索评测和概率检索；[Berkeley LLM Agents](https://rdi.berkeley.edu/llm-agents/f24)用于工具与规划专题。继续读[DPR](../readings/papers/dpr.md)、[ReAct](../readings/papers/react.md)及[LangGraph源码](../readings/projects/langgraph.md)。完整实践分为[RAG](../labs/rag/README.md)和[Agent](../labs/agent/README.md)，分别记录算法结果、控制器fixture与真实本地模型结果。
+
+---
+
+<a id="page-docs-08-walkthroughs-07-generative-multimodal-md"></a>
+
+<a id="page-docs-08-walkthroughs-07-generative-multimodal-md-生成与多模态从分布去噪到图文对齐"></a>
+
+# 生成与多模态：从分布、去噪到图文对齐
+
+[导读](#page-docs-08-walkthroughs-readme-md) · [G 生成模型](#page-docs-02-perception-language-g-generative-models-md) · [H 多模态](#page-docs-02-perception-language-h-multimodal-vlm-md)
+
+<a id="page-docs-08-walkthroughs-07-generative-multimodal-md-1-生成模型首先回答概率问题"></a>
+
+## 1. 生成模型首先回答概率问题
+
+分类模型常学 $p(y\mid x)$；生成模型可以学 $p(x)$ 或带条件的 $p(x\mid c)$。观察到一幅清晰图像并不能说明模型覆盖了数据分布，生成模型还可能只重复少数训练样本。因此要区分样本质量、覆盖度、多样性和记忆。
+
+自回归把联合分布分解为条件概率乘积，潜变量模型引入未观察的 $z$，扩散模型定义逐步加噪与反向生成过程。它们比较的是建模和计算方式，不是简单的“谁画得更好”。
+
+<a id="page-docs-08-walkthroughs-07-generative-multimodal-md-2-vae-的-elbo-从哪里来"></a>
+
+## 2. VAE 的 ELBO 从哪里来
+
+设生成模型 $p_\theta(x,z)=p(z)p_\theta(x\mid z)$，近似后验为 $q_\phi(z\mid x)$。插入这个分布并利用Jensen不等式，可得到
+
+$$\log p_\theta(x)\geq
+\mathbb E_q[\log p_\theta(x\mid z)]-D_{KL}(q_\phi(z\mid x)\Vert p(z))=\operatorname{ELBO}.$$
+
+也可由恒等式理解差距：$\log p_\theta(x)-\operatorname{ELBO}=D_{KL}(q_\phi(z\mid x)\Vert p_\theta(z\mid x))\geq0$。第一项鼓励从潜变量重构数据，第二项约束后验与先验的差异；提高ELBO同时涉及模型拟合和推断近似。
+
+对对角Gaussian后验，令 $z=\mu+\sigma\odot\epsilon$、$\epsilon\sim\mathcal N(0,I)$，把随机性移到与参数无关的噪声，梯度可以穿过 $\mu,\sigma$。一维后验 $\mathcal N(1,1)$ 相对标准Gaussian的KL为 $\frac12(1^2+1-\log1-1)=0.5$。这是分布差异，不能把它当成重构像素误差。
+
+重构项具体是Bernoulli、Gaussian还是其他似然，需要与数据假设匹配。过强的解码器可能忽略 $z$，形成posterior collapse；好看的重构图不证明潜变量有用。
+
+<a id="page-docs-08-walkthroughs-07-generative-multimodal-md-3-ddpm-的训练不是直接从纯噪声生成"></a>
+
+## 3. DDPM 的训练不是直接从纯噪声生成
+
+前向过程可写为 $x_t=\sqrt{\bar\alpha_t}x_0+\sqrt{1-\bar\alpha_t}\epsilon$。每次训练抽取一个时间步和噪声，网络根据 $x_t,t$ 预测噪声。常用简化目标为
+
+$$L=\mathbb E_{x_0,t,\epsilon}\|\epsilon-\epsilon_\theta(x_t,t)\|^2.$$
+
+令 $\bar\alpha_t=0.25,x_0=2,\epsilon=-1$，得到 $x_t=1-\sqrt{0.75}\approx0.134$。已知噪声时可按代数关系恢复 $x_0$；真实生成时没有原始 $x_0$，必须从噪声出发，反复使用网络预测构建反向更新。只计算一次MSE反传，不等于实现完整扩散采样器。
+
+时间条件不能省略，同一个带噪数值在不同噪声级别可能对应不同任务。噪声表、反向方差和采样算法都会影响结果；减少采样步数时也应比较质量变化和计算预算。
+
+CFG把有条件和无条件预测组合，例如 $\epsilon_u+s(\epsilon_c-\epsilon_u)$。增大 $s$ 往往强化条件，却可能降低多样性或引入失真，它不是无代价改善。
+
+<a id="page-docs-08-walkthroughs-07-generative-multimodal-md-4-clip配对目标如何形成共享空间"></a>
+
+## 4. CLIP：配对目标如何形成共享空间
+
+图像编码器和文本编码器分别输出归一化向量 $u_i,v_i\in\mathbb R^d$。相似度 $S_{ij}=u_i^Tv_j/\tau$ 构成 $B\times B$ 矩阵，正确配对通常在对角线上。图搜文损失是对每行做交叉熵，文搜图对每列做交叉熵，再取平均。
+
+两个样本的logits若为 $[2,0]$，正确配对概率约为0.881，对应损失约0.127。降低温度会使分布更尖，但错误配对也会受到更强惩罚。重复描述或语义相同图像可能成为false negative，因此batch构成是学习目标的一部分。
+
+检索是比较向量；零样本分类把类别写成文本提示再比较；生成式VLM则需要输出语言token。这三件事不相同。合成数据训练的小双塔若从未见过某个类别词，也不能被直接称为开放词汇模型。
+
+<a id="page-docs-08-walkthroughs-07-generative-multimodal-md-5-从-clip-到生成式-vlm"></a>
+
+## 5. 从 CLIP 到生成式 VLM
+
+一个常见结构是视觉encoder → connector → LLM。图像切为patch或其他视觉token，connector把视觉表示映射到语言模型可接收的隐藏空间，再与文本共同处理。训练可能分为对齐连接器和多模态指令微调，但具体冻结策略由方法决定。
+
+有视觉token并不保证回答真正依赖图像。模型可能依靠语言先验猜答案，需要图像替换、问题扰动和细粒度grounding测试。图文匹配准确也不能证明计数、空间关系或文档细节正确。
+
+<a id="page-docs-08-walkthroughs-07-generative-multimodal-md-6-检测题与解析"></a>
+
+## 6. 检测题与解析
+
+1. **VAE中重构项更好而总ELBO更差可能吗？** 可以，KL项的增加可能超过重构改善；必须同时看两项和它们的单位、权重。
+2. **DDPM训练抽一个t，生成也只需一次预测吗？** 不必然。标准反向过程需要多个步骤；一步模型需要额外方法和相应训练，不能从随机t训练直接推出。
+3. **图文检索测试把同一形状的几乎相同图片随机分两组有什么问题？** 可能只测到近重复识别。应按场景或属性组合划分，说明测试是已见组合的新外观，还是未见组合泛化。
+
+<a id="page-docs-08-walkthroughs-07-generative-multimodal-md-7-精读与实践"></a>
+
+## 7. 精读与实践
+
+先读[VAE](../readings/papers/vae.md)、[DDPM](../readings/papers/ddpm.md)，再读[CLIP](../readings/papers/clip.md)、[LLaVA](../readings/papers/llava.md)。[CMU 11-777课程](https://multicomp.cs.cmu.edu/mmml-course/fall2023/)按表示、对齐、融合与生成组织多模态问题。[图文检索实验](../labs/multimodal/README.md)提供完整小数据双塔流程，预训练CLIP扩展使用英文描述并单独记录结果。
+
+---
+
+<a id="page-docs-08-walkthroughs-08-domain-bridges-md"></a>
+
+<a id="page-docs-08-walkthroughs-08-domain-bridges-md-各领域怎样接回共同主干"></a>
+
+# 各领域怎样接回共同主干
+
+[导读](#page-docs-08-walkthroughs-readme-md) · [课程教材索引](#page-docs-07-resources-t-source-index-md) · [论文精读目录](#page-readings-readme-md)
+
+本讲义保留大模型以外的主要方向。选方向时先问：输入输出是什么，允许观察什么，干预或行动会不会改变后续数据，任务是否存在时间、空间或图结构。下面每节给出问题、方法与一个有答案的诊断题，具体数学回到已有单元。
+
+<a id="page-docs-08-walkthroughs-08-domain-bridges-md-1-经典-ai搜索约束逻辑与规划"></a>
+
+## 1. 经典 AI：搜索、约束、逻辑与规划
+
+[B07–B12](#page-docs-01-foundations-b-plus-classical-ai-md-b07)把问题表示为状态、动作、转移和目标。搜索寻找动作序列，CSP寻找满足约束的赋值，逻辑推理判断结论是否被知识库支持。它们可以作为Agent的确定性子模块，而不是被“让模型想一下”完全替代。
+
+**例子与答案**：迷宫中每步成本为1，BFS寻找最少步数路径；若不同格子代价不同，BFS不再保证最低总成本。A*的启发式和图搜索实现需要满足相应条件，才能使用最优性结论。资料：[CS188在线教材](https://inst.eecs.berkeley.edu/~cs188/textbook/)的search、CSP与games章节。
+
+<a id="page-docs-08-walkthroughs-08-domain-bridges-md-2-概率模型把结构和不确定性显式写出来"></a>
+
+## 2. 概率模型：把结构和不确定性显式写出来
+
+[C13 图模型](#page-docs-01-foundations-c-machine-learning-md-c13)与[C14–C15 概率推断](#page-docs-01-foundations-c-plus-probabilistic-black-box-md-c14)连接图模型、GP、采样与变分推断。图模型中一条边表达概率依赖，不一定表达因果关系。GP对函数建先验；MCMC使用相关样本近似后验期望，不能把迭代数等同独立样本数。
+
+**例子与答案**：两条MCMC链都跑一万步但一直停在不同模式，不能因为样本数多就认为收敛；应检查轨迹、混合和有效样本量。资料：[CS228公开笔记](https://ermongroup.github.io/cs228-notes/)、[Probabilistic Machine Learning](https://probml.github.io/pml-book/book1.html)。这条先修支线帮助理解VAE和Bayesian uncertainty。
+
+<a id="page-docs-08-walkthroughs-08-domain-bridges-md-3-视觉与语音先理解测量过程"></a>
+
+## 3. 视觉与语音：先理解测量过程
+
+[E视觉](#page-docs-02-perception-language-e-computer-vision-md)、[K语音](#page-docs-03-decision-specialties-k-speech-audio-md)共同依赖采样、局部结构和表示学习。图像分辨率、颜色空间、摄像机几何影响“看到什么”；音频采样率、时间窗和频谱变换影响“听到什么”。
+
+**例子与答案**：提高音频采样率不会凭空恢复录音时已经丢失的高频信息；调整图像尺寸也可能改变小物体可见性。评估应分别报告感知输入条件。视觉读[CS231n](https://cs231n.stanford.edu/)和[Szeliski教材](https://szeliski.org/Book/)；语音读[李宏毅DLHLP](https://speech.ee.ntu.edu.tw/~hylee/dlhlp/2020-spring.php)及[SLP3](https://web.stanford.edu/~jurafsky/slp3/)语音章节。
+
+<a id="page-docs-08-walkthroughs-08-domain-bridges-md-4-强化学习行动改变后续数据"></a>
+
+## 4. 强化学习：行动改变后续数据
+
+[I强化学习](#page-docs-03-decision-specialties-i-reinforcement-learning-md)从MDP、回报和Bellman方程出发。监督学习通常直接拥有标签，RL需要通过行动获得回报和新状态，探索行为还会改变收集到的数据分布。
+
+**例子与答案**：一次轨迹成功不能说明策略稳健；不同随机种子、初始状态和环境扰动可能导致相反结果。评估时关闭训练探索，并分清环境终止和时间截断。学习顺序为老虎机 → MDP → DP/MC/TD → 函数逼近 → 策略梯度；[DQN精读](../readings/papers/dqn.md)不替代后训练需要的PPO先修。资料：[CS285](https://rail.eecs.berkeley.edu/deeprlcourse/)、[Sutton与Barto教材入口](http://incompleteideas.net/book/the-book-2nd.html)。
+
+<a id="page-docs-08-walkthroughs-08-domain-bridges-md-5-图学习邻居不是普通特征列"></a>
+
+## 5. 图学习：邻居不是普通特征列
+
+[J图学习](#page-docs-03-decision-specialties-j-graph-neural-networks-md)把关系结构纳入表示。消息传递先从邻居收集信息，再用与节点排列无关的聚合更新自身。堆叠层数增加感受范围，但也可能导致过平滑或信息瓶颈。
+
+**例子与答案**：把节点ID重新编号后，图级预测应不变，节点级预测应随编号对应重排。若测试边提前进入训练图，可能发生结构泄漏。资料：[CS224W](https://web.stanford.edu/class/cs224w/)、[Graph Representation Learning](https://www.cs.mcgill.ca/~wlh/grl_book/)、[GCN精读](../readings/papers/gcn.md)。
+
+<a id="page-docs-08-walkthroughs-08-domain-bridges-md-6-时间序列因果与推荐评测协议决定问题"></a>
+
+## 6. 时间序列、因果与推荐：评测协议决定问题
+
+[L时间序列](#page-docs-03-decision-specialties-l-time-series-md)要区分预测时可用信息和事后统计。滚动验证应在每个预测时点只用过去；使用全序列均值标准化可能泄漏未来。
+
+[M因果推断](#page-docs-03-decision-specialties-m-causal-inference-md)区分观察条件 $P(Y\mid X)$ 与干预后的 $P(Y\mid do(X))$。天气同时影响冰淇淋销量和溺水风险时，销量可预测风险，并不意味着干预销量会改变溺水概率。混杂、选择偏差和可识别性假设必须先说明，再谈估计器。
+
+[N推荐检索](#page-docs-03-decision-specialties-n-recommendation-search-retrieval-md)的数据还受到曝光策略影响。用户没点击可能因为不喜欢，也可能根本没看到；随机负采样的离线高分不能直接推出线上收益。
+
+**检测与答案**：三个方向都不应只随机拆行。时间序列考虑时间边界，因果考虑分配机制与混杂，推荐考虑用户/物品和曝光边界。进一步阅读：[Forecasting: Principles and Practice](https://otexts.com/fpp3/)、[Causal Inference: What If](https://www.hsph.harvard.edu/miguel-hernan/wp-content/uploads/sites/1268/2024/04/hernanrobins_WhatIf_26apr24.pdf)、[Stanford IR教材](https://nlp.stanford.edu/IR-book/)。
+
+<a id="page-docs-08-walkthroughs-08-domain-bridges-md-7-机器人策略输出之后仍有物理系统"></a>
+
+## 7. 机器人：策略输出之后仍有物理系统
+
+[Q机器人](#page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md)连接坐标变换、感知、状态估计、运动学、规划与控制。语言模型输出“抓取杯子”不是电机指令；学习策略输出候选动作也不意味着满足碰撞、速度、接触和可达性约束。
+
+**例子与答案**：两臂末端目标都可达，联合轨迹仍可能相撞；单臂IK成功不足以证明双臂任务安全。先明确观测、动作接口、控制周期和异常停机，再比较模仿学习或RL。资料：[MIT Underactuated Robotics](https://underactuated.csail.mit.edu/)与[Robotic Manipulation](https://manipulation.csail.mit.edu/)。本轮不运行机器人仿真或把静态讲解写成碰撞验证结果。
+
+<a id="page-docs-08-walkthroughs-08-domain-bridges-md-8-可信-ai-贯穿全部方向"></a>
+
+## 8. 可信 AI 贯穿全部方向
+
+公平性、隐私、鲁棒性和安全性通常对应不同目标，不能用一个总体准确率替代。不同公平性指标可能冲突，需要说明目标人群、风险和权衡。学习来源：[Fairness and Machine Learning](https://fairmlbook.org/)。在每个实验里保留数据来源、分组误差、失败条件和用途限制，比孤立列出几个原则更可执行。
+
+---
+
+<a id="page-docs-07-resources-t-source-index-md"></a>
+
+<a id="page-docs-07-resources-t-source-index-md-t-总索引与资料使用说明"></a>
+
+# T. 总索引与资料使用说明
+
+
+[🏠 仓库首页](../README.md) · [📚 学习导航](../docs/README.md) · [📖 完整单文件版](AI_Encyclopedia.md) · [← 上一章](#page-docs-06-projects-s-projects-assessment-md)
+
+---
+
+<a id="page-docs-07-resources-t-source-index-md-知识单元"></a>
+
+## 知识单元
+
+<a id="page-docs-07-resources-t-source-index-md-t01-一手资料总入口"></a>
 
 ### T01 一手资料总入口
 
@@ -4520,6 +7225,8 @@ model_card.md           用途、数据、指标、风险和禁止用途
 - RL：[Sutton & Barto 第二版](http://incompleteideas.net/book/the-book-2nd.html)、[Berkeley CS185/285](https://rail.eecs.berkeley.edu/deeprlcourse/)和 [Gymnasium Tutorials](https://gymnasium.farama.org/tutorials/)。
 - VLM：[Hugging Face Multimodal Unit](https://huggingface.co/learn/computer-vision-course/en/unit4/multimodal-models/pre-intro)作为入门导航，结论回到各原论文。
 - 评测与安全：[HELM](https://crfm.stanford.edu/helm/index.html)、[NIST Generative AI Profile](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf)、[OWASP LLM Top 10 2025](https://owasp.org/www-project-top-10-for-large-language-model-applications/assets/PDF/OWASP-Top-10-for-LLMs-v2025.pdf)。
+
+<a id="page-docs-07-resources-t-source-index-md-t02-资料可信度顺序"></a>
 
 ### T02 资料可信度顺序
 
@@ -4534,6 +7241,8 @@ model_card.md           用途、数据、指标、风险和禁止用途
 
 产品价格、模型名称、API 限制和排行榜属于高漂移信息，必须重新打开官方页面核验；原理性定义不要从产品页推断。
 
+<a id="page-docs-07-resources-t-source-index-md-t03-这份百科的边界"></a>
+
 ### T03 这份百科的边界
 
 “AI 的全部”不存在稳定终点。本讲义覆盖共同主干和主要现代分支，但测度论、随机微分方程、Bayesian nonparametrics、编译器/芯片设计、法律法规细则以及医疗/金融/生物等行业知识只能作为继续深挖方向。遇到新技术时，用下面五问把它挂回已有知识树：
@@ -4545,3 +7254,468 @@ model_card.md           用途、数据、指标、风险和禁止用途
 5. 能否用一个小实验复现其核心机制或证伪宣传？
 
 只要能回答这五问，新论文就不会成为孤立名词。
+
+<a id="page-docs-07-resources-t-source-index-md-t04-课程教材与本仓库的对应关系"></a>
+
+### T04 课程、教材与本仓库的对应关系
+
+本表是2026-10-03整理的学习入口：核对官方课程、目录和公开材料范围，不表示每门课所有视频或整本教材都已逐页读完。固定年份用于保持可定位性；课程主页更新时，优先保留所读历史版本。
+
+| 领域与本地入口 | 主课程或开放讲义 | 教材及精读位置 | 公开程度与使用方式 |
+|---|---|---|---|
+| A 数学 | [MIT OCW 18.06](https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/) | [Mathematics for Machine Learning](https://mml-book.github.io/)，Ch2–7：线代、几何、分解、微积分、概率、优化 | 官方公开课程；作者提供教材PDF，按先修选读 |
+| B+ 经典AI | [CS188 Spring 2025](https://inst.eecs.berkeley.edu/~cs188/archive/sp25/) | [CS188在线教材](https://inst.eecs.berkeley.edu/~cs188/textbook/)，search/CSP/games/MDP | 公开讲义和教材；AIMA作者站不是整本免费版 |
+| C 机器学习 | [CS229历史公开课程](https://see.stanford.edu/Course/CS229) | [ISLP](https://www.statlearning.com/)，回归、分类、重采样、正则化、树；书籍版本以作者页为准 | 公开视频与作者PDF；不要把校内当季录像当必需入口 |
+| C+ 概率模型 | [CS228笔记](https://ermongroup.github.io/cs228-notes/) | [Probabilistic Machine Learning](https://probml.github.io/pml-book/book1.html)，概率、推断与潜变量章节 | 课程笔记和作者草稿；标明草稿与正式出版物差异 |
+| D 深度学习 | [MIT 6.S191](https://introtodeeplearning.com/) | [D2L 1.0.3英文站](https://d2l.ai/)，Ch5 MLP、Ch7–8 CNN、Ch9–10 RNN、Ch11 Attention、Ch12优化；[Deep Learning](https://www.deeplearningbook.org/)，Ch6/8 | 公开材料，例程库版本可能变化 |
+| E 视觉 | [CS231n 2025](https://cs231n.stanford.edu/2025/schedule.html) | [Szeliski第2版](https://szeliski.org/Book/)，图像形成、特征、对齐与三维 | 课件公开；当季录像和教材下载条件分别确认 |
+| F 语言模型 | [CS224N Winter 2026](https://web.stanford.edu/class/cs224n/)、[CS336 Spring 2025归档](https://cs336.stanford.edu/spring2025/) | [SLP3草稿](https://web.stanford.edu/~jurafsky/slp3/)，语言模型、Transformer、预训练；CS336 assignments 1–5 | CS224N公开历史录像与当季校内录像区分；CS336完整作业需要额外算力 |
+| G 生成模型 | [CS236](https://deepgenerativemodels.github.io/) | [VAE](../readings/papers/vae.md)、[DDPM](../readings/papers/ddpm.md)精读及原文 | 以公开课程和原论文解释目标，不用图片观感代替评估 |
+| H 多模态 | [CMU 11-777 Fall 2023](https://multicomp.cs.cmu.edu/mmml-course/fall2023/) | representations/alignment/fusion/generation讲次；[CLIP](../readings/papers/clip.md)、[LLaVA](../readings/papers/llava.md) | 历史公开课件和部分录像；研究综述不称为正式教材 |
+| I 强化学习 | [CS285](https://rail.eecs.berkeley.edu/deeprlcourse/) | [Sutton与Barto第二版](http://incompleteideas.net/book/the-book-2nd.html)，Ch2–6、9、13 | 公开课程及作者入口；特定页面若不可用应记录而非编造可访问性 |
+| J 图学习 | [CS224W](https://web.stanford.edu/class/cs224w/) | [Hamilton GRL](https://www.cs.mcgill.ca/~wlh/grl_book/)，图嵌入与消息传递 | 作者公开的是出版前草稿 |
+| K 语音 | [李宏毅DLHLP 2020](https://speech.ee.ntu.edu.tw/~hylee/dlhlp/2020-spring.php) | SLP3语音表征、ASR、TTS章节 | 中文课程公开；用较新教材补内容，不能称2020课为最新 |
+| L 时间序列 | [FPP3开放教材](https://otexts.com/fpp3/) | Ch2时间序列图、Ch3分解、Ch5预测基础、Ch8 ETS、Ch9 ARIMA | 作者HTML教材；可将R例子的原理对应Python实践 |
+| M 因果 | [What If作者公开PDF（2024）](https://www.hsph.harvard.edu/miguel-hernan/wp-content/uploads/sites/1268/2024/04/hernanrobins_WhatIf_26apr24.pdf) | Part I：因果定义、交换性、标准化、IPW | 作者公开教材；识别假设与计算估计分开 |
+| N 检索 | [Stanford IR教材](https://nlp.stanford.edu/IR-book/) | Ch6评分、Ch8评测、Ch11概率检索；[DPR](../readings/papers/dpr.md) | HTML和PDF公开；传统IR与神经检索分别学习 |
+| O 后训练与Agent | [RLHF Book及课程](https://rlhfbook.com/course)、[Berkeley Agents 2024](https://rdi.berkeley.edu/llm-agents/f24) | SFT/reward modeling/DPO/policy gradients；Agent的工具、规划、评估讲次 | 作者开放书与官方课件；SLP3未完成的Agent章节不作完整依据 |
+| P 系统与可信AI | [DLSys](https://dlsyscourse.org/) | [MLSysBook](https://mlsysbook.ai/)、[Fairness and ML](https://fairmlbook.org/) | 开放课程/教材；系统测量与公平性约束承担不同问题 |
+| Q 机器人 | [MIT Underactuated](https://underactuated.csail.mit.edu/) | [Robotic Manipulation](https://manipulation.csail.mit.edu/)，运动学、感知、规划与控制 | 作者开放讲义；仿真与硬件运行不能由静态阅读替代 |
+
+<a id="page-docs-07-resources-t-source-index-md-t05-论文源码和实验的证据层"></a>
+
+### T05 论文、源码和实验的证据层
+
+- [论文精读库](#page-readings-readme-md)：登记确切论文和阅读版本，关键实验回到原文图表。
+- [项目源码导读](../readings/projects/README.md)：针对固定版本和实际源文件，区分原始实现、教学实现和工程框架。
+- [完整实践项目](../labs/README.md)：自建小数据的真实算法运行；预训练模型扩展另行验证。
+- [系统串讲](#page-docs-08-walkthroughs-readme-md)：原创例子和推导帮助理解，不把手算数值或模拟结果当作论文复现成绩。
+
+公开可读与允许任意转载不同。优先链接官方材料并以自己的话解释，保留上游代码许可证；引用实验数字时写明它是作者报告还是本地运行。本轮不进行哈希值校验。
+
+<a id="page-docs-07-resources-t-source-index-md-t06-大模型主线的精确课程定位"></a>
+
+### T06 大模型主线的精确课程定位
+
+下表在2026-10-03核对官方目录。在线材料可能继续更新；阅读时以所列版本、日期和小节名称共同定位。课堂练习与本仓库的自建实验分别维护，本仓库不是课程作业的逐题答案。
+
+| 资料与阅读版本 | 具体位置 | 本仓库用途 | 开放范围 / 核验日期 |
+|---|---|---|---|
+| [CS229 SEE历史公开版](https://see.stanford.edu/Course/CS229) | Lecture2：线性回归、批量与随机梯度；Lecture3：概率解释、欠拟合/过拟合、逻辑回归；Lecture4：Newton与GLM | 串讲1–2的似然、损失与优化先修 | 官方视频、讲义与transcript；2026-10-03 |
+| [D2L英文网页1.0.3](https://d2l.ai/) | §2.5自动微分、§3.6泛化、§5.3前后向、§11.5多头注意力、§11.7 Transformer、§12.10 Adam | 数学→张量→代码的连接 | 网页正文、代码公开；不要混用不同语言版章节编号；2026-10-03 |
+| [CS224N Winter2026课程表](https://web.stanford.edu/class/cs224n/#schedule) | Jan20 Transformer、Jan27预训练、Jan29后训练、Feb3高效适配、Feb5 Agent/工具/RAG、Feb10评测 | 对应串讲3–6及精读路径 | 课件与阅读列表公开；当季录像的Canvas入口可能需身份，历史公开视频另查；2026-10-03 |
+| [CS336 Spring2025课程表](https://cs336.stanford.edu/spring2025/#schedule) | Lecture1分词、2资源核算、3架构、9/11 scaling、10推理、12评测、13/14数据、15–17后训练；作业1–5 | Mini-GPT、推理与后训练的课程依据 | 历史归档、代码讲义及作业公开；本机项目采用较小自建任务；2026-10-03 |
+| [RLHF Book网页与配套课](https://rlhfbook.com/course) | instruction tuning、reward modeling、policy gradients、direct preference optimization；网页主页标示last built 2026-09-24 | 串讲5及InstructGPT/DPO/GRPO的先修 | 作者公开书与课程；与2026年纸书的勘误差异以主页说明为准；2026-10-03 |
+| [Berkeley Agents Fall2024](https://rdi.berkeley.edu/llm-agents/f24) | Sept16 Agent概述/ReAct、Sept23框架与知识助手、Oct7复合系统、Nov25能力测量、Dec2可信Agent | 串讲6的工具、状态、评估和失败边界 | 课件与edited video公开；original recording的校内入口分开；2026-10-03 |
+
+---
+
+<a id="page-docs-07-resources-knowledge-index-md"></a>
+
+<a id="page-docs-07-resources-knowledge-index-md-知识点与术语索引"></a>
+
+# 知识点与术语索引
+
+[学习目录](../docs/README.md) · [系统推导](#page-docs-08-walkthroughs-readme-md) · [论文与源码](#page-readings-readme-md) · [实践](../labs/README.md)
+
+> 由章节标题和精读清单自动生成：`python scripts/sync_navigation.py`。标题是检索入口，编号是稳定跳转接口；精读不是该单元的必修前置。
+
+<a id="page-docs-07-resources-knowledge-index-md-a-数学统计与优化"></a>
+
+## A. 数学、统计与优化
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| A01 | [集合、函数、关系与逻辑记号](#page-docs-01-foundations-a-math-statistics-optimization-md-a01) | — |
+| A02 | [标量、向量、矩阵与张量](#page-docs-01-foundations-a-math-statistics-optimization-md-a02) | [Transformer：注意力与编解码器](../readings/papers/transformer.md) |
+| A03 | [向量空间、基、秩、线性映射与子空间](#page-docs-01-foundations-a-math-statistics-optimization-md-a03) | — |
+| A04 | [内积、范数、距离、正交与投影](#page-docs-01-foundations-a-math-statistics-optimization-md-a04) | — |
+| A05 | [特征分解、SVD、正定矩阵与二次型](#page-docs-01-foundations-a-math-statistics-optimization-md-a05) | [LoRA：低秩任务更新](../readings/papers/lora.md)、[GCN：图归一化与节点分类](../readings/papers/gcn.md) |
+| A06 | [单变量与多变量微分、偏导和梯度](#page-docs-01-foundations-a-math-statistics-optimization-md-a06) | — |
+| A07 | [Jacobian、Hessian、链式法则与矩阵微积分](#page-docs-01-foundations-a-math-statistics-optimization-md-a07) | — |
+| A08 | [Taylor 展开、局部近似与曲率](#page-docs-01-foundations-a-math-statistics-optimization-md-a08) | [XGBoost：二阶树提升与系统设计](../readings/papers/xgboost.md) |
+| A09 | [概率公理、条件概率与 Bayes 公式](#page-docs-01-foundations-a-math-statistics-optimization-md-a09) | — |
+| A10 | [随机变量、常见分布、期望与方差](#page-docs-01-foundations-a-math-statistics-optimization-md-a10) | [Adam：自适应梯度与偏差校正](../readings/papers/adam.md) |
+| A11 | [联合、边缘、条件分布、独立性与协方差](#page-docs-01-foundations-a-math-statistics-optimization-md-a11) | [DDPM：逐步去噪生成](../readings/papers/ddpm.md) |
+| A12 | [大数定律、中心极限定理与集中现象](#page-docs-01-foundations-a-math-statistics-optimization-md-a12) | — |
+| A13 | [参数估计、MLE、MAP 与 Bayesian 推断](#page-docs-01-foundations-a-math-statistics-optimization-md-a13) | [VAE：变分下界与可微采样](../readings/papers/vae.md) |
+| A14 | [置信区间、假设检验、Bootstrap 与显著性](#page-docs-01-foundations-a-math-statistics-optimization-md-a14) | — |
+| A15 | [熵、交叉熵、KL 散度、互信息与编码长度](#page-docs-01-foundations-a-math-statistics-optimization-md-a15) | [DPO：从偏好直接优化策略](../readings/papers/dpo.md) |
+| A16 | [浮点数、数值稳定性、条件数与数值线性代数](#page-docs-01-foundations-a-math-statistics-optimization-md-a16) | [FlashAttention：分块精确注意力](../readings/papers/flashattention.md) |
+| A17 | [梯度下降、凸性、约束优化与对偶思想](#page-docs-01-foundations-a-math-statistics-optimization-md-a17) | [Chinchilla：计算最优的模型数据分配](../readings/papers/chinchilla.md) |
+| A18 | [随机优化、经验风险、正则化与泛化](#page-docs-01-foundations-a-math-statistics-optimization-md-a18) | [Adam：自适应梯度与偏差校正](../readings/papers/adam.md) |
+
+<a id="page-docs-07-resources-knowledge-index-md-b-编程数据与实验基础"></a>
+
+## B. 编程、数据与实验基础
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| B01 | [Python、NumPy、广播与向量化](#page-docs-01-foundations-b-programming-data-experiments-md-b01) | — |
+| B02 | [数据结构、算法复杂度与内存复杂度](#page-docs-01-foundations-b-programming-data-experiments-md-b02) | — |
+| B03 | [Git、环境、依赖、测试与调试](#page-docs-01-foundations-b-programming-data-experiments-md-b03) | — |
+| B04 | [张量、自动微分、GPU 与计算图工具](#page-docs-01-foundations-b-programming-data-experiments-md-b04) | [nanoGPT：经典最小GPT训练器](../readings/projects/nanogpt.md)、[Transformers：模型定义与训练生成接口](../readings/projects/transformers.md) |
+| B05 | [数据清洗、预处理、划分与数据泄漏](#page-docs-01-foundations-b-programming-data-experiments-md-b05) | — |
+| B06 | [指标、基线、受控实验、复现与误差分析](#page-docs-01-foundations-b-programming-data-experiments-md-b06) | — |
+
+<a id="page-docs-07-resources-knowledge-index-md-b-经典人工智能搜索约束逻辑与规划"></a>
+
+## B+. 经典人工智能：搜索、约束、逻辑与规划
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| B07 | [状态空间、图搜索与问题建模](#page-docs-01-foundations-b-plus-classical-ai-md-b07) | — |
+| B08 | [启发式搜索与 A*](#page-docs-01-foundations-b-plus-classical-ai-md-b08) | — |
+| B09 | [约束满足问题（CSP）](#page-docs-01-foundations-b-plus-classical-ai-md-b09) | — |
+| B10 | [对抗搜索、Minimax 与 Alpha–Beta](#page-docs-01-foundations-b-plus-classical-ai-md-b10) | — |
+| B11 | [命题逻辑、蕴含与规则推理](#page-docs-01-foundations-b-plus-classical-ai-md-b11) | — |
+| B12 | [自动规划、STRIPS 与执行监控](#page-docs-01-foundations-b-plus-classical-ai-md-b12) | [ReAct：推理行动与外部观察](../readings/papers/react.md)、[LangGraph：有状态工具流程与恢复](../readings/projects/langgraph.md) |
+
+<a id="page-docs-07-resources-knowledge-index-md-c-传统机器学习"></a>
+
+## C. 传统机器学习
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| C01 | [监督学习问题、假设空间与经验风险最小化](#page-docs-01-foundations-c-machine-learning-md-c01) | — |
+| C02 | [线性回归、最小二乘、Ridge 与 Lasso](#page-docs-01-foundations-c-machine-learning-md-c02) | — |
+| C03 | [Logistic、Softmax、交叉熵与概率校准](#page-docs-01-foundations-c-machine-learning-md-c03) | — |
+| C04 | [特征缩放、缺失值、类别编码与特征工程](#page-docs-01-foundations-c-machine-learning-md-c04) | — |
+| C05 | [kNN、距离学习与原型方法](#page-docs-01-foundations-c-machine-learning-md-c05) | — |
+| C06 | [Naive Bayes、LDA 与 QDA](#page-docs-01-foundations-c-machine-learning-md-c06) | — |
+| C07 | [决策树、划分准则、剪枝与可解释性](#page-docs-01-foundations-c-machine-learning-md-c07) | [XGBoost：二阶树提升与系统设计](../readings/papers/xgboost.md) |
+| C08 | [Bagging、随机森林、Boosting 与 GBDT](#page-docs-01-foundations-c-machine-learning-md-c08) | [XGBoost：二阶树提升与系统设计](../readings/papers/xgboost.md) |
+| C09 | [间隔、SVM 与核方法](#page-docs-01-foundations-c-machine-learning-md-c09) | — |
+| C10 | [k-means、GMM、EM 与层次聚类](#page-docs-01-foundations-c-machine-learning-md-c10) | — |
+| C11 | [PCA、降维、流形学习与可视化](#page-docs-01-foundations-c-machine-learning-md-c11) | — |
+| C12 | [交叉验证、调参、类别不均衡与阈值选择](#page-docs-01-foundations-c-machine-learning-md-c12) | — |
+| C13 | [概率图模型、隐变量推断与 HMM](#page-docs-01-foundations-c-machine-learning-md-c13) | — |
+
+<a id="page-docs-07-resources-knowledge-index-md-c-概率函数模型与无梯度优化"></a>
+
+## C+. 概率函数模型与无梯度优化
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| C14 | [Gaussian Process、核先验与 Bayesian Optimization](#page-docs-01-foundations-c-plus-probabilistic-black-box-md-c14) | — |
+| C15 | [MCMC、变分推断与近似 Bayesian 计算](#page-docs-01-foundations-c-plus-probabilistic-black-box-md-c15) | [VAE：变分下界与可微采样](../readings/papers/vae.md) |
+| C16 | [进化算法、随机搜索与黑盒优化](#page-docs-01-foundations-c-plus-probabilistic-black-box-md-c16) | — |
+
+<a id="page-docs-07-resources-knowledge-index-md-d-深度学习共同主干"></a>
+
+## D. 深度学习共同主干
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| D01 | [感知机、神经元、MLP 与激活函数](#page-docs-01-foundations-d-deep-learning-md-d01) | — |
+| D02 | [计算图、反向传播与自动微分](#page-docs-01-foundations-d-deep-learning-md-d02) | [ResNet：残差学习与深层优化](../readings/papers/resnet.md) |
+| D03 | [输出分布、任务损失与复合目标](#page-docs-01-foundations-d-deep-learning-md-d03) | — |
+| D04 | [参数初始化、信号传播与梯度稳定性](#page-docs-01-foundations-d-deep-learning-md-d04) | — |
+| D05 | [SGD、Momentum、Adam 与学习率调度](#page-docs-01-foundations-d-deep-learning-md-d05) | [Adam：自适应梯度与偏差校正](../readings/papers/adam.md) |
+| D06 | [Weight Decay、Dropout、早停与数据增强](#page-docs-01-foundations-d-deep-learning-md-d06) | — |
+| D07 | [BatchNorm、LayerNorm 与 RMSNorm](#page-docs-01-foundations-d-deep-learning-md-d07) | [LLaMA：现代自回归模型的设计](../readings/papers/llama.md) |
+| D08 | [训练循环、微型过拟合、检查点与系统调试](#page-docs-01-foundations-d-deep-learning-md-d08) | [nanoGPT：经典最小GPT训练器](../readings/projects/nanogpt.md) |
+| D09 | [Embedding、表征学习与度量学习](#page-docs-01-foundations-d-deep-learning-md-d09) | [DPR：稠密段落检索](../readings/papers/dpr.md)、[CLIP：图文对比对齐](../readings/papers/clip.md) |
+| D10 | [残差、门控、递归与状态传递结构](#page-docs-01-foundations-d-deep-learning-md-d10) | [ResNet：残差学习与深层优化](../readings/papers/resnet.md)、[Transformer：注意力与编解码器](../readings/papers/transformer.md) |
+| D11 | [迁移学习、微调、冻结策略与参数高效适配](#page-docs-01-foundations-d-deep-learning-md-d11) | [BERT：双向预训练与迁移](../readings/papers/bert.md)、[LoRA：低秩任务更新](../readings/papers/lora.md)、[Transformers：模型定义与训练生成接口](../readings/projects/transformers.md)、[PEFT：参数高效适配的注入保存与合并](../readings/projects/peft.md) |
+| D12 | [自监督、对比学习与掩码建模](#page-docs-01-foundations-d-deep-learning-md-d12) | [CLIP：图文对比对齐](../readings/papers/clip.md) |
+| D13 | [Attention、Multi-Head Attention 与 Transformer 公共结构](#page-docs-01-foundations-d-deep-learning-md-d13) | [Transformer：注意力与编解码器](../readings/papers/transformer.md)、[LLaMA：现代自回归模型的设计](../readings/papers/llama.md)、[nanoGPT：经典最小GPT训练器](../readings/projects/nanogpt.md) |
+| D14 | [表达能力、优化偏置、泛化与 Scaling Law](#page-docs-01-foundations-d-deep-learning-md-d14) | [Chinchilla：计算最优的模型数据分配](../readings/papers/chinchilla.md) |
+| D15 | [不确定性、校准、OOD 与对抗鲁棒性](#page-docs-01-foundations-d-deep-learning-md-d15) | — |
+| D16 | [混合精度、分布式训练、性能剖析、剪枝与量化](#page-docs-01-foundations-d-deep-learning-md-d16) | [FlashAttention：分块精确注意力](../readings/papers/flashattention.md)、[vLLM：缓存调度与模型服务](../readings/projects/vllm.md) |
+
+<a id="page-docs-07-resources-knowledge-index-md-e-计算机视觉"></a>
+
+## E. 计算机视觉
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| E01 | [图像表示、成像、颜色、采样与增强 [核心·成熟]](../02-perception-language/e-computer-vision.md#e01) | — |
+| E02 | [滤波、边缘、局部特征、多视几何与传统视觉 [分支·成熟]](../02-perception-language/e-computer-vision.md#e02) | — |
+| E03 | [CNN、卷积、等变性与感受野 [核心·成熟]](../02-perception-language/e-computer-vision.md#e03) | [ResNet：残差学习与深层优化](../readings/papers/resnet.md)、[DQN：经验回放与目标网络](../readings/papers/dqn.md) |
+| E04 | [ResNet、EfficientNet、ConvNeXt 与现代骨干 [核心·成熟]](../02-perception-language/e-computer-vision.md#e04) | [ResNet：残差学习与深层优化](../readings/papers/resnet.md) |
+| E05 | [图像分类、定位、归因与可解释性 [核心·较成熟]](../02-perception-language/e-computer-vision.md#e05) | — |
+| E06 | [目标检测与实例分割 [分支·成熟]](../02-perception-language/e-computer-vision.md#e06) | — |
+| E07 | [语义分割、深度估计、光流与稠密预测 [分支·成熟]](../02-perception-language/e-computer-vision.md#e07) | — |
+| E08 | [ViT、视觉自监督与视觉基础模型 [核心·较成熟；基础模型持续演进]](../02-perception-language/e-computer-vision.md#e08) | — |
+| E09 | [视频理解、3D 视觉、点云与 NeRF [分支·较成熟；世界建模解释仍前沿]](../02-perception-language/e-computer-vision.md#e09) | — |
+
+<a id="page-docs-07-resources-knowledge-index-md-f-nlptransformer-与-llm"></a>
+
+## F. NLP、Transformer 与 LLM
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| F01 | [语言层次、Unicode、规范化与语料 [核心·成熟]](../02-perception-language/f-nlp-transformers-llms.md#f01) | — |
+| F02 | [分词、子词、BPE、WordPiece 与词表 [核心·成熟]](../02-perception-language/f-nlp-transformers-llms.md#f02) | — |
+| F03 | [BoW、TF-IDF 与传统文本分类 [核心·成熟]](../02-perception-language/f-nlp-transformers-llms.md#f03) | — |
+| F04 | [分布式语义、Word2Vec 与静态词向量 [核心·成熟]](../02-perception-language/f-nlp-transformers-llms.md#f04) | — |
+| F05 | [RNN、LSTM 与 GRU [核心·成熟]](../02-perception-language/f-nlp-transformers-llms.md#f05) | — |
+| F06 | [Seq2Seq、编码器—解码器与注意力 [核心·成熟]](../02-perception-language/f-nlp-transformers-llms.md#f06) | [Transformer：注意力与编解码器](../readings/papers/transformer.md)、[T5：统一文本接口与跨度去噪](../readings/papers/t5.md)、[RAG：检索文档的概率边际化](../readings/papers/rag.md) |
+| F07 | [Transformer、位置编码、Mask 与 KV Cache [核心·成熟]](../02-perception-language/f-nlp-transformers-llms.md#f07) | [Transformer：注意力与编解码器](../readings/papers/transformer.md)、[LLaMA：现代自回归模型的设计](../readings/papers/llama.md)、[FlashAttention：分块精确注意力](../readings/papers/flashattention.md)、[nanoGPT：经典最小GPT训练器](../readings/projects/nanogpt.md)、[Transformers：模型定义与训练生成接口](../readings/projects/transformers.md) |
+| F08 | [因果、掩码与 Encoder–Decoder 语言建模目标 [核心·成熟]](../02-perception-language/f-nlp-transformers-llms.md#f08) | [BERT：双向预训练与迁移](../readings/papers/bert.md)、[GPT-3：上下文学习与规模](../readings/papers/gpt3.md)、[T5：统一文本接口与跨度去噪](../readings/papers/t5.md)、[nanoGPT：经典最小GPT训练器](../readings/projects/nanogpt.md) |
+| F09 | [BERT、GPT 与 T5 [核心·成熟]](../02-perception-language/f-nlp-transformers-llms.md#f09) | [BERT：双向预训练与迁移](../readings/papers/bert.md)、[GPT-3：上下文学习与规模](../readings/papers/gpt3.md)、[T5：统一文本接口与跨度去噪](../readings/papers/t5.md)、[DPR：稠密段落检索](../readings/papers/dpr.md)、[Transformers：模型定义与训练生成接口](../readings/projects/transformers.md) |
+| F10 | [预训练数据、去重、Scaling 与配比 [核心·较成熟；配方快速演进]](../02-perception-language/f-nlp-transformers-llms.md#f10) | [GPT-3：上下文学习与规模](../readings/papers/gpt3.md)、[Chinchilla：计算最优的模型数据分配](../readings/papers/chinchilla.md)、[LLaMA：现代自回归模型的设计](../readings/papers/llama.md) |
+| F11 | [Greedy、Beam、采样与约束解码 [核心·成熟]](../02-perception-language/f-nlp-transformers-llms.md#f11) | [Transformers：模型定义与训练生成接口](../readings/projects/transformers.md)、[vLLM：缓存调度与模型服务](../readings/projects/vllm.md) |
+| F12 | [SFT、指令数据、Chat Template 与 PEFT/LoRA [核心·较成熟；工具接口会变]](../02-perception-language/f-nlp-transformers-llms.md#f12) | [LoRA：低秩任务更新](../readings/papers/lora.md)、[PEFT：参数高效适配的注入保存与合并](../readings/projects/peft.md) |
+| F13 | [分类、标注、抽取、翻译、摘要与 QA 评测 [核心·成熟；开放生成评测仍不完备]](../02-perception-language/f-nlp-transformers-llms.md#f13) | [GPT-3：上下文学习与规模](../readings/papers/gpt3.md) |
+| F14 | [长上下文、高效 Attention、KV Cache 与 LLM 推理 [前沿；系统快速演进]](../02-perception-language/f-nlp-transformers-llms.md#f14) | [FlashAttention：分块精确注意力](../readings/papers/flashattention.md)、[PagedAttention：KV缓存分页与共享](../readings/papers/pagedattention.md)、[vLLM：缓存调度与模型服务](../readings/projects/vllm.md) |
+
+<a id="page-docs-07-resources-knowledge-index-md-g-生成模型"></a>
+
+## G. 生成模型
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| G01 | [显式似然、隐式、潜变量、能量与 Score 范式 [核心·成熟框架]](../02-perception-language/g-generative-models.md#g01) | — |
+| G02 | [自回归生成与密度分解 [核心·成熟]](../02-perception-language/g-generative-models.md#g02) | — |
+| G03 | [潜变量、变分推断与 ELBO [核心·成熟]](../02-perception-language/g-generative-models.md#g03) | [VAE：变分下界与可微采样](../readings/papers/vae.md)、[DDPM：逐步去噪生成](../readings/papers/ddpm.md) |
+| G04 | [VAE、层次潜变量与解耦 [核心·成熟；解耦主张需谨慎]](../02-perception-language/g-generative-models.md#g04) | [VAE：变分下界与可微采样](../readings/papers/vae.md) |
+| G05 | [Normalizing Flow [分支·成熟]](../02-perception-language/g-generative-models.md#g05) | — |
+| G06 | [GAN [核心·成熟；训练稳定性仍任务相关]](../02-perception-language/g-generative-models.md#g06) | — |
+| G07 | [Score Matching、扩散、DDPM 与 SDE [核心·较成熟；采样研究活跃]](../02-perception-language/g-generative-models.md#g07) | [DDPM：逐步去噪生成](../readings/papers/ddpm.md) |
+| G08 | [条件/潜空间扩散、Guidance 与生成评测 [核心·较成熟；模型配方快速变化]](../02-perception-language/g-generative-models.md#g08) | — |
+
+<a id="page-docs-07-resources-knowledge-index-md-h-vlm-与多模态"></a>
+
+## H. VLM 与多模态
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| H01 | [多模态表示、对齐、融合与 Cross-Attention [核心·较成熟]](../02-perception-language/h-multimodal-vlm.md#h01) | [CLIP：图文对比对齐](../readings/papers/clip.md) |
+| H02 | [CLIP 图文对比预训练 [核心·成熟]](../02-perception-language/h-multimodal-vlm.md#h02) | [CLIP：图文对比对齐](../readings/papers/clip.md)、[LLaVA：视觉指令微调](../readings/papers/llava.md) |
+| H03 | [Caption、VQA、视觉定位与文档理解 [分支·较成熟]](../02-perception-language/h-multimodal-vlm.md#h03) | — |
+| H04 | [视觉编码器—连接器—LLM 的 VLM 架构 [核心·较成熟；具体配方演进]](../02-perception-language/h-multimodal-vlm.md#h04) | [LLaVA：视觉指令微调](../readings/papers/llava.md)、[Transformers：模型定义与训练生成接口](../readings/projects/transformers.md) |
+| H05 | [多模态指令微调与数据混合 [核心·前沿工程]](../02-perception-language/h-multimodal-vlm.md#h05) | [LLaVA：视觉指令微调](../readings/papers/llava.md) |
+| H06 | [跨模态检索、组合泛化、幻觉与 VLM 评测 [核心·评测前沿]](../02-perception-language/h-multimodal-vlm.md#h06) | [LLaVA：视觉指令微调](../readings/papers/llava.md) |
+| H07 | [统一多模态 Token 与图像、视频、音频生成 [前沿·快速变化]](../02-perception-language/h-multimodal-vlm.md#h07) | — |
+
+<a id="page-docs-07-resources-knowledge-index-md-i-强化学习与-deep-rl"></a>
+
+## I. 强化学习与 Deep RL
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| I01 | [多臂老虎机与探索—利用【稳定】](#page-docs-03-decision-specialties-i-reinforcement-learning-md-i01) | — |
+| I02 | [MDP、轨迹与环境接口【稳定】](#page-docs-03-decision-specialties-i-reinforcement-learning-md-i02) | — |
+| I03 | [回报、策略与价值函数【稳定】](#page-docs-03-decision-specialties-i-reinforcement-learning-md-i03) | — |
+| I04 | [Bellman 方程与动态规划【稳定】](#page-docs-03-decision-specialties-i-reinforcement-learning-md-i04) | [DQN：经验回放与目标网络](../readings/papers/dqn.md) |
+| I05 | [Monte Carlo 估计与重要性采样【稳定】](#page-docs-03-decision-specialties-i-reinforcement-learning-md-i05) | — |
+| I06 | [TD、SARSA 与 Q-learning【稳定】](#page-docs-03-decision-specialties-i-reinforcement-learning-md-i06) | [DQN：经验回放与目标网络](../readings/papers/dqn.md) |
+| I07 | [函数逼近、经验回放与 DQN【稳定基础】](#page-docs-03-decision-specialties-i-reinforcement-learning-md-i07) | [DQN：经验回放与目标网络](../readings/papers/dqn.md) |
+| I08 | [策略梯度与 REINFORCE【稳定】](#page-docs-03-decision-specialties-i-reinforcement-learning-md-i08) | — |
+| I09 | [Actor–Critic 与 GAE【稳定】](#page-docs-03-decision-specialties-i-reinforcement-learning-md-i09) | [DeepSeekMath：数学训练与GRPO](../readings/papers/deepseekmath.md) |
+| I10 | [PPO 与受限策略更新【稳定工程基线】](#page-docs-03-decision-specialties-i-reinforcement-learning-md-i10) | [InstructGPT：人类反馈与策略优化](../readings/papers/instructgpt.md)、[DeepSeekMath：数学训练与GRPO](../readings/papers/deepseekmath.md)、[TRL：监督偏好与在线策略训练](../readings/projects/trl.md) |
+| I11 | [连续控制与 Soft Actor-Critic【稳定基线】](#page-docs-03-decision-specialties-i-reinforcement-learning-md-i11) | — |
+| I12 | [离线强化学习与分布外动作【演进中】](#page-docs-03-decision-specialties-i-reinforcement-learning-md-i12) | — |
+| I13 | [模仿学习：BC、DAgger 与 GAIL【稳定基础，扩展活跃】](#page-docs-03-decision-specialties-i-reinforcement-learning-md-i13) | — |
+| I14 | [多智能体强化学习与 CTDE【演进中】](#page-docs-03-decision-specialties-i-reinforcement-learning-md-i14) | — |
+
+<a id="page-docs-07-resources-knowledge-index-md-j-图神经网络"></a>
+
+## J. 图神经网络
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| J01 | [图表示与消息传递【稳定】](#page-docs-03-decision-specialties-j-graph-neural-networks-md-j01) | [GCN：图归一化与节点分类](../readings/papers/gcn.md) |
+| J02 | [图卷积网络 GCN【稳定】](#page-docs-03-decision-specialties-j-graph-neural-networks-md-j02) | [GCN：图归一化与节点分类](../readings/papers/gcn.md) |
+| J03 | [图注意力 GAT【稳定】](#page-docs-03-decision-specialties-j-graph-neural-networks-md-j03) | — |
+| J04 | [图级读出、批处理与不变性【稳定】](#page-docs-03-decision-specialties-j-graph-neural-networks-md-j04) | — |
+| J05 | [链接预测、负采样与归纳泛化【稳定基础】](#page-docs-03-decision-specialties-j-graph-neural-networks-md-j05) | — |
+
+<a id="page-docs-07-resources-knowledge-index-md-k-语音与音频"></a>
+
+## K. 语音与音频
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| K01 | [波形、采样、频谱与混叠【稳定】](#page-docs-03-decision-specialties-k-speech-audio-md-k01) | — |
+| K02 | [分帧、STFT、Mel 频谱与 MFCC【稳定】](#page-docs-03-decision-specialties-k-speech-audio-md-k02) | — |
+| K03 | [CTC 与端到端语音识别【稳定基础】](#page-docs-03-decision-specialties-k-speech-audio-md-k03) | — |
+| K04 | [自监督语音表示：wav2vec 2.0【演进中】](#page-docs-03-decision-specialties-k-speech-audio-md-k04) | — |
+| K05 | [TTS、声码器与音频评估【成熟组件，生成前沿活跃】](#page-docs-03-decision-specialties-k-speech-audio-md-k05) | — |
+
+<a id="page-docs-07-resources-knowledge-index-md-l-时间序列"></a>
+
+## L. 时间序列
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| L01 | [时间索引、窗口化与无泄漏切分【稳定】](#page-docs-03-decision-specialties-l-time-series-md-l01) | — |
+| L02 | [朴素、季节朴素与指数平滑基线【稳定】](#page-docs-03-decision-specialties-l-time-series-md-l02) | — |
+| L03 | [自回归、平稳性与滚动预测【稳定】](#page-docs-03-decision-specialties-l-time-series-md-l03) | — |
+| L04 | [深度时序：RNN、TCN 与 Transformer【成熟组件，选型演进中】](#page-docs-03-decision-specialties-l-time-series-md-l04) | — |
+| L05 | [概率预测、区间校准与异常检测【稳定原则，模型演进中】](#page-docs-03-decision-specialties-l-time-series-md-l05) | — |
+
+<a id="page-docs-07-resources-knowledge-index-md-m-因果推断"></a>
+
+## M. 因果推断
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| M01 | [结构因果模型、干预与反事实【稳定理论】](#page-docs-03-decision-specialties-m-causal-inference-md-m01) | — |
+| M02 | [潜在结果、随机试验与 ATE【稳定理论】](#page-docs-03-decision-specialties-m-causal-inference-md-m02) | — |
+| M03 | [混杂、后门准则与调整【稳定理论】](#page-docs-03-decision-specialties-m-causal-inference-md-m03) | — |
+| M04 | [倾向得分、重加权与双重稳健【稳定方法】](#page-docs-03-decision-specialties-m-causal-inference-md-m04) | — |
+| M05 | [自然实验：工具变量与双重差分【稳定设计，假设强】](#page-docs-03-decision-specialties-m-causal-inference-md-m05) | — |
+
+<a id="page-docs-07-resources-knowledge-index-md-n-推荐搜索与检索"></a>
+
+## N. 推荐、搜索与检索
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| N01 | [候选、排序与离线检索指标【稳定】](#page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n01) | — |
+| N02 | [隐式反馈、时间切分与曝光偏差【稳定问题，纠偏演进中】](#page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n02) | — |
+| N03 | [协同过滤、矩阵分解与 BPR【稳定】](#page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n03) | — |
+| N04 | [双塔与稠密检索【稳定架构，训练技巧演进中】](#page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n04) | [DPR：稠密段落检索](../readings/papers/dpr.md)、[RAG：检索文档的概率边际化](../readings/papers/rag.md) |
+| N05 | [Learning to Rank 与重排【稳定基础】](#page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n05) | — |
+| N06 | [ANN、混合检索与线上实验【成熟系统，索引演进中】](#page-docs-03-decision-specialties-n-recommendation-search-retrieval-md-n06) | [DPR：稠密段落检索](../readings/papers/dpr.md) |
+
+<a id="page-docs-07-resources-knowledge-index-md-o-llm-后训练rag-与-agent"></a>
+
+## O. LLM 后训练、RAG 与 Agent
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| O01 | [指令数据与监督微调 SFT【稳定流程】](#page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o01) | [InstructGPT：人类反馈与策略优化](../readings/papers/instructgpt.md)、[TRL：监督偏好与在线策略训练](../readings/projects/trl.md) |
+| O02 | [参数高效微调 LoRA【稳定基础，变体活跃】](#page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o02) | [LoRA：低秩任务更新](../readings/papers/lora.md)、[PEFT：参数高效适配的注入保存与合并](../readings/projects/peft.md) |
+| O03 | [偏好数据与奖励模型【稳定框架，标注科学活跃】](#page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o03) | [InstructGPT：人类反馈与策略优化](../readings/papers/instructgpt.md)、[DPO：从偏好直接优化策略](../readings/papers/dpo.md)、[DeepSeekMath：数学训练与GRPO](../readings/papers/deepseekmath.md)、[TRL：监督偏好与在线策略训练](../readings/projects/trl.md) |
+| O04 | [RLHF、KL 约束与 DPO【成熟主线，快速演进】](#page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o04) | [InstructGPT：人类反馈与策略优化](../readings/papers/instructgpt.md)、[DPO：从偏好直接优化策略](../readings/papers/dpo.md)、[DeepSeekMath：数学训练与GRPO](../readings/papers/deepseekmath.md)、[TRL：监督偏好与在线策略训练](../readings/projects/trl.md) |
+| O05 | [RAG：切分、索引与检索【稳定架构，配方演进中】](#page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o05) | [DPR：稠密段落检索](../readings/papers/dpr.md)、[RAG：检索文档的概率边际化](../readings/papers/rag.md) |
+| O06 | [Grounded RAG、引用与端到端评估【演进中】](#page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o06) | [RAG：检索文档的概率边际化](../readings/papers/rag.md) |
+| O07 | [工具、资源与 Agent 协议【协议稳定化中】](#page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o07) | [ReAct：推理行动与外部观察](../readings/papers/react.md)、[LangGraph：有状态工具流程与恢复](../readings/projects/langgraph.md) |
+| O08 | [Agent 策略：ReAct、规划、记忆与多 Agent【研究前沿】](#page-docs-04-systems-agents-robotics-o-llm-posttraining-rag-agents-md-o08) | [ReAct：推理行动与外部观察](../readings/papers/react.md)、[LangGraph：有状态工具流程与恢复](../readings/projects/langgraph.md) |
+
+<a id="page-docs-07-resources-knowledge-index-md-p-mlops安全与评测"></a>
+
+## P. MLOps、安全与评测
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| P01 | [环境、随机性与可复现运行【稳定工程原则】](#page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p01) | — |
+| P02 | [数据版本、血缘与数据契约【稳定工程原则】](#page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p02) | — |
+| P03 | [实验追踪、基线与持续测试【稳定工程原则】](#page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p03) | — |
+| P04 | [打包、推理接口与服务契约【稳定工程原则】](#page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p04) | [PagedAttention：KV缓存分页与共享](../readings/papers/pagedattention.md)、[vLLM：缓存调度与模型服务](../readings/projects/vllm.md) |
+| P05 | [导出、量化与性能剖析【成熟技术，硬件配方演进中】](#page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p05) | [FlashAttention：分块精确注意力](../readings/papers/flashattention.md)、[PagedAttention：KV缓存分页与共享](../readings/papers/pagedattention.md)、[vLLM：缓存调度与模型服务](../readings/projects/vllm.md) |
+| P06 | [监控、漂移与反馈闭环【稳定原则，检测方法演进中】](#page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p06) | — |
+| P07 | [评测集、统计不确定性与回归决策【稳定原则】](#page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p07) | — |
+| P08 | [威胁建模、对抗输入与 LLM 工具安全【安全实践演进中】](#page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p08) | [LangGraph：有状态工具流程与恢复](../readings/projects/langgraph.md) |
+| P09 | [治理、隐私、公平与模型卡【稳定框架，法规会变化】](#page-docs-04-systems-agents-robotics-p-mlops-safety-evaluation-md-p09) | — |
+
+<a id="page-docs-07-resources-knowledge-index-md-q-具身智能与机器人"></a>
+
+## Q. 具身智能与机器人
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| Q01 | [机器人系统分层、坐标系与 SE(3)【稳定】](#page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q01) | — |
+| Q02 | [感知、标定与状态估计【稳定基础，学习感知演进中】](#page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q02) | — |
+| Q03 | [正运动学、逆运动学与可达性【稳定】](#page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q03) | — |
+| Q04 | [碰撞检测、运动规划与轨迹控制【稳定核心】](#page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q04) | — |
+| Q05 | [行为克隆、动作分块与 Diffusion Policy【演进中】](#page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q05) | — |
+| Q06 | [机器人 RL、仿真到现实与安全探索【演进中】](#page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q06) | — |
+| Q07 | [VLA、世界模型与分层技能【研究前沿】](#page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q07) | — |
+| Q08 | [具身 Agent、多机器人协同与安全执行【研究前沿】](#page-docs-04-systems-agents-robotics-q-embodied-ai-robotics-md-q08) | — |
+
+<a id="page-docs-07-resources-knowledge-index-md-r-20242026-前沿技术地图"></a>
+
+## R. 2024–2026 前沿技术地图
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| R01 | [稀疏 Mixture of Experts（MoE）与路由](#page-docs-05-frontier-r-frontier-2024-2026-md-r01) | — |
+| R02 | [RoPE、位置外推与长上下文](#page-docs-05-frontier-r-frontier-2024-2026-md-r02) | — |
+| R03 | [KV Cache、GQA、FlashAttention 与长序列系统](#page-docs-05-frontier-r-frontier-2024-2026-md-r03) | — |
+| R04 | [State Space Model 与 Mamba 路线](#page-docs-05-frontier-r-frontier-2024-2026-md-r04) | — |
+| R05 | [推理模型后训练：DPO、GRPO 与可验证奖励](#page-docs-05-frontier-r-frontier-2024-2026-md-r05) | — |
+| R06 | [Test-time Compute、Self-consistency 与 Verifier Search](#page-docs-05-frontier-r-frontier-2024-2026-md-r06) | — |
+| R07 | [统一多模态 Token、Early Fusion 与 Omni 模型](#page-docs-05-frontier-r-frontier-2024-2026-md-r07) | — |
+| R08 | [Diffusion Transformer、Flow Matching 与视频生成](#page-docs-05-frontier-r-frontier-2024-2026-md-r08) | — |
+| R09 | [世界模型、VLA 与具身基础模型](#page-docs-05-frontier-r-frontier-2024-2026-md-r09) | — |
+| R10 | [Agent 协议、状态机与可靠性评测](#page-docs-05-frontier-r-frontier-2024-2026-md-r10) | — |
+| R11 | [如何阅读“当前 GPT/基础模型”产品信息](#page-docs-05-frontier-r-frontier-2024-2026-md-r11) | — |
+| R12 | [合成数据、知识蒸馏与自举训练](#page-docs-05-frontier-r-frontier-2024-2026-md-r12) | — |
+
+<a id="page-docs-07-resources-knowledge-index-md-s-综合项目与验收路线"></a>
+
+## S. 综合项目与验收路线
+
+| 编号 | 知识点 / 术语 | 延伸精读 |
+|---|---|---|
+| S01 | [两周基础诊断](#page-docs-06-projects-s-projects-assessment-md-s01) | — |
+| S02 | [经典 ML：表格预测](#page-docs-06-projects-s-projects-assessment-md-s02) | — |
+| S03 | [深度学习：可复用训练模板](#page-docs-06-projects-s-projects-assessment-md-s03) | — |
+| S04 | [CV：稠密预测与鲁棒性](#page-docs-06-projects-s-projects-assessment-md-s04) | — |
+| S05 | [NLP/LLM：从 TF-IDF 到 Mini-GPT](#page-docs-06-projects-s-projects-assessment-md-s05) | — |
+| S06 | [生成模型：二维分布实验室](#page-docs-06-projects-s-projects-assessment-md-s06) | — |
+| S07 | [VLM：图文检索与零样本分类](#page-docs-06-projects-s-projects-assessment-md-s07) | — |
+| S08 | [强化学习：GridWorld → 经典控制](#page-docs-06-projects-s-projects-assessment-md-s08) | — |
+| S09 | [RAG/Agent：可证伪的工具系统](#page-docs-06-projects-s-projects-assessment-md-s09) | — |
+| S10 | [综合研究项目](#page-docs-06-projects-s-projects-assessment-md-s10) | — |
+| S11 | [项目统一评分表](#page-docs-06-projects-s-projects-assessment-md-s11) | — |
+
+---
+
+<a id="page-readings-readme-md"></a>
+
+<a id="page-readings-readme-md-论文精读与项目源码导读"></a>
+
+# 论文精读与项目源码导读
+
+这里把知识讲义中的概念连接到原论文、真实代码与本地实验。已提供 **24篇论文精读、6篇项目导读**；论文正文包含推导、可手算例子、实验条件与带答案的问题，项目正文沿实际数据与调用链阅读。先修关系使用原有知识单元ID，不另建一套冲突编号。
+
+入口：[全部论文索引](../readings/papers/README.md) · [项目源码索引](../readings/projects/README.md) · [知识讲义](../docs/README.md) · [本地实验](../labs/README.md) · [机器可读目录](../readings/catalog.json)
+
+<a id="page-readings-readme-md-怎样读一篇论文"></a>
+
+## 怎样读一篇论文
+
+1. 从标题下的先修链接回补概念，先能说清输入、输出和要解决的问题。
+2. 按正文算一遍小例子，核对形状、归一化轴与损失符号。例子为独立教学构造，不是作者实验样本。
+3. 打开文首指定版本的原论文，阅读方法及所标出的图表；把指标、数据、预算和评估协议一起记下。
+4. 进入相应项目导读，找到公式对应的张量、配置与训练/推理边界。
+5. 完成本地实验或纸面练习，最后回答三道自测题。只看过代码或算过例子，应记录为静态理解或教学验证。
+
+论文作者的性能结果、讲义的数值例子、本地实际运行结果属于不同证据。正文不会把原论文数字写成本仓库复现；本地运行应以实验生成的报告为准。全量训练需要的数据、硬件与历史环境没有因一篇导读而自动准备齐全。
+
+<a id="page-readings-readme-md-按领域选择"></a>
+
+## 按领域选择
+
+|领域|论文精读|关联项目与实验|
+|---|---|---|
+|优化、树模型与深层网络|[Adam](../readings/papers/adam.md)、[XGBoost](../readings/papers/xgboost.md)、[ResNet](../readings/papers/resnet.md)|[nanoGPT](../readings/projects/nanogpt.md)、[minigpt](../labs/minigpt/README.md)|
+|语言建模与预训练|[Transformer](../readings/papers/transformer.md)、[BERT](../readings/papers/bert.md)、[GPT-3](../readings/papers/gpt3.md)、[T5](../readings/papers/t5.md)、[Chinchilla](../readings/papers/chinchilla.md)、[LLaMA](../readings/papers/llama.md)|[nanoGPT](../readings/projects/nanogpt.md)、[Transformers](../readings/projects/transformers.md)|
+|适配与后训练|[LoRA](../readings/papers/lora.md)、[InstructGPT](../readings/papers/instructgpt.md)、[DPO](../readings/papers/dpo.md)、[DeepSeekMath](../readings/papers/deepseekmath.md)|[PEFT](../readings/projects/peft.md)、[TRL](../readings/projects/trl.md)、[posttrain](../labs/posttrain/README.md)|
+|检索与智能体|[DPR](../readings/papers/dpr.md)、[RAG](../readings/papers/rag.md)、[ReAct](../readings/papers/react.md)|[LangGraph](../readings/projects/langgraph.md)、[rag](../labs/rag/README.md)、[agent](../labs/agent/README.md)|
+|概率生成与扩散|[VAE](../readings/papers/vae.md)、[DDPM](../readings/papers/ddpm.md)|[生成模型讲义](#page-docs-02-perception-language-g-generative-models-md)|
+|多模态|[CLIP](../readings/papers/clip.md)、[LLaVA](../readings/papers/llava.md)|[Transformers](../readings/projects/transformers.md)、[multimodal](../labs/multimodal/README.md)|
+|强化学习与图学习|[DQN](../readings/papers/dqn.md)、[GCN](../readings/papers/gcn.md)|[强化学习讲义](#page-docs-03-decision-specialties-i-reinforcement-learning-md)、[图学习讲义](#page-docs-03-decision-specialties-j-graph-neural-networks-md)|
+|注意力计算与推理服务|[FlashAttention](../readings/papers/flashattention.md)、[PagedAttention](../readings/papers/pagedattention.md)|[vLLM](../readings/projects/vllm.md)|
+
+<a id="page-readings-readme-md-三条连续阅读路线"></a>
+
+## 三条连续阅读路线
+
+**从零理解大模型：** Adam → ResNet → Transformer → BERT/GPT-3/T5 对照 → Chinchilla → LLaMA → nanoGPT/Transformers → minigpt。前三篇解决优化与基本构件，中间比较训练目标，后面连接资源分配、架构与训练程序。
+
+**把模型变成可用助手：** LoRA → InstructGPT → DPO → DeepSeekMath → PEFT/TRL → posttrain；随后 DPR → RAG → ReAct → LangGraph → rag/agent。后训练修改参数行为，检索提供外部证据，工具流程根据观察采取后续动作，三者各有职责。
+
+**多模态与系统：** CLIP → LLaVA → multimodal；Transformer → FlashAttention → PagedAttention → vLLM。前一条连接视觉与语言表示，后一条依次处理注意力数学、计算调度与跨请求缓存。
+
+<a id="page-readings-readme-md-版本与公开程度"></a>
+
+## 版本与公开程度
+
+论文文首固定阅读版本，图表号仅对该版本负责。[来源核验记录](../readings/assets/source-verification.md) 列出原文入口与本次核验范围。源码会演进，应先看各项目导读的版本说明；nanoGPT保留为经典精读，官方已指向nanochat作为后续项目，不能把它当持续维护的新训练栈。
+
+本地实验统一从 [labs入口](../labs/README.md) 查看支持的阶段；CLI形态为 `python -m labs.run <project> <stage> --config labs/<project>/config.json`，具体合法stage和依赖以对应实验README为准。这里列出的是学习关联，不表示每篇论文都有同等规模的可运行复现。
+
+<a id="page-readings-readme-md-新增材料的标准"></a>
+
+## 新增材料的标准
+
+[论文模板](../readings/templates/paper-study.md) 和 [项目模板](../readings/templates/project-study.md) 约束后续质量。新增正文须提供独立推导或算法轨迹、完整小例子、原始实验定位、失败边界与有答案自测，不能仅填摘要和链接。同步更新catalog，并在知识单元、论文、项目、实验之间建立精确关联。
+
+[返回仓库首页](../README.md)

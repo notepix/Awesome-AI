@@ -7,7 +7,15 @@
 
 ---
 
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](../08-walkthroughs/08-domain-bridges.md) · [论文与源码精读](../../readings/README.md) · [完整实践代码](../../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
 ## 知识单元
+
+<a id="c14"></a>
 
 ### C14 `[选]` Gaussian Process、核先验与 Bayesian Optimization
 
@@ -46,7 +54,13 @@ print(mean[[0, 40, -1]], np.sqrt(np.maximum(var[[0, 40, -1]], 0)))
 
 ---
 
+<a id="c15"></a>
+
 ### C15 `[选]` MCMC、变分推断与近似 Bayesian 计算
+
+<!-- readings:start -->
+**进一步精读：** [VAE：变分下界与可微采样](../../readings/papers/vae.md)
+<!-- readings:end -->
 
 **先修**：A09–A15，C13 概率图模型。
 
@@ -84,6 +98,8 @@ print(samples.mean(), samples.std(), accepted / 12_000)
 **常见误区**：把迭代次数当作独立样本数；只看接受率不看 trace/autocorrelation；漏掉 burn-in 与多链诊断；认为 ELBO 更大就保证近似覆盖全部后验模式；把近似推断输出当成经过校准的真概率。
 
 ---
+
+<a id="c16"></a>
 
 ### C16 `[选]` 进化算法、随机搜索与黑盒优化
 

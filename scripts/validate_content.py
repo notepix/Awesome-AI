@@ -10,11 +10,15 @@ command works locally and in a minimal CI runner:
 from __future__ import annotations
 
 import ast
+import json
 import re
 import sys
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
+
+from content_model import anchors, dependency_cycles, load_manifest, prerequisite_ids
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,32 +29,8 @@ def ids(prefix: str, first: int, last: int) -> tuple[str, ...]:
     return tuple(f"{prefix}{number:02d}" for number in range(first, last + 1))
 
 
-# These paths form the public content contract. Splitting B and C keeps the
-# classical-AI and probabilistic/black-box additions discoverable without
-# changing the stable knowledge-point identifiers.
-CHAPTER_FILES: dict[Path, tuple[str, ...]] = {
-    Path("docs/01-foundations/a-math-statistics-optimization.md"): ids("A", 1, 18),
-    Path("docs/01-foundations/b-programming-data-experiments.md"): ids("B", 1, 6),
-    Path("docs/01-foundations/b-plus-classical-ai.md"): ids("B", 7, 12),
-    Path("docs/01-foundations/c-machine-learning.md"): ids("C", 1, 13),
-    Path("docs/01-foundations/c-plus-probabilistic-black-box.md"): ids("C", 14, 16),
-    Path("docs/01-foundations/d-deep-learning.md"): ids("D", 1, 16),
-    Path("docs/02-perception-language/e-computer-vision.md"): ids("E", 1, 9),
-    Path("docs/02-perception-language/f-nlp-transformers-llms.md"): ids("F", 1, 14),
-    Path("docs/02-perception-language/g-generative-models.md"): ids("G", 1, 8),
-    Path("docs/02-perception-language/h-multimodal-vlm.md"): ids("H", 1, 7),
-    Path("docs/03-decision-specialties/i-reinforcement-learning.md"): ids("I", 1, 14),
-    Path("docs/03-decision-specialties/j-graph-neural-networks.md"): ids("J", 1, 5),
-    Path("docs/03-decision-specialties/k-speech-audio.md"): ids("K", 1, 5),
-    Path("docs/03-decision-specialties/l-time-series.md"): ids("L", 1, 5),
-    Path("docs/03-decision-specialties/m-causal-inference.md"): ids("M", 1, 5),
-    Path("docs/03-decision-specialties/n-recommendation-search-retrieval.md"): ids("N", 1, 6),
-    Path("docs/04-systems-agents-robotics/o-llm-posttraining-rag-agents.md"): ids("O", 1, 8),
-    Path("docs/04-systems-agents-robotics/p-mlops-safety-evaluation.md"): ids("P", 1, 9),
-    Path("docs/04-systems-agents-robotics/q-embodied-ai-robotics.md"): ids("Q", 1, 8),
-    Path("docs/05-frontier/r-frontier-2024-2026.md"): ids("R", 1, 12),
-    Path("docs/06-projects/s-projects-assessment.md"): ids("S", 1, 11),
-}
+MANIFEST = load_manifest()
+CHAPTER_FILES = {Path(c["path"]): tuple(c["units"]) for c in MANIFEST["chapters"]}
 
 SUPPORT_FILES = (
     Path("docs/README.md"),
@@ -62,16 +42,16 @@ SUPPORT_FILES = (
 EXPECTED_KNOWLEDGE = tuple(
     unit_id
     for chapter_path, chapter_ids in CHAPTER_FILES.items()
-    if not chapter_path.name.startswith("s-")
+    if next(c["kind"] for c in MANIFEST["chapters"] if c["path"] == chapter_path.as_posix()) == "knowledge"
     for unit_id in chapter_ids
 )
-EXPECTED_PROJECTS = ids("S", 1, 11)
+EXPECTED_PROJECTS = tuple(u for c in MANIFEST["chapters"] if c["kind"] == "project" for u in c["units"])
 EXPECTED_ALL = EXPECTED_KNOWLEDGE + EXPECTED_PROJECTS
 EXPECTED_OWNER = {
     unit_id: path for path, chapter_ids in CHAPTER_FILES.items() for unit_id in chapter_ids
 }
 
-UNIT_HEADING_RE = re.compile(r"^###\s+([A-S]\d{2})\b(?:\s+.*)?$")
+UNIT_HEADING_RE = re.compile(r"^###\s+([A-S]\d{2,})\b(?:\s+.*)?$")
 FENCE_OPEN_RE = re.compile(r"^[ \t]*(?P<fence>`{3,}|~{3,})(?P<info>.*)$")
 MARKDOWN_LINK_RE = re.compile(
     r"!?\[[^\]\n]*\]\(\s*(?P<target><[^>]+>|[^\s)]+)"
@@ -317,6 +297,11 @@ def markdown_targets(text: str) -> list[tuple[int, str]]:
     return targets
 
 
+@lru_cache(maxsize=None)
+def file_anchors(path: Path) -> set[str]:
+    return anchors(path.read_text(encoding="utf-8"))
+
+
 def check_links(path: Path, text: str, fenced_lines: set[int]) -> list[Finding]:
     findings: list[Finding] = []
     lines = text.splitlines()
@@ -346,7 +331,7 @@ def check_links(path: Path, text: str, fenced_lines: set[int]) -> list[Finding]:
         if target.casefold().startswith(("http:", "https:")):
             findings.append(Finding(path, line_number, f"HTTP(S) 链接格式错误：{target!r}"))
             continue
-        if scheme in {"mailto", "tel", "data"} or target.startswith("#"):
+        if scheme in {"mailto", "tel", "data"}:
             continue
         if scheme:
             # Other explicit URI schemes are not local file references.
@@ -354,8 +339,8 @@ def check_links(path: Path, text: str, fenced_lines: set[int]) -> list[Finding]:
 
         relative_text = unquote(target.split("#", 1)[0].split("?", 1)[0])
         if not relative_text:
-            continue
-        if relative_text.startswith("/"):
+            resolved = path
+        elif relative_text.startswith("/"):
             resolved = ROOT / relative_text.lstrip("/")
         else:
             resolved = path.parent / relative_text
@@ -363,11 +348,47 @@ def check_links(path: Path, text: str, fenced_lines: set[int]) -> list[Finding]:
             findings.append(
                 Finding(path, line_number, f"相对链接指向不存在：{target!r}")
             )
+        elif parsed.fragment:
+            anchor_file = resolved / "README.md" if resolved.is_dir() else resolved
+            if anchor_file.suffix.lower() == ".md" and anchor_file.is_file():
+                fragment = unquote(parsed.fragment)
+                if fragment not in file_anchors(anchor_file.resolve()):
+                    findings.append(Finding(path, line_number, f"链接锚点不存在：{target!r}"))
+    return findings
+
+
+def check_readings() -> list[Finding]:
+    findings = []
+    catalog = ROOT / "readings/catalog.json"
+    try:
+        data = json.loads(catalog.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        return [Finding(catalog, 1, f"无法读取精读清单：{exc}")]
+    seen = set()
+    for kind in ("papers", "projects"):
+        for item in data.get(kind, []):
+            key = (kind, item["id"])
+            if key in seen:
+                findings.append(Finding(catalog, 1, f"重复精读条目：{key}"))
+            seen.add(key)
+            p = ROOT / item["path"]
+            if not p.is_file():
+                findings.append(Finding(p, 1, "精读清单中的正文不存在"))
+                continue
+            body = p.read_text(encoding="utf-8")
+            if len(re.findall(r"(?m)^## ", body)) < 5:
+                findings.append(Finding(p, 1, "精读缺少方法、证据、边界等实质章节"))
+            if not item.get("sources"):
+                findings.append(Finding(catalog, 1, f"{key} 没有来源"))
+            for unit_id in item.get("units", []):
+                if unit_id not in EXPECTED_ALL:
+                    findings.append(Finding(catalog, 1, f"{key} 引用未知单元 {unit_id}"))
     return findings
 
 
 def validate() -> tuple[list[Finding], int, int, int]:
     findings: list[Finding] = []
+    file_anchors.cache_clear()
 
     required = tuple(CHAPTER_FILES) + SUPPORT_FILES
     for relative_path in required:
@@ -380,6 +401,10 @@ def validate() -> tuple[list[Finding], int, int, int]:
         return findings, 0, 0, 0
 
     markdown_files = sorted(DOCS.rglob("*.md"))
+    extra_files = [ROOT / "README.md", ROOT / "CONTRIBUTING.md", ROOT / "full/AI_Encyclopedia.md"]
+    for folder in ("readings", "labs"):
+        extra_files.extend((ROOT / folder).rglob("*.md"))
+    markdown_files.extend(p for p in extra_files if p.is_file())
     if not markdown_files:
         findings.append(Finding(DOCS, 1, "docs/**/*.md 未找到任何 Markdown 文件"))
         return findings, 0, 0, 0
@@ -394,7 +419,14 @@ def validate() -> tuple[list[Finding], int, int, int]:
         findings.extend(fence_findings)
         findings.extend(check_math_and_latex(path, lines, fenced_lines))
         findings.extend(check_links(path, text, fenced_lines))
-        units.extend(parse_units(path, lines, blocks, fenced_lines))
+        for block in blocks:
+            if block.language in {"python", "py"}:
+                try:
+                    ast.parse(block.code, filename=f"{display_path(path)}:{block.start_line + 1}")
+                except SyntaxError as error:
+                    findings.append(Finding(path, block.start_line + (error.lineno or 1), f"Python 代码语法错误：{error.msg}"))
+        if path.is_relative_to(DOCS):
+            units.extend(parse_units(path, lines, blocks, fenced_lines))
 
     occurrences: dict[str, list[Unit]] = {}
     for unit in units:
@@ -433,9 +465,9 @@ def validate() -> tuple[list[Finding], int, int, int]:
             )
 
     knowledge_units = [unit for unit in units if unit.unit_id in EXPECTED_KNOWLEDGE]
-    if len(knowledge_units) != 177:
+    if len(knowledge_units) != len(EXPECTED_KNOWLEDGE):
         findings.append(
-            Finding(DOCS, 1, f"知识单元总数应为 177，实际为 {len(knowledge_units)}")
+            Finding(DOCS, 1, f"知识单元总数应为 {len(EXPECTED_KNOWLEDGE)}，实际为 {len(knowledge_units)}")
         )
 
     for unit in knowledge_units:
@@ -445,30 +477,23 @@ def validate() -> tuple[list[Finding], int, int, int]:
                     Finding(unit.path, unit.start_line, f"{unit.unit_id} 缺少字段：{field_name}")
                 )
 
-        python_blocks = [
-            block for block in unit.blocks if block.language in {"python", "py"}
-        ]
-        if len(python_blocks) != 1:
-            findings.append(
-                Finding(
-                    unit.path,
-                    unit.start_line,
-                    f"{unit.unit_id} 必须恰有一个 Python 代码块，实际为 {len(python_blocks)}",
-                )
-            )
-            continue
-        block = python_blocks[0]
-        try:
-            ast.parse(block.code, filename=f"{display_path(unit.path)}:{block.start_line + 1}")
-        except SyntaxError as error:
-            code_line = block.start_line + (error.lineno or 1)
-            findings.append(
-                Finding(
-                    unit.path,
-                    code_line,
-                    f"{unit.unit_id} Python 代码语法错误：{error.msg}",
-                )
-            )
+    graph = {}
+    for unit in knowledge_units:
+        prereq = FIELD_PATTERNS["先修"].search(unit.body)
+        text = unit.body[prereq.end():].splitlines()[0] if prereq else ""
+        deps = prerequisite_ids(text)
+        graph[unit.unit_id] = deps
+        for unknown in sorted(deps - set(EXPECTED_ALL)):
+            findings.append(Finding(unit.path, unit.start_line, f"{unit.unit_id} 的先修 {unknown} 不存在"))
+    for cycle in dependency_cycles(graph):
+        findings.append(Finding(DOCS, 1, "先修形成环路：" + " → ".join(cycle)))
+    findings.extend(check_readings())
+    from build_full import build, OUTPUT
+    try:
+        if OUTPUT.read_text(encoding="utf-8") != build():
+            findings.append(Finding(OUTPUT, 1, "完整版与分章不一致，请运行 python scripts/build_full.py"))
+    except (OSError, ValueError) as exc:
+        findings.append(Finding(OUTPUT, 1, f"无法核对全文：{exc}"))
 
     return findings, len(markdown_files), len(knowledge_units), all_blocks
 
@@ -484,8 +509,8 @@ def main() -> int:
 
     print(
         "[OK] 内容校验通过："
-        f"{markdown_count} 个 docs Markdown 文件，"
-        f"{knowledge_count} 个知识单元，11 个综合项目，{block_count} 个代码块。"
+        f"{markdown_count} 个 Markdown 文件，"
+        f"{knowledge_count} 个知识单元，{len(EXPECTED_PROJECTS)} 个项目单元，{block_count} 个代码块。"
     )
     return 0
 

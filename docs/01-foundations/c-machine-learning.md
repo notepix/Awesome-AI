@@ -5,7 +5,15 @@
 
 ---
 
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](../08-walkthroughs/01-probability-learning.md) · [论文与源码精读](../../readings/README.md) · [完整实践代码](../../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
 ## 知识单元
+
+<a id="c01"></a>
 
 ### C01 `[核]` 监督学习问题、假设空间与经验风险最小化
 
@@ -33,6 +41,8 @@ print("baseline/model MSE", np.mean((mean_baseline-y[split:])**2), np.mean((pred
 
 **常见坑：** 先选模型再定义问题；标签包含未来信息；把训练目标当业务指标；没有说明样本独立单位与部署分布。
 
+<a id="c02"></a>
+
 ### C02 `[核]` 线性回归、最小二乘、Ridge 与 Lasso
 
 **先修：** A05、A13、A17、C01。
@@ -58,6 +68,8 @@ for lam in [0., .1, 10.]:
 **检测题/小实验：** 增强两列共线性并重复抽样，比较 OLS/Ridge 系数方差；说明为何不应通过显式矩阵逆求解。
 
 **常见坑：** 系数相关就解释为因果；正则化前不缩放；对截距也无意施加惩罚；以训练 `R²` 作为唯一依据。
+
+<a id="c03"></a>
 
 ### C03 `[核]` Logistic、Softmax、交叉熵与概率校准
 
@@ -87,6 +99,8 @@ print("w", w, "log-loss", loss, "accuracy", np.mean((p>.5)==y))
 
 **常见坑：** 对 softmax 前先取整；用不稳定的 `exp`；把 0.5 当所有成本场景的最佳阈值；在校准集上再报告最终性能。
 
+<a id="c04"></a>
+
 ### C04 `[核]` 特征缩放、缺失值、类别编码与特征工程
 
 **先修：** B05、C01。
@@ -115,6 +129,8 @@ print(Z.toarray() if hasattr(Z, "toarray") else Z)
 
 **常见坑：** 用整数编码无序类别；全数据拟合 scaler/imputer；线上出现新类别即报错；机械填补而不保留缺失指示。
 
+<a id="c05"></a>
+
 ### C05 `[核]` kNN、距离学习与原型方法
 
 **先修：** A04、C04。
@@ -140,6 +156,8 @@ print(idx, pred)
 **检测题/小实验：** 加入一个数值尺度大 100 倍的无关特征，比较缩放前后预测；画验证误差随 `k` 的曲线。
 
 **常见坑：** 忽略缩放；用测试集选 `k`；偶数 `k` 的平票未定义；高维稀疏数据盲用欧氏距离。
+
+<a id="c06"></a>
 
 ### C06 `[核]` Naive Bayes、LDA 与 QDA
 
@@ -167,7 +185,13 @@ for m in models:
 
 **常见坑：** 把“朴素独立”理解为边缘独立；忽略先验类概率；高维小样本协方差奇异；凭训练准确率选 LDA/QDA。
 
+<a id="c07"></a>
+
 ### C07 `[核]` 决策树、划分准则、剪枝与可解释性
+
+<!-- readings:start -->
+**进一步精读：** [XGBoost：二阶树提升与系统设计](../../readings/papers/xgboost.md)
+<!-- readings:end -->
 
 **先修：** A15、C01。
 
@@ -193,7 +217,13 @@ print(export_text(tree, max_depth=2))
 
 **常见坑：** 将单棵深树的 feature importance 当因果解释；忽略类别不均衡；用测试集决定深度；认为树完全无需数据清洗。
 
+<a id="c08"></a>
+
 ### C08 `[核]` Bagging、随机森林、Boosting 与 GBDT
+
+<!-- readings:start -->
+**进一步精读：** [XGBoost：二阶树提升与系统设计](../../readings/papers/xgboost.md)
+<!-- readings:end -->
 
 **先修：** A18、C07。
 
@@ -219,6 +249,8 @@ for m in models:
 **检测题/小实验：** 改变森林树数、单树深度和 Boosting 学习率，记录均值与训练时间；比较 permutation importance 与 impurity importance。
 
 **常见坑：** 认为更多树必然过拟合；把 Boosting 的学习率和树数分开调；使用有偏的 impurity importance 解释高基数特征。
+
+<a id="c09"></a>
 
 ### C09 `[核]` 间隔、SVM 与核方法
 
@@ -247,6 +279,8 @@ for kernel in ["linear", "rbf"]:
 
 **常见坑：** 将核理解为显式生成新样本；不缩放特征；大样本直接使用核 SVM；在训练集可分就认为泛化良好。
 
+<a id="c10"></a>
+
 ### C10 `[核]` k-means、GMM、EM 与层次聚类
 
 **先修：** A04、A13。
@@ -273,6 +307,8 @@ print("centers", centers, "inertia", ((X-centers[label])**2).sum())
 **检测题/小实验：** 对非球形 moons、不同方差和不同密度数据比较 k-means、GMM 与层次聚类；重复不同初始化并报告目标分布。
 
 **常见坑：** 把簇编号当有序标签；用轮廓系数机械决定真实类别数；忽略缩放与离群点；空簇和局部最优未处理。
+
+<a id="c11"></a>
 
 ### C11 `[核]` PCA、降维、流形学习与可视化
 
@@ -301,6 +337,8 @@ print("variance ratio", ratio, "reconstruction MSE", np.mean((X-Xhat)**2))
 
 **常见坑：** PCA 前忘记中心化；把主成分当原始特征因果；把 t-SNE 簇间距离作定量结论；在全数据拟合降维后交叉验证。
 
+<a id="c12"></a>
+
 ### C12 `[核]` 交叉验证、调参、类别不均衡与阈值选择
 
 **先修：** B06、C01–C03。
@@ -327,6 +365,8 @@ print("predictions", (p >= threshold).astype(int))
 **检测题/小实验：** 对普通 KFold、StratifiedKFold、GroupKFold、TimeSeriesSplit 各举一个适用场景；实现嵌套 CV 比较乐观偏差。
 
 **常见坑：** 在全数据调参后仍把 CV 均值当无偏测试结果；忽略群组重复；先过采样再划分；按测试集挑阈值。
+
+<a id="c13"></a>
 
 ### C13 `[选]` 概率图模型、隐变量推断与 HMM
 

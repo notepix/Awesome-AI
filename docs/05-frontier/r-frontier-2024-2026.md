@@ -7,7 +7,17 @@
 
 ---
 
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](../08-walkthroughs/04-pretraining-inference.md) · [论文与源码精读](../../readings/README.md) · [完整实践代码](../../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
+本章既有前沿结论仍按原标注日期理解。成熟机制已在[系统串讲](../08-walkthroughs/README.md)展开；本轮没有把所有旧事实统一标成已于2026-10-03重新核验。
+
 ## 知识单元
+
+<a id="r01"></a>
 
 ### R01 `[前沿]` 稀疏 Mixture of Experts（MoE）与路由
 
@@ -50,6 +60,8 @@ print("expert load:", load.tolist())
 
 **常见坑**：把 MoE 当成模型集成；忽略路由通信；只报总参数；把某一篇论文的专家数、top-k 和平衡策略当作固定标准。
 
+<a id="r02"></a>
+
 ### R02 `[前沿]` RoPE、位置外推与长上下文
 
 **先修**：A04 内积、F07 位置编码、F14 长上下文。
@@ -82,6 +94,8 @@ assert torch.allclose(x.norm(dim=1), y.norm(dim=1), atol=1e-5)
 
 **常见坑**：把训练窗口、API 窗口和有效上下文混为一谈；扩窗后不复测短文本能力；忽略位置分布外推与显存/时延。
 
+<a id="r03"></a>
+
 ### R03 `[前沿]` KV Cache、GQA、FlashAttention 与长序列系统
 
 **先修**：B02 复杂度、D13 Attention、D16 性能、F14 推理。
@@ -111,6 +125,8 @@ print("cached K/V shape:", tuple(k.shape), tuple(v.shape))
 **检测题/小实验**：推导 MHA 与 GQA 的 KV 缓存元素数；区分“算术 FLOPs 少”“HBM 访问少”“端到端 latency 低”。
 
 **常见坑**：把 FlashAttention 当成近似注意力；只测单请求吞吐；忽略 batch、序列长度、首 token 延迟和生成 token 延迟。
+
+<a id="r04"></a>
 
 ### R04 `[前沿]` State Space Model 与 Mamba 路线
 
@@ -144,6 +160,8 @@ assert y.shape == (T, D)
 
 **常见坑**：把所有 SSM 都叫 Mamba；把理论复杂度直接等同于 GPU 实测；只看超长序列而不测短序列和检索型任务。
 
+<a id="r05"></a>
+
 ### R05 `[前沿]` 推理模型后训练：DPO、GRPO 与可验证奖励
 
 **先修**：F12 SFT、I08 Policy Gradient、I09 Actor–Critic、I10 PPO、O03 奖励模型、O04 RLHF/DPO。
@@ -173,6 +191,8 @@ print(float(loss))
 
 **常见坑**：把“奖励可验证”误写成推理过程必然正确；只看最终准确率；忽略 KL、采样分布、奖励尺度、数据污染和训练稳定性。
 
+<a id="r06"></a>
+
 ### R06 `[前沿]` Test-time Compute、Self-consistency 与 Verifier Search
 
 **先修**：F11 解码、F13 评测、R05 后训练。
@@ -201,6 +221,8 @@ assert vote == truth
 **检测题/小实验**：把单次正确率从 0.65 改成 0.4，重复 1000 次，观察多数投票为何可能失效；再加入一个有系统偏差的 verifier。
 
 **常见坑**：只报告最优样例；忽略成本和延迟；验证器与候选共享同一偏差；把不可见的内部过程当成可靠解释。
+
+<a id="r07"></a>
 
 ### R07 `[前沿]` 统一多模态 Token、Early Fusion 与 Omni 模型
 
@@ -232,6 +254,8 @@ assert seq.shape == (9, D) and causal_mask.shape == (9, 9)
 **检测题/小实验**：图像从 16×16 patch 改为 8×8 patch 后 token 数和注意力矩阵大小怎样变化？为实时语音设计 chunk、缓存和中断策略。
 
 **常见坑**：把统一接口等同于统一理解；忽略时间同步和模态缺失；仅凭聊天样例判断 grounding；混淆输入多模态与输出多模态。
+
+<a id="r08"></a>
 
 ### R08 `[前沿]` Diffusion Transformer、Flow Matching 与视频生成
 
@@ -267,6 +291,8 @@ assert end < start
 
 **常见坑**：把 flow matching 说成“另一种去噪扩散”；只展示精选视频；把视觉逼真等同于世界状态和动作可控。
 
+<a id="r09"></a>
+
 ### R09 `[前沿]` 世界模型、VLA 与具身基础模型
 
 **先修**：I02–I11 强化学习主干、H04 VLM、Q05–Q07 机器人策略/VLA/世界模型。
@@ -297,6 +323,8 @@ assert action == 1.0
 
 **常见坑**：平台有双臂就宣称解决多臂协同；VLM 输出动作名字就视为可执行轨迹；忽略控制频率、闭环反馈、OOD 与安全停止。
 
+<a id="r10"></a>
+
 ### R10 `[前沿]` Agent 协议、状态机与可靠性评测
 
 **先修**：O01–O08、P06–P07。
@@ -326,6 +354,8 @@ assert call_tool("add", {"a": 2, "b": 3}) == 5
 
 **常见坑**：把协议等同于智能；工具输出不验证；无限循环；无最小权限；只看 demo，不做 execution-based evaluation。
 
+<a id="r11"></a>
+
 ### R11 `[前沿]` 如何阅读“当前 GPT/基础模型”产品信息
 
 **先修**：F09 GPT、F10 规模化、F14 推理、P07 评测。
@@ -353,6 +383,8 @@ assert eligible == ["B"]
 **检测题/小实验**：做一张“官方声明 / 论文证据 / 自己评测 / 未知”四列表，把一个模型的事实放入正确列；为你的真实任务建立质量、延迟、成本、安全四维 eval。
 
 **常见坑**：引用搜索摘要而不打开官方页；用旧价格和退役模型；把 reasoning effort、产品模式或上下文窗口当作公开训练算法；跨版本比较时更换提示和评测集。
+
+<a id="r12"></a>
 
 ### R12 `[前沿]` 合成数据、知识蒸馏与自举训练
 

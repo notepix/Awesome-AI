@@ -5,7 +5,15 @@
 
 ---
 
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](../08-walkthroughs/05-posttraining.md) · [论文与源码精读](../../readings/README.md) · [完整实践代码](../../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
 ## 知识单元
+
+<a id="i01"></a>
 
 ### I01 多臂老虎机与探索—利用【稳定】
 - **先修**：期望、均值、独立同分布采样。
@@ -27,6 +35,8 @@ print(np.mean([run(s) for s in range(5)]))
 - **检测/实验**：把 ε 改为 0、0.01、0.1、0.5，先预测五种子平均遗憾排序；验收要求报告均值与标准差。
 - **常见坑**：只跑一个种子；用最终训练奖励冒充独立评估；误把非平稳奖励仍当作样本均值问题。
 
+<a id="i02"></a>
+
 ### I02 MDP、轨迹与环境接口【稳定】
 - **先修**：条件概率、马尔可夫性、有限状态机。
 - **定义与解析**：MDP 用 $\left(\mathcal S,\mathcal A,P,R,\gamma\right)$ 描述“当前状态和动作足以决定下一步分布”的序贯决策；轨迹是交互样本而非固定标签集。
@@ -47,6 +57,8 @@ assert all(abs(P[s,a].sum()-1)<1e-9 for s in range(2) for a in range(2))
 - **检测/实验**：若观察缺少速度，位置控制是否仍是 MDP？给出补历史或 belief state 的办法。
 - **常见坑**：把观测当真实状态；忽略时间上限 bootstrap；训练与评估环境 wrapper 不一致。
 
+<a id="i03"></a>
+
 ### I03 回报、策略与价值函数【稳定】
 - **先修**：I02、几何级数、条件期望。
 - **定义与解析**：策略给动作分布；状态价值和动作价值把未来随机回报压缩为期望，不能解释为必然结果。
@@ -65,7 +77,13 @@ assert np.allclose(G,[1+2*.9**2+3*.9**3, 2*.9+3*.9**2, 4.7, 3.])
 - **检测/实验**：手算同一奖励序列在 $\gamma=0,0.5,1$ 时的 $G_0$，解释 $\gamma$ 同时改变偏好与数值尺度。
 - **常见坑**：奖励与回报混用；继续任务直接令 γ=1；比较不同 γ 的原始 value 大小。
 
+<a id="i04"></a>
+
 ### I04 Bellman 方程与动态规划【稳定】
+
+<!-- readings:start -->
+**进一步精读：** [DQN：经验回放与目标网络](../../readings/papers/dqn.md)
+<!-- readings:end -->
 - **先修**：I03、全概率公式、矩阵迭代。
 - **定义与解析**：Bellman 方程把长时程价值拆成一步奖励加后继价值；已知完整模型时可做策略评估、策略迭代或价值迭代。
 - **公式/机制**：$V^*(s)=\max_a\sum_{s'}P(s'\mid s,a)\left[R+\gamma V^*(s')\right]$；最优算子在 $\gamma<1$ 时为压缩映射。
@@ -85,6 +103,8 @@ assert np.all(np.isfinite(V))
 ```
 - **检测/实验**：区分“对固定策略求期望”与“对动作取最大”；将最大误写到求和内会发生什么？
 - **常见坑**：奖励张量索引错位；终止状态仍 bootstrap；用动态规划却声称 model-free。
+
+<a id="i05"></a>
 
 ### I05 Monte Carlo 估计与重要性采样【稳定】
 - **先修**：I03、样本均值、大数定律。
@@ -106,7 +126,13 @@ assert abs(np.mean(vals)-(1+1.8+2.43))<.1
 - **检测/实验**：把 episode 长度从 3 增到 100，观察估计方差；说明普通与加权重要性采样的偏差—方差取舍。
 - **常见坑**：把每步相关样本当 IID；行为策略对目标动作概率为零仍做修正；只报最后一条 episode。
 
+<a id="i06"></a>
+
 ### I06 TD、SARSA 与 Q-learning【稳定】
+
+<!-- readings:start -->
+**进一步精读：** [DQN：经验回放与目标网络](../../readings/papers/dqn.md)
+<!-- readings:end -->
 - **先修**：I03–I05、随机逼近。
 - **定义与解析**：TD 用下一状态估计 bootstrap；SARSA 学行为策略价值，Q-learning 用最大动作目标学习 off-policy 最优价值。
 - **公式/机制**：$Q(s,a)\leftarrow Q(s,a)+\alpha\left[r+\gamma Q(s',a')-Q(s,a)\right]$；Q-learning 将 $Q(s',a')$ 换成 $\max_{a'}Q(s',a')$。
@@ -129,7 +155,13 @@ assert sum(evaluate(train(s)) for s in range(5))>=4
 - **检测/实验**：Cliff Walking 中为什么 SARSA 可能比 Q-learning 走得更安全？验收需冻结 Q 后单独评估。
 - **常见坑**：评估仍用 ε-greedy；将截断一律视为终止；看训练移动平均而没有独立 episode。
 
+<a id="i07"></a>
+
 ### I07 函数逼近、经验回放与 DQN【稳定基础】
+
+<!-- readings:start -->
+**进一步精读：** [DQN：经验回放与目标网络](../../readings/papers/dqn.md)
+<!-- readings:end -->
 - **先修**：I06、MLP、反向传播、目标网络。
 - **定义与解析**：DQN 用神经网络近似离散动作 Q；回放打散相关性，延迟目标网络缓和“追逐移动目标”。
 - **公式/机制**：$y=r+\gamma(1-d)\max_{a'}Q_{\bar\theta}(s',a')$，最小化 $\operatorname{Huber}\!\left(Q_\theta(s,a)-y\right)$。
@@ -147,6 +179,8 @@ assert torch.isfinite(loss)
 ```
 - **检测/实验**：去掉 target detach、回放或目标网络分别预测故障；完整项目至少 5 个训练种子和冻结策略评估均值/置信区间。
 - **常见坑**：对终止状态 bootstrap；训练网络同时生成有梯度 target；以最好种子代表算法。
+
+<a id="i08"></a>
 
 ### I08 策略梯度与 REINFORCE【稳定】
 - **先修**：I03、概率分布、log-derivative trick、自动微分。
@@ -167,7 +201,13 @@ print(logits.detach()); assert logits[2]>logits[0]
 - **检测/实验**：证明常数 baseline 不改变期望梯度；比较有无 baseline 的五种子梯度方差。
 - **常见坑**：对采样动作反传；最大化目标却忘记负号；用同批数据反复更新却称严格 on-policy。
 
+<a id="i09"></a>
+
 ### I09 Actor–Critic 与 GAE【稳定】
+
+<!-- readings:start -->
+**进一步精读：** [DeepSeekMath：数学训练与GRPO](../../readings/papers/deepseekmath.md)
+<!-- readings:end -->
 - **先修**：I06、I08、价值函数拟合。
 - **定义与解析**：actor 更新策略，critic 估计价值提供低方差 advantage；GAE 用 λ 连续调节 TD 偏差与 MC 方差。
 - **公式/机制**：$\delta_t=r_t+\gamma V(s_{t+1})-V(s_t)$，$\hat A_t=\delta_t+\gamma\lambda(1-d_t)\hat A_{t+1}$。
@@ -186,7 +226,13 @@ print(adv,ret); assert torch.isfinite(adv).all()
 - **检测/实验**：λ=0 与 λ=1 分别接近什么？比较 advantage 标准化前后的尺度而非宣称其必然提升。
 - **常见坑**：跨 episode 传播 GAE；value target 未 detach；把 advantage 与 return 混作同一监督量。
 
+<a id="i10"></a>
+
 ### I10 PPO 与受限策略更新【稳定工程基线】
+
+<!-- readings:start -->
+**进一步精读：** [InstructGPT：人类反馈与策略优化](../../readings/papers/instructgpt.md) · [DeepSeekMath：数学训练与GRPO](../../readings/papers/deepseekmath.md) · [TRL：监督偏好与在线策略训练](../../readings/projects/trl.md)
+<!-- readings:end -->
 - **先修**：I08–I09、重要性比率、KL 散度。
 - **定义与解析**：PPO-Clip 用概率比截断减少一次更新离旧策略过远的激励；截断不是严格 KL 约束或单调改进保证。
 - **公式/机制**：$L=\mathbb E\!\left[\min\!\left(r_tA_t,\operatorname{clip}(r_t,1-\epsilon,1+\epsilon)A_t\right)\right]$，$r_t=\pi_\theta(a_t\mid s_t)/\pi_{\mathrm{old}}(a_t\mid s_t)$。
@@ -203,6 +249,8 @@ assert torch.isfinite(loss)
 ```
 - **检测/实验**：分别画正、负 advantage 下目标随 ratio 的曲线；训练至少 5 种子，评估时冻结参数、动作使用明确 deterministic/stochastic 约定。
 - **常见坑**：old log-prob 随更新变化；不监测 KL、clip fraction、value loss；只复用同批数据却不打乱 minibatch。
+
+<a id="i11"></a>
 
 ### I11 连续控制与 Soft Actor-Critic【稳定基线】
 - **先修**：I09、连续分布、重参数化、双 Q。
@@ -221,6 +269,8 @@ print(loss.item(),mu.grad.mean().item()); assert torch.isfinite(loss)
 ```
 - **检测/实验**：调 α 观察动作熵与回报；说明 tanh 后为何需要 log-prob Jacobian 修正。
 - **常见坑**：省略双 Q 的最小值；动作缩放与环境边界不一致；把训练采样策略直接当确定性部署策略。
+
+<a id="i12"></a>
 
 ### I12 离线强化学习与分布外动作【演进中】
 - **先修**：I06–I11、分布偏移、行为策略。
@@ -241,6 +291,8 @@ assert np.any(counts[np.arange(2),naive]==0)
 - **检测/实验**：构造 random/medium/expert 三种数据覆盖，比较 BC、普通 Q-learning、保守选择；不能在线调参后仍称纯离线评估。
 - **常见坑**：把 replay buffer 训练等同 offline RL；测试环境反馈渗入调参；只报 D4RL normalized score 而不说明版本与归一化。
 
+<a id="i13"></a>
+
 ### I13 模仿学习：BC、DAgger 与 GAIL【稳定基础，扩展活跃】
 - **先修**：监督学习、I02、I08。
 - **定义与解析**：BC 对专家状态动作做监督学习，但自身错误改变后续状态分布；DAgger 在学习者访问的状态上请求专家并聚合数据，GAIL 匹配占用分布。
@@ -259,6 +311,8 @@ print(acc.item()); assert acc>.95
 ```
 - **检测/实验**：在链式环境逐步注入 1% 动作错误，测成功率随 horizon 的下降；DAgger 需要在线专家，不能假装免费标签。
 - **常见坑**：随机切分同一轨迹帧导致泄漏；只测动作 MSE 不测 rollout 成功；专家动作多模态却用单峰回归。
+
+<a id="i14"></a>
 
 ### I14 多智能体强化学习与 CTDE【演进中】
 - **先修**：I02–I11、博弈论基本概念、联合动作空间。

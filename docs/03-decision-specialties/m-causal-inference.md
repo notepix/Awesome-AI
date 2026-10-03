@@ -5,7 +5,15 @@
 
 ---
 
+## 配套系统讲解
+
+[串联本章的推导、例子与练习解析](../08-walkthroughs/08-domain-bridges.md) · [论文与源码精读](../../readings/README.md) · [完整实践代码](../../labs/README.md)
+
+原有知识单元保留稳定编号；概念卡用于定位，系统讲解用于连接完整过程。
+
 ## 知识单元
+
+<a id="m01"></a>
 
 ### M01 结构因果模型、干预与反事实【稳定理论】
 - **先修**：概率图、回归、条件概率。
@@ -25,11 +33,13 @@ print(obs,causal); assert abs(causal-2)<.1 and obs>3
 - **检测/实验**：画出 U→X、U→Y、X→Y 的 DAG；解释为什么更准的 (E[Y|X]) 仍可能给错干预结论。
 - **常见坑**：把 `do` 当条件筛选；DAG 方向只由相关数据决定；没有领域假设却宣称识别反事实。
 
+<a id="m02"></a>
+
 ### M02 潜在结果、随机试验与 ATE【稳定理论】
 - **先修**：M01、抽样、置信区间、假设检验。
 - **定义与解析**：个体同时有 (Y(1),Y(0))，但只能观察其中一个；随机化使处理与潜在结果独立，从而差均值无偏估计 ATE。
 - **公式/机制**：$\operatorname{ATE}=\mathbb E[Y(1)-Y(0)]$；一致性 $Y=TY(1)+(1-T)Y(0)$，随机化 $T\perp(Y(0),Y(1))$。
-- **资料**：Hernán & Robins [What If Ch.1–2](https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/)；Rubin [1974，§2–3](https://doi.org/10.1037/h0037350)。
+- **资料**：Hernán & Robins [What If Ch.1–2](https://www.hsph.harvard.edu/miguel-hernan/wp-content/uploads/sites/1268/2024/04/hernanrobins_WhatIf_26apr24.pdf)；Rubin [1974，§2–3](https://doi.org/10.1037/h0037350)。
 - **最小代码（可执行 RCT）**：
 ```python
 import numpy as np
@@ -43,11 +53,13 @@ assert abs(ate-tau.mean())<3*se
 - **检测/实验**：区分 ATE、ATT、个体效应；检查随机化前后协变量平衡但不要以“不显著”作为唯一判断。
 - **常见坑**：观察不到个体反事实却汇报个体真实效应；随机分配后按处理依从性直接分组；多次窥视结果再停止试验。
 
+<a id="m03"></a>
+
 ### M03 混杂、后门准则与调整【稳定理论】
 - **先修**：M01–M02、DAG、线性回归。
 - **定义与解析**：混杂变量同时影响处理和结果，打开非因果后门路径；调整集需阻断所有后门路径且不能包含处理后变量或 collider。
 - **公式/机制**：若 $Z$ 满足后门准则，$P(y\mid\operatorname{do}(x))=\sum_zP(y\mid x,z)P(z)$。
-- **资料**：Hernán & Robins [What If Ch.7–8](https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/)；Pearl [overview §3.3 Back-door criterion](https://ftp.cs.ucla.edu/pub/stat_ser/r350.pdf)。
+- **资料**：Hernán & Robins [What If Ch.7–8](https://www.hsph.harvard.edu/miguel-hernan/wp-content/uploads/sites/1268/2024/04/hernanrobins_WhatIf_26apr24.pdf)；Pearl [overview §3.3 Back-door criterion](https://ftp.cs.ucla.edu/pub/stat_ser/r350.pdf)。
 - **最小代码（可执行回归调整）**：
 ```python
 import numpy as np
@@ -61,11 +73,13 @@ assert abs(adj-2)<.1 and abs(naive-2)>1
 - **检测/实验**：分别调整混杂、mediator、collider，模拟估计偏差；要求先画 DAG 再选特征。
 - **常见坑**：“控制变量越多越好”；从结果发生后生成的特征做调整；仅凭相关系数识别混杂。
 
+<a id="m04"></a>
+
 ### M04 倾向得分、重加权与双重稳健【稳定方法】
 - **先修**：M02–M03、逻辑回归、positivity。
 - **定义与解析**：倾向得分 $e(X)=P(T=1\mid X)$ 将可观测混杂压缩为处理概率；IPW 构造伪总体，双重稳健估计结合处理与结果模型。
 - **公式/机制**：$\widehat{\operatorname{ATE}}_{\mathrm{IPW}}=n^{-1}\sum_i\left[T_iY_i/e_i-(1-T_i)Y_i/(1-e_i)\right]$；需一致性、无未测混杂、positivity。
-- **资料**：Rosenbaum & Rubin [1983，Theorem 1–3](https://doi.org/10.1093/biomet/70.1.41)；Hernán & Robins [What If Ch.12–13](https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/)。
+- **资料**：Rosenbaum & Rubin [1983，Theorem 1–3](https://doi.org/10.1093/biomet/70.1.41)；Hernán & Robins [What If Ch.12–13](https://www.hsph.harvard.edu/miguel-hernan/wp-content/uploads/sites/1268/2024/04/hernanrobins_WhatIf_26apr24.pdf)。
 - **最小代码（可执行 IPW，已知倾向用于教学）**：
 ```python
 import numpy as np
@@ -79,6 +93,8 @@ print(ate,ess); assert abs(ate-1.5)<.15
 ```
 - **检测/实验**：画 propensity 重叠与权重直方图；改变 clipping，报告偏差、方差和有效样本量。
 - **常见坑**：倾向模型 AUC 越高越好；没有共同支持仍外推；只报加权后点估计、不报权重极值和 balance。
+
+<a id="m05"></a>
 
 ### M05 自然实验：工具变量与双重差分【稳定设计，假设强】
 - **先修**：M01–M04、回归、面板数据。
